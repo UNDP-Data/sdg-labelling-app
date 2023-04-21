@@ -259,7 +259,7 @@ QUIT_MODAL = dmc.Modal(
 )
 
 
-def getMainLayout(paragraph: str):
+def get_main_layout(paragraph: str):
     return [html.Div(
         children=[
             HEADER,

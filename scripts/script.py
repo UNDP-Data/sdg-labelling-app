@@ -1,4 +1,4 @@
-def getParagraphs(mongo_collection):
+def get_paragraphs(mongo_collection):
     pipeline = [
         # Filter out documents with null labels
         {
@@ -25,7 +25,7 @@ def getParagraphs(mongo_collection):
     return list(mongo_collection.aggregate(pipeline))
     
 
-def updateParagraph(collection, _id, labels): 
+def update_paragraph(collection, _id, labels): 
     document = collection.find_one({'_id': _id})
 
     if document:
@@ -37,6 +37,6 @@ def updateParagraph(collection, _id, labels):
         print ('Document not found')
 
 
-def getParagraphById(collection, _id):
+def get_paragraph_by_id(collection, _id):
     document = collection.find_one({'_id': _id})
     return document

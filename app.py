@@ -128,9 +128,9 @@ def changeToMainLayout(n_clicks, input_value):
         N_CLICKS = 0
         MAX_CLICKS = input_value
         LABELS = [[] for i in range(MAX_CLICKS)]
-        CURRENT_DOC = list(script.getParagraphs(collection))[0]
+        CURRENT_DOC = list(script.get_paragraphs(collection))[0]
         DOC_IDS = [CURRENT_DOC['_id']]
-        return [components.getMainLayout(CURRENT_DOC['text'])]
+        return [components.get_main_layout(CURRENT_DOC['text'])]
     else:
         return dash.no_update
 
@@ -196,16 +196,16 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children: lis
 
         # update database with the current state of the labeling
         if aux != []:
-            script.updateParagraph(collection, CURRENT_DOC['_id'], aux)
+            script.update_paragraph(collection, CURRENT_DOC['_id'], aux)
 
         # get next paragraph
         if N_CLICKS < MAX_CLICKS:
             aux = LABELS[N_CLICKS]
             if DOC_IDS[-1] != CURRENT_DOC['_id']:
-                CURRENT_DOC = script.getParagraphById(
+                CURRENT_DOC = script.get_paragraph_by_id(
                     collection, DOC_IDS[N_CLICKS])
             else:
-                paragraphs = script.getParagraphs(collection)
+                paragraphs = script.get_paragraphs(collection)
                 i = 0
                 while paragraphs[i]['_id'] in DOC_IDS:
                     i += 1
@@ -224,7 +224,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children: lis
         LABELS[N_CLICKS] = aux
         N_CLICKS -= 1
         aux = LABELS[N_CLICKS]
-        CURRENT_DOC = script.getParagraphById(collection, DOC_IDS[N_CLICKS])
+        CURRENT_DOC = script.get_paragraph_by_id(collection, DOC_IDS[N_CLICKS])
 
         # check chips
         for tooltip in chip_container_children:
