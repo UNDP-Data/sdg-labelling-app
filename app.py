@@ -7,10 +7,7 @@ import dash_mantine_components as dmc
 from math import floor
 from dotenv import load_dotenv
 import os
-from json import dumps
-# import ast
 import pymongo
-# import dash_auth
 import scripts.script as script
 import scripts.components as components
 
@@ -23,13 +20,6 @@ MONGO_URI = os.getenv('MONGO_URI')
 client = pymongo.MongoClient(MONGO_URI)
 db = client['sdg_text_corpora']
 collection = db['test']
-
-
-# All the valid username/password pairs come from .env file for now
-# User validation and control is yet to be implemented.
-
-# VALID_USERNAME_PASSWORD_PAIRS = ast.literal_eval(
-#    os.environ.get('VALID_USERNAME_PASSWORD_PAIRS'))
 
 
 # Initialize the app
@@ -45,15 +35,8 @@ app = Dash(__name__,
            suppress_callback_exceptions=True
            )
 
-# User validation and control is yet to be implemented.
-"""auth = dash_auth.BasicAuth(
-    app,
-    VALID_USERNAME_PASSWORD_PAIRS
-)
-"""
 
 # Initialize components
-
 
 app.layout = dmc.MantineProvider(
     children=[
