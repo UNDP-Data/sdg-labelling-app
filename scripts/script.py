@@ -1,4 +1,16 @@
 from bson import ObjectId
+from dotenv import load_dotenv
+import os 
+import pymongo
+
+def get_document_collection():
+    load_dotenv()
+    x = os.getenv('MONGO_URI')
+    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
+    db = client['sdg_text_corpora']
+    collection = db['test']
+    return collection
+
 
 def get_paragraphs(mongo_collection):
     pipeline = [
