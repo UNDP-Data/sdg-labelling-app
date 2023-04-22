@@ -12,7 +12,7 @@ def get_document_collection():
     return collection
 
 
-def get_paragraphs(mongo_collection):
+def get_paragraph(mongo_collection, doc_ids : list):
     pipeline = [
         # Filter out documents with null labels
         {
@@ -27,7 +27,7 @@ def get_paragraphs(mongo_collection):
                 'count': { '$size': '$labels' }
             }
         },
-        # Sort by count in ascending order
+        # Sort by count in descending order
         {
             '$sort': { 'count': 1 }
         },
@@ -41,7 +41,10 @@ def get_paragraphs(mongo_collection):
     if documents:
         for doc in documents:
             doc['_id'] = str(doc['_id'])
-        return documents
+            if doc['_id'] not in doc_ids:
+                doc_ids.append(doc['_id'])
+                return doc, doc_ids
+        raise Exception('No documents found')
     else:
         raise Exception('No documents found')
     

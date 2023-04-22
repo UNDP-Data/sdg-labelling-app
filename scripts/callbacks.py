@@ -52,13 +52,13 @@ def quit_app(n1, is_open):
 def changeToMainLayout(n_clicks, input_value, data):
     """Change start layout to main layout."""
     if n_clicks is not None:
-        doc = list(database.get_paragraphs(database.get_document_collection()))[0]
+        doc, doc_ids = list(database.get_paragraph(database.get_document_collection(), []))
         aux = {
             'N_CLICKS': 0,
             'MAX_CLICKS': input_value,
             'LABELS': [[] for i in range(input_value)],
             'CURRENT_DOC': doc,
-            'DOC_IDS': [doc['_id']]
+            'DOC_IDS': doc_ids
         }
         x = components.get_main_layout(doc['text'])
         return x, aux
@@ -144,13 +144,8 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
                 doc = database.get_paragraph_by_id(
                     collection, doc_ids[user_clicks])
             else:
-                paragraphs = database.get_paragraphs(collection)
-                i = 0
-                while paragraphs[i]['_id'] in doc_ids:
-                    i += 1
-                doc = paragraphs[i]
-                doc_ids.append(doc['_id'])
-
+                doc, doc_ids = database.get_paragraph(collection, doc_ids)
+    
             # check chips if neccesary
             if labels[user_clicks] != []:
                 for tooltip in chip_container_children:
