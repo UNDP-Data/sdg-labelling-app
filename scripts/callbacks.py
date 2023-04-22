@@ -4,7 +4,7 @@ from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 import dash._callback_context
 from math import floor
-from . import script
+from . import database
 from . import components
 
 
@@ -52,7 +52,7 @@ def quit_app(n1, is_open):
 def changeToMainLayout(n_clicks, input_value, data):
     """Change start layout to main layout."""
     if n_clicks is not None:
-        doc = list(script.get_paragraphs(script.get_document_collection()))[0]
+        doc = list(database.get_paragraphs(database.get_document_collection()))[0]
         aux = {
             'N_CLICKS': 0,
             'MAX_CLICKS': input_value,
@@ -113,7 +113,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     doc = data['CURRENT_DOC']
     labels = data['LABELS']
     doc_ids = data['DOC_IDS']
-    collection = script.get_document_collection()
+    collection = database.get_document_collection()
 
     ctx = dash.callback_context
     if not ctx.triggered:
@@ -135,16 +135,16 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
 
         # update database with the current state of the labeling
         if aux != []:
-            script.update_paragraph(collection, doc['_id'], aux)
+            database.update_paragraph(collection, doc['_id'], aux)
 
         # get next paragraph
         if user_clicks < max_clicks:
             aux = labels[user_clicks]
             if doc_ids[-1] != doc['_id']:
-                doc = script.get_paragraph_by_id(
+                doc = database.get_paragraph_by_id(
                     collection, doc_ids[user_clicks])
             else:
-                paragraphs = script.get_paragraphs(collection)
+                paragraphs = database.get_paragraphs(collection)
                 i = 0
                 while paragraphs[i]['_id'] in doc_ids:
                     i += 1
@@ -162,7 +162,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         labels[user_clicks] = aux
         user_clicks -= 1
         aux = labels[user_clicks]
-        doc = script.get_paragraph_by_id(collection, doc_ids[user_clicks])
+        doc = database.get_paragraph_by_id(collection, doc_ids[user_clicks])
 
         # check chips
         for tooltip in chip_container_children:
