@@ -26,10 +26,12 @@ def get_paragraphs(mongo_collection):
     ]
     documents = list(mongo_collection.aggregate(pipeline))
 
-    for doc in documents:
-        doc['_id'] = str(doc['_id'])
-    
-    return documents
+    if documents:
+        for doc in documents:
+            doc['_id'] = str(doc['_id'])
+        return documents
+    else:
+        raise Exception('No documents found')
     
 
 def update_paragraph(collection, _id, labels): 
@@ -38,11 +40,9 @@ def update_paragraph(collection, _id, labels):
 
     if document:
         document['labels'] += [labels]
-        print(document['labels'])
         collection.replace_one({'_id': _id}, document)
-        print(collection.find_one({'_id': _id}))
     else :
-        print ('Document not found')
+        raise Exception('Document not found')
 
 
 def get_paragraph_by_id(collection, _id):
@@ -52,4 +52,4 @@ def get_paragraph_by_id(collection, _id):
         document['_id'] = str(document['_id'])
         return document
     else:
-        print('Document not found')
+        raise Exception('Document not found')
