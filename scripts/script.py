@@ -1,3 +1,5 @@
+from bson import ObjectId
+
 def get_paragraphs(mongo_collection):
     pipeline = [
         # Filter out documents with null labels
@@ -22,10 +24,16 @@ def get_paragraphs(mongo_collection):
             '$limit': 300
         }
     ]
-    return list(mongo_collection.aggregate(pipeline))
+    documents = list(mongo_collection.aggregate(pipeline))
+
+    for doc in documents:
+        doc['_id'] = str(doc['_id'])
+    
+    return documents
     
 
 def update_paragraph(collection, _id, labels): 
+    _id = ObjectId(_id)
     document = collection.find_one({'_id': _id})
 
     if document:
@@ -38,5 +46,10 @@ def update_paragraph(collection, _id, labels):
 
 
 def get_paragraph_by_id(collection, _id):
+    _id = ObjectId(_id)
     document = collection.find_one({'_id': _id})
-    return document
+    if document:
+        document['_id'] = str(document['_id'])
+        return document
+    else:
+        print('Document not found')
