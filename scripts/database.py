@@ -29,11 +29,11 @@ def get_paragraph(mongo_collection, doc_ids : list):
         },
         # Sort by count in descending order
         {
-            '$sort': { 'count': 1 }
+            '$sort': { 'count': -1 }
         },
         # Limit to first 300 documents
         {
-            '$limit': 300
+            '$limit': 100
         }
     ]
     documents = list(mongo_collection.aggregate(pipeline))
@@ -44,9 +44,8 @@ def get_paragraph(mongo_collection, doc_ids : list):
             if doc['_id'] not in doc_ids:
                 doc_ids.append(doc['_id'])
                 return doc, doc_ids
-        raise Exception('No documents found')
-    else:
-        raise Exception('No documents found')
+    
+    raise Exception('No documents found')
     
 
 def update_paragraph(collection, _id, labels): 
