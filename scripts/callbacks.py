@@ -16,7 +16,7 @@ from . import components
 def start_over_button(n_clicks):
     """This callback resets the app to its initial state when the start over button is clicked."""
     if n_clicks is not None:
-        return [components.START_LAYOUT]
+        return [components.get_start_layout()]
     else:
         return dash.no_update
     
@@ -37,7 +37,7 @@ def quit_app(n1, is_open):
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
     if button_id == 'quit-modal-button' and n1 is not None:
-        return components.START_LAYOUT, False
+        return components.get_start_layout(), False
     else:
         return dash.no_update, is_open
     
@@ -184,5 +184,5 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     if value < 100:
         return value, str(floor(value)) + '%', chip_container_children, doc['text'], dash.no_update, aux
     else:
-        return dash.no_update, dash.no_update, dash.no_update, dash.no_update, components.FINISH_LAYOUT, aux
+        return dash.no_update, dash.no_update, dash.no_update, dash.no_update, components.get_finish_layout(), aux
 

@@ -1,7 +1,7 @@
 # Import packages
 from dash import Dash, html, dcc
 import dash_mantine_components as dmc
-from scripts.components import START_LAYOUT
+from scripts.components import get_start_layout
 import scripts.callbacks as callbacks
 
 
@@ -25,7 +25,7 @@ app.layout = dmc.MantineProvider(
         dcc.Store(id='memory-output', storage_type='memory'),
         html.Div(
             id='app-wrapper',
-            children=START_LAYOUT
+            children=get_start_layout()
         )
     ]
 )
