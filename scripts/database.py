@@ -1,11 +1,11 @@
 from bson import ObjectId
 from dotenv import load_dotenv
+from datetime import datetime, timedelta
 import os 
 import pymongo
 
 def get_document_collection():
     load_dotenv()
-    x = os.getenv('MONGO_URI')
     client = pymongo.MongoClient(os.getenv('MONGO_URI'))
     db = client['sdg_text_corpora']
     collection = db['test']
@@ -41,12 +41,40 @@ def get_paragraph(mongo_collection, doc_ids : list):
     if documents:
         for doc in documents:
             doc['_id'] = str(doc['_id'])
-            if doc['_id'] not in doc_ids:
+            if doc['_id'] not in doc_ids and check_queue(doc['_id']):
+                update_queue(doc['_id'])
                 doc_ids.append(doc['_id'])
                 return doc, doc_ids
     
     raise Exception('No documents found')
     
+def update_queue(_id):
+    load_dotenv()
+    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
+    db = client['sdg_text_corpora']
+    collection = db['paragraph_queue']
+
+    doc = collection.find_one({'_id': _id})
+    if doc:
+        collection.replace_one({'_id': _id}, {'_id' : _id, 'date' : datetime.now()})
+    else:
+        collection.insert_one({'_id' : _id, 'date' : datetime.now()})
+
+def check_queue(_id):
+    load_dotenv()
+    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
+    db = client['sdg_text_corpora']
+    collection = db['paragraph_queue']
+    doc = collection.find_one({'_id' : _id})
+    
+    if doc:
+        if datetime.now() - doc['date'] >= timedelta(hours=1):
+            return True
+        return False
+    else:
+        return True
+        
+
 
 def update_paragraph(collection, _id, labels): 
     _id = ObjectId(_id)
