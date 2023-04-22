@@ -13,11 +13,9 @@ import scripts.components as components
 
 # Load environment variables
 load_dotenv()
-MONGO_URI = os.getenv('MONGO_URI')
-
 
 # Connect to MongoDB
-client = pymongo.MongoClient(MONGO_URI)
+client = pymongo.MongoClient(os.getenv('MONGO_URI'))
 db = client['sdg_text_corpora']
 collection = db['test']
 
