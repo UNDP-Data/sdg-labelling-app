@@ -1,5 +1,5 @@
 # Import packages
-from dash import callback
+from dash import callback, MATCH
 from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 import dash._callback_context
@@ -186,3 +186,24 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     else:
         return dash.no_update, dash.no_update, dash.no_update, dash.no_update, components.get_finish_layout(), aux
 
+
+@callback(
+    Output({'type': 'sdg-button', 'index': MATCH}, 'style'),
+    Input({'type': 'sdg-button', 'index': MATCH}, 'n_clicks'),
+    State({'type': 'sdg-button', 'index': MATCH}, 'id'),
+    prevent_initial_call=True
+)
+def change_sdg_img(n_clicks, button_id):
+    if  n_clicks is not None and n_clicks % 2 != 0:
+            index = int(button_id['index'])
+            return {
+                'height': '11vh',
+                'width': '11vh',
+                'max-height': '11vh',
+                'max-width': '11vh',
+                'background-image': 'url("../assets/SDG_icons/SDG'+str(index)+'.png")',
+                'background-size': 'cover',
+                'transition': '0.3s',
+                'border': '3px dotted black',
+                'border-radius': '5px',
+            }

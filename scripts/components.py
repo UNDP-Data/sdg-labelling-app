@@ -24,23 +24,23 @@ SDG_LIST = [
 
 
 SDG_COLORS = [
-    'red.7',
-    'yellow.5',
-    'green.7',
-    'red.9',
-    'orange.8',
-    'blue.3',
-    'yellow.4',
-    'pink.8',
-    'orange.6',
-    'pink.5',
-    'yellow.7',
-    'yellow.6',
-    'green.9',
-    'blue.5',
-    'lime.5',
-    'blue.7',
-    'blue.9'
+    '#e5243b',
+    '#DDA63A',
+    '#4C9F38',
+    '#C5192D',
+    '#FF3A21',
+    '#26BDE2',
+    '#FCC30B',
+    '#A21942',
+    '#FD6925',
+    '#DD1367',
+    '#FD9D24',
+    '#BF8B2E',
+    '#3F7E44',
+    '#0A97D9',
+    '#56C02B',
+    '#00689D',
+    '#19486A'
 ]
 
 
@@ -69,21 +69,33 @@ def get_header():
 
 def get_chips():
     chip_array = []
+    i = 1
 
     for sdg in SDG_LIST:
-        chip = dmc.Chip(
-            "SDG " + sdg['code'],
-            className='chip',
-            value=sdg['code'],
-            variant='filled',
-            radius='md',
-            color=SDG_COLORS[int(sdg['code'])-1],
-            checked=False,
+
+        button = html.Button(
+            className='sdg-img-button',
+            id = {'type': 'sdg-button', 'index': i},
+            
+            style={
+                'height': '10vh',
+                'width': '10vh',
+                'max-height': '10vh',
+                'max-width': '10vh',
+                'background-image': 'url("../assets/SDG_icons/SDG' + str(i) + '.png")',
+                'background-size': 'cover',
+                'transition': '0.3s',
+                'border': '2px solid '+ SDG_COLORS[i-1],
+                'border-radius': '5px',
+            }
         )
 
-        tooltip = dmc.Tooltip(label=sdg['name'], children=[
-                              chip], withArrow=True)
+        tooltip = dmc.Tooltip(label=sdg['name'],
+                              children=[button],
+                              withArrow=True
+                              )
         chip_array.append(tooltip)
+        i+=1
 
     return dmc.Container(
         id='chip-container',
@@ -235,6 +247,7 @@ def get_finish_layout():
                 )])
     ]
 
+
 def get_quit_modal():
     return dmc.Modal(
         id='modal',
@@ -250,9 +263,9 @@ def get_quit_modal():
                 },
                 children=[
                     dmc.Text("Are you sure you want to quit?",
-                            weight=700, size=20, color="#1D3557"),
+                             weight=700, size=20, color="#1D3557"),
                     dmc.Text("Your progress will be saved.",
-                            weight=400, size=15, color="#1D3557"),
+                             weight=400, size=15, color="#1D3557"),
                     dmc.Space(h=20),
                     dmc.Group(
                         children=[
