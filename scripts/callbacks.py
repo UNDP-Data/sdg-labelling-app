@@ -49,7 +49,7 @@ def quit_app(n1, is_open):
     State('memory-output', 'data')],
     prevent_initial_call=True
 )
-def changeToMainLayout(n_clicks, input_value, data):
+def change_to_main_layout(n_clicks, input_value, data):
     """Change start layout to main layout."""
     if n_clicks is not None:
         doc, doc_ids = list(database.get_paragraph(database.get_document_collection(), []))
@@ -73,7 +73,7 @@ def changeToMainLayout(n_clicks, input_value, data):
     State('memory-output', 'data'),
     prevent_initial_call=True
 )
-def changeToFinishLayout(n_clicks, data):
+def change_to_finish_layout(n_clicks, data):
     """Change main layout to finish layout."""
     clk = data['N_CLICKS']
     max_clk = data['MAX_CLICKS']
