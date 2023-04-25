@@ -1,6 +1,6 @@
 
 import dash_mantine_components as dmc
-from dash import html
+from dash import html, dcc
 
 SDG_LIST = [
     {'name': 'No poverty', 'code': '1'},
@@ -75,8 +75,8 @@ def get_chips():
 
         button = html.Button(
             className='sdg-img-button',
-            id = {'type': 'sdg-button', 'index': i},
-            
+            id={'type': 'sdg-button', 'index': i},
+            value=str(i-1),
             style={
                 'height': '10vh',
                 'width': '10vh',
@@ -85,17 +85,22 @@ def get_chips():
                 'background-image': 'url("../assets/SDG_icons/SDG' + str(i) + '.png")',
                 'background-size': 'cover',
                 'transition': '0.3s',
-                'border': '2px solid '+ SDG_COLORS[i-1],
+                'border': '2px solid ' + SDG_COLORS[i-1],
                 'border-radius': '5px',
             }
         )
 
         tooltip = dmc.Tooltip(label=sdg['name'],
-                              children=[button],
-                              withArrow=True
-                              )
+                              children=[
+                                dcc.Store(
+                                    id={'type': 'sdg-store', 'index': i},
+                                    storage_type='memory',
+                                    data={'clicked': False}),
+                                button],
+            withArrow=True
+        )
         chip_array.append(tooltip)
-        i+=1
+        i += 1
 
     return dmc.Container(
         id='chip-container',
@@ -103,6 +108,108 @@ def get_chips():
         children=chip_array,
     )
 
+def get_blank_chip_array():
+    chip_array = []
+    i = 1
+
+    for sdg in SDG_LIST:
+
+        button = html.Button(
+            className='sdg-img-button',
+            id={'type': 'sdg-button', 'index': i},
+            value=str(i-1),
+            style={
+                'height': '10vh',
+                'width': '10vh',
+                'max-height': '10vh',
+                'max-width': '10vh',
+                'background-image': 'url("../assets/SDG_icons/SDG' + str(i) + '.png")',
+                'background-size': 'cover',
+                'transition': '0.3s',
+                'border': '2px solid ' + SDG_COLORS[i-1],
+                'border-radius': '5px',
+            }
+        )
+
+        tooltip = dmc.Tooltip(label=sdg['name'],
+                              children=[
+                                dcc.Store(
+                                    id={'type': 'sdg-store', 'index': i},
+                                    storage_type='memory',
+                                    data={'clicked': False}),
+                                button],
+            withArrow=True
+        )
+        chip_array.append(tooltip)
+        i += 1
+
+    return chip_array
+
+def get_checked_chip_array(ids):
+    chip_array = []
+    i = 1
+
+    for sdg in SDG_LIST:
+        if i - 1 in ids:
+            button = html.Button(
+                className='sdg-img-button',
+                id={'type': 'sdg-button', 'index': i},
+                value=str(i-1),
+                style={
+                'height': '11vh',
+                'width': '11vh',
+                'max-height': '11vh',
+                'max-width': '11vh',
+                'background-image': 'url("../assets/SDG_icons/SDG'+str(i)+'.png")',
+                'background-size': 'cover',
+                'transition': '0.3s',
+                'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
+                'border-radius': '5px'
+            }
+            )
+
+            tooltip = dmc.Tooltip(label=sdg['name'],
+                              children=[
+                                dcc.Store(
+                                    id={'type': 'sdg-store', 'index': i},
+                                    storage_type='memory',
+                                    data={'clicked': True}),
+                                button],
+            withArrow=True
+        )
+        else:
+            button = html.Button(
+                className='sdg-img-button',
+                id={'type': 'sdg-button', 'index': i},
+                value=str(i-1),
+                style={
+                'height': '10vh',
+                'width': '10vh',
+                'max-height': '10vh',
+                'max-width': '10vh',
+                'background-image': 'url("../assets/SDG_icons/SDG'+str(i)+'.png")',
+                'background-size': 'cover',
+                'transition': '0.3s',
+                'border': '2px solid ' + SDG_COLORS[i-1],
+                'border-radius': '5px'
+            }
+            )
+
+            tooltip = dmc.Tooltip(label=sdg['name'],
+                              children=[
+                                dcc.Store(
+                                    id={'type': 'sdg-store', 'index': i},
+                                    storage_type='memory',
+                                    data={'clicked': False}),
+                                button],
+            withArrow=True
+        )
+
+        
+        chip_array.append(tooltip)
+        i += 1
+
+    return chip_array
 
 def get_button_container():
     return html.Div(

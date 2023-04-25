@@ -1,5 +1,5 @@
 # Import packages
-from dash import callback, MATCH
+from dash import callback, MATCH, ALL
 from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 import dash._callback_context
@@ -114,6 +114,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     labels = data['LABELS']
     doc_ids = data['DOC_IDS']
     collection = database.get_document_collection()
+    new_chips = 0
 
     ctx = dash.callback_context
     if not ctx.triggered:
@@ -121,21 +122,21 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     else:
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
-    # uncheck chips
+    # get labels from chips
     aux = []
-    for tooltip in chip_container_children:
-        chip = tooltip['props']['children'][0]['props']
-        if chip['checked'] == True:
-            aux.append(int(chip['value']))
-            chip['checked'] = False
+    for sdg in chip_container_children:
+        if sdg['props']['children'][0]['props']['data']['clicked'] == True:
+            aux.append(int(sdg['props']['children'][1]['props']['value']))
+    
+        
 
     if button_id == 'next-button' and n_clicks_next is not None:
         labels[user_clicks] = aux
         user_clicks += 1
 
         # update database with the current state of the labeling
-        if aux != []:
-            database.update_paragraph(collection, doc['_id'], aux)
+        #if aux != []:
+         #   database.update_paragraph(collection, doc['_id'], aux)
 
         # get next paragraph
         if user_clicks < max_clicks:
@@ -147,11 +148,10 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
                 doc, doc_ids = database.get_paragraph(collection, doc_ids)
     
             # check chips if neccesary
+            
             if labels[user_clicks] != []:
-                for tooltip in chip_container_children:
-                    chip = tooltip['props']['children'][0]['props']
-                    if int(chip['value']) in aux:
-                        chip['checked'] = True
+                chip_container_children = components.get_checked_chip_array(labels[user_clicks])
+            
 
     elif button_id == 'back-button' and n_clicks_back is not None and user_clicks > 0:
         labels[user_clicks] = aux
@@ -160,10 +160,12 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         doc = database.get_paragraph_by_id(collection, doc_ids[user_clicks])
 
         # check chips
-        for tooltip in chip_container_children:
-            chip = tooltip['props']['children'][0]['props']
-            if int(chip['value']) in aux:
-                chip['checked'] = True
+        if labels[user_clicks] != []:
+                chip_container_children = components.get_checked_chip_array(labels[user_clicks])
+            
+
+    if labels[user_clicks] == []:
+        chip_container_children = components.get_blank_chip_array()
 
     if user_clicks < 0:
         user_clicks = 0
@@ -188,14 +190,18 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
 
 
 @callback(
-    Output({'type': 'sdg-button', 'index': MATCH}, 'style'),
+    [Output({'type': 'sdg-button', 'index': MATCH}, 'style'),
+     Output({'type': 'sdg-store', 'index': MATCH}, 'data')],
     Input({'type': 'sdg-button', 'index': MATCH}, 'n_clicks'),
-    State({'type': 'sdg-button', 'index': MATCH}, 'id'),
+    [State({'type': 'sdg-button', 'index': MATCH}, 'id'),
+     State({'type': 'sdg-store', 'index': MATCH}, 'data')],
     prevent_initial_call=True
 )
-def change_sdg_img(n_clicks, button_id):
-    if  n_clicks is not None and n_clicks % 2 != 0:
-            index = int(button_id['index'])
+def change_sdg_img(n_clicks, button_id, data):
+
+    if  n_clicks is not None:
+        index = int(button_id['index'])
+        if data['clicked'] == False:
             return {
                 'height': '11vh',
                 'width': '11vh',
@@ -204,6 +210,18 @@ def change_sdg_img(n_clicks, button_id):
                 'background-image': 'url("../assets/SDG_icons/SDG'+str(index)+'.png")',
                 'background-size': 'cover',
                 'transition': '0.3s',
-                'border': '3px dotted black',
-                'border-radius': '5px',
-            }
+                'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
+                'border-radius': '5px'
+            }, {'clicked': True}
+        else:
+            return {
+                    'height': '10vh',
+                    'width': '10vh',
+                    'max-height': '10vh',
+                    'max-width': '10vh',
+                    'background-image': 'url("../assets/SDG_icons/SDG'+str(index)+'.png")',
+                    'background-size': 'cover',
+                    'transition': '0.3s',
+                    'border': '2px solid '+ components.SDG_COLORS[index-1],
+                    'border-radius': '5px',
+                }, {'clicked': False}
