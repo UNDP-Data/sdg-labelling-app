@@ -31,7 +31,7 @@ def get_paragraph(mongo_collection, doc_ids : list):
         {
             '$sort': { 'count': -1 }
         },
-        # Limit to first 300 documents
+        # Limit to first 100 documents
         {
             '$limit': 100
         }

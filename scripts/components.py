@@ -50,12 +50,6 @@ def get_header():
         height=120,
         withBorder=True,
         children=[
-            dmc.Image(
-                src='/assets/UNDP_logo.svg.png',
-                className='app-header-logo',
-                height=100,
-                width=50
-            ),
             dmc.Text(
                 'SDG LABELLING PAGE',
                 color="#1D3557",
