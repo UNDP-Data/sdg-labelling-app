@@ -4,20 +4,24 @@ from datetime import datetime, timedelta
 import os 
 import pymongo
 
-def get_document_collection():
+def get_document_collection(collection_name):
     load_dotenv()
     client = pymongo.MongoClient(os.getenv('MONGO_URI'))
     db = client['sdg_text_corpora']
-    collection = db['test']
+    collection = db[collection_name]
     return collection
 
 
-def get_paragraph(mongo_collection, doc_ids : list):
+def get_paragraph(doc_ids : list, recent_ids : list):
+    mongo_collection = get_document_collection('test')
+
+
     pipeline = [
         # Filter out documents with null labels
         {
             '$match': {
                 'labels': { '$ne': None },
+                '_id': { '$nin': [ObjectId(_id) for _id in recent_ids] },
                 '$expr': { '$lte': [{ '$size': '$labels' }, 2] }
             }
         },
@@ -31,7 +35,7 @@ def get_paragraph(mongo_collection, doc_ids : list):
         {
             '$sort': { 'count': -1 }
         },
-        # Limit to first 300 documents
+        # Limit to first 100 documents
         {
             '$limit': 100
         }
@@ -41,43 +45,33 @@ def get_paragraph(mongo_collection, doc_ids : list):
     if documents:
         for doc in documents:
             doc['_id'] = str(doc['_id'])
-            if doc['_id'] not in doc_ids and check_queue(doc['_id']):
+            if doc['_id'] not in doc_ids and doc['_id'] not in recent_ids:
                 update_queue(doc['_id'])
                 doc_ids.append(doc['_id'])
-                return doc, doc_ids
+                return doc, doc_ids, recent_ids
     
     raise Exception('No documents found')
+
+
+def get_recent_ids():
+    collection = get_document_collection('paragraph_queue')
+    docs = collection.find({'date': {'$gt': datetime.now() - timedelta(hours=1)}}, {'_id': 1})
+    return [doc['_id'] for doc in docs]
     
 def update_queue(_id):
-    load_dotenv()
-    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
-    db = client['sdg_text_corpora']
-    collection = db['paragraph_queue']
+    collection = get_document_collection('paragraph_queue')
 
     doc = collection.find_one({'_id': _id})
     if doc:
         collection.replace_one({'_id': _id}, {'_id' : _id, 'date' : datetime.now()})
     else:
         collection.insert_one({'_id' : _id, 'date' : datetime.now()})
-
-def check_queue(_id):
-    load_dotenv()
-    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
-    db = client['sdg_text_corpora']
-    collection = db['paragraph_queue']
-    doc = collection.find_one({'_id' : _id})
-    
-    if doc:
-        if datetime.now() - doc['date'] >= timedelta(hours=1):
-            return True
-        return False
-    else:
-        return True
         
 
 
-def update_paragraph(collection, _id, labels): 
+def update_paragraph( _id, labels): 
     _id = ObjectId(_id)
+    collection = get_document_collection('test')
     document = collection.find_one({'_id': _id})
 
     if document:
@@ -87,8 +81,9 @@ def update_paragraph(collection, _id, labels):
         raise Exception('Document not found')
 
 
-def get_paragraph_by_id(collection, _id):
+def get_paragraph_by_id(_id):
     _id = ObjectId(_id)
+    collection = get_document_collection('test')
     document = collection.find_one({'_id': _id})
     if document:
         document['_id'] = str(document['_id'])

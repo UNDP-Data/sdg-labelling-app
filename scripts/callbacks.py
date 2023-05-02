@@ -52,13 +52,14 @@ def quit_app(n1, is_open):
 def change_to_main_layout(n_clicks, input_value, data):
     """Change start layout to main layout."""
     if n_clicks is not None:
-        doc, doc_ids = list(database.get_paragraph(database.get_document_collection(), []))
+        doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids()))
         aux = {
             'N_CLICKS': 0,
             'MAX_CLICKS': input_value,
             'LABELS': [[] for i in range(input_value)],
             'CURRENT_DOC': doc,
-            'DOC_IDS': doc_ids
+            'DOC_IDS': doc_ids,
+            'RECENT_IDS': recent_ids
         }
         x = components.get_main_layout(doc['text'])
         return x, aux
@@ -79,7 +80,7 @@ def change_to_finish_layout(n_clicks, data):
     max_clk = data['MAX_CLICKS']
 
     if n_clicks is not None and clk == max_clk:
-        return components.FINISH_LAYOUT
+        return components.get_finish_layout()
     else:
         raise PreventUpdate
     
@@ -113,8 +114,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     doc = data['CURRENT_DOC']
     labels = data['LABELS']
     doc_ids = data['DOC_IDS']
-    collection = database.get_document_collection()
-    new_chips = 0
+    recent_ids = data['RECENT_IDS']
 
     ctx = dash.callback_context
     if not ctx.triggered:
@@ -142,10 +142,9 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         if user_clicks < max_clicks:
             aux = labels[user_clicks]
             if doc_ids[-1] != doc['_id']:
-                doc = database.get_paragraph_by_id(
-                    collection, doc_ids[user_clicks])
+                doc = database.get_paragraph_by_id(doc_ids[user_clicks])
             else:
-                doc, doc_ids = database.get_paragraph(collection, doc_ids)
+                doc, doc_ids, recent_ids = database.get_paragraph(doc_ids, recent_ids)
     
             # check chips if neccesary
             
@@ -157,15 +156,15 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         labels[user_clicks] = aux
         user_clicks -= 1
         aux = labels[user_clicks]
-        doc = database.get_paragraph_by_id(collection, doc_ids[user_clicks])
+        doc = database.get_paragraph_by_id( doc_ids[user_clicks])
 
         # check chips
         if labels[user_clicks] != []:
                 chip_container_children = components.get_checked_chip_array(labels[user_clicks])
             
-
-    if labels[user_clicks] == []:
-        chip_container_children = components.get_blank_chip_array()
+    if user_clicks < max_clicks:
+        if labels[user_clicks] == []:
+            chip_container_children = components.get_blank_chip_array()
 
     if user_clicks < 0:
         user_clicks = 0
@@ -179,7 +178,8 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         'MAX_CLICKS': max_clicks,
         'LABELS': labels,
         'CURRENT_DOC': doc,
-        'DOC_IDS': doc_ids
+        'DOC_IDS': doc_ids,
+        'RECENT_IDS': recent_ids
     }
 
     # get next paragraph
