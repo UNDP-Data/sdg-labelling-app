@@ -1,5 +1,4 @@
 from bson import ObjectId
-from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import os 
 import pymongo
