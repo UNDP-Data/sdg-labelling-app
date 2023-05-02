@@ -5,7 +5,6 @@ import os
 import pymongo
 
 def get_document_collection():
-    load_dotenv()
     client = pymongo.MongoClient(os.getenv('MONGO_URI'))
     db = client['sdg_text_corpora']
     collection = db['test']
@@ -49,7 +48,6 @@ def get_paragraph(mongo_collection, doc_ids : list):
     raise Exception('No documents found')
     
 def update_queue(_id):
-    load_dotenv()
     client = pymongo.MongoClient(os.getenv('MONGO_URI'))
     db = client['sdg_text_corpora']
     collection = db['paragraph_queue']
@@ -61,7 +59,6 @@ def update_queue(_id):
         collection.insert_one({'_id' : _id, 'date' : datetime.now()})
 
 def check_queue(_id):
-    load_dotenv()
     client = pymongo.MongoClient(os.getenv('MONGO_URI'))
     db = client['sdg_text_corpora']
     collection = db['paragraph_queue']

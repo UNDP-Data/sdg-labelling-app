@@ -109,13 +109,15 @@ def get_button_container():
 
 
 def get_body_title():
-    BODY_TITLE = dmc.Text(
+    return dmc.Text(
         'ASSIGN EACH PARAGRAPH TO THEIR MOST RELEVANT SDGs',
         className='app-body-text',
         color="#1D3557",
         weight=700,
         size=25
     )
+
+
 
 
 def get_progress_bar():
