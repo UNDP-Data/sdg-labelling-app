@@ -50,12 +50,6 @@ def get_header():
         height=120,
         withBorder=True,
         children=[
-            dmc.Image(
-                src='/assets/UNDP_logo.svg.png',
-                className='app-header-logo',
-                height=100,
-                width=50
-            ),
             dmc.Text(
                 'SDG LABELLING PAGE',
                 color="#1D3557",
@@ -163,6 +157,7 @@ def get_checked_chip_array(ids):
                 'background-image': 'url("../assets/SDG_icons/SDG'+str(i)+'.png")',
                 'background-size': 'cover',
                 'transition': '0.3s',
+                'border': '2px solid '+ SDG_COLORS[i-1],
                 'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
                 'border-radius': '5px'
             }
@@ -234,7 +229,7 @@ def get_button_container():
 
 
 def get_body_title():
-    BODY_TITLE = dmc.Text(
+    return dmc.Text(
         'ASSIGN EACH PARAGRAPH TO THEIR MOST RELEVANT SDGs',
         className='app-body-text',
         color="#1D3557",

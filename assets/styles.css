@@ -18,8 +18,9 @@
 .app-header {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-content: center;
-  justify-content: space-between;
+  justify-content: right;
 }
 
 .app-start-title {
@@ -39,7 +40,7 @@
 .app-header-text {
     padding-right: 15vh;
     display: flex;
-    align-items: center
+    align-items: end;
 }
 
 .paper {

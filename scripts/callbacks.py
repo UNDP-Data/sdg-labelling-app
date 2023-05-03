@@ -135,8 +135,8 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         user_clicks += 1
 
         # update database with the current state of the labeling
-        #if aux != []:
-         #   database.update_paragraph(collection, doc['_id'], aux)
+        if aux != []:
+            database.update_paragraph(doc['_id'], aux)
 
         # get next paragraph
         if user_clicks < max_clicks:
@@ -209,6 +209,7 @@ def change_sdg_img(n_clicks, button_id, data):
                 'max-width': '11vh',
                 'background-image': 'url("../assets/SDG_icons/SDG'+str(index)+'.png")',
                 'background-size': 'cover',
+                'border': '2px solid '+ components.SDG_COLORS[index-1],
                 'transition': '0.3s',
                 'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
                 'border-radius': '5px'

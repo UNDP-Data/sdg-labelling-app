@@ -1,11 +1,9 @@
 from bson import ObjectId
-from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import os 
 import pymongo
 
 def get_document_collection(collection_name):
-    load_dotenv()
     client = pymongo.MongoClient(os.getenv('MONGO_URI'))
     db = client['sdg_text_corpora']
     collection = db[collection_name]
