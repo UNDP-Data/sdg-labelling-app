@@ -1,10 +1,11 @@
 # Import packages
 from dash import Dash, html, dcc
 import dash_mantine_components as dmc
+from dotenv import load_dotenv
 from scripts.components import get_start_layout
 import scripts.callbacks as callbacks
 
-
+load_dotenv()
 # Initialize the app
 app = Dash(__name__,
            external_stylesheets=['styles.css'],
