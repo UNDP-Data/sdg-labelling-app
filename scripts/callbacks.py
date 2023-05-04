@@ -6,6 +6,7 @@ import dash._callback_context
 from math import floor
 from . import database
 from . import components
+import re
 
 
 @callback(
@@ -43,26 +44,34 @@ def quit_app(n1, is_open):
     
 @callback(
     [Output('app-wrapper', 'children', allow_duplicate=True),
-     Output('memory-output', 'data',  allow_duplicate=True)],
+     Output('memory-output', 'data',  allow_duplicate=True),
+     Output('email-input', 'error')],
     Input('start-button', 'n_clicks'),
     [State('slider', 'value'),
-    State('memory-output', 'data')],
+    State('email-input', 'value')],
     prevent_initial_call=True
 )
-def change_to_main_layout(n_clicks, input_value, data):
+def change_to_main_layout(n_clicks, input_value, email):
     """Change start layout to main layout."""
+
+    # RFC5322-compliant Regular Expression
+    regex = re.compile(r"([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\[[\t -Z^-~]*])")
+
     if n_clicks is not None:
-        doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids()))
-        aux = {
-            'N_CLICKS': 0,
-            'MAX_CLICKS': input_value,
-            'LABELS': [[] for i in range(input_value)],
-            'CURRENT_DOC': doc,
-            'DOC_IDS': doc_ids,
-            'RECENT_IDS': recent_ids
-        }
-        x = components.get_main_layout(doc['text'])
-        return x, aux
+        if re.fullmatch(regex, email):
+            doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids()))
+            aux = {
+                'N_CLICKS': 0,
+                'MAX_CLICKS': input_value,
+                'LABELS': [[] for i in range(input_value)],
+                'CURRENT_DOC': doc,
+                'DOC_IDS': doc_ids,
+                'RECENT_IDS': recent_ids,
+                'USER_EMAIL' : email
+            }
+            return components.get_main_layout(doc['text']), aux, dash.no_update
+        else:
+            return dash.no_update, dash.no_update, 'Invalid email address'
     else:
         raise PreventUpdate
     

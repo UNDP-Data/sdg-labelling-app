@@ -86,11 +86,11 @@ def get_chips():
 
         tooltip = dmc.Tooltip(label=sdg['name'],
                               children=[
-                                dcc.Store(
-                                    id={'type': 'sdg-store', 'index': i},
-                                    storage_type='memory',
-                                    data={'clicked': False}),
-                                button],
+            dcc.Store(
+                id={'type': 'sdg-store', 'index': i},
+                storage_type='memory',
+                data={'clicked': False}),
+            button],
             withArrow=True
         )
         chip_array.append(tooltip)
@@ -101,6 +101,7 @@ def get_chips():
         className='chip-container',
         children=chip_array,
     )
+
 
 def get_blank_chip_array():
     chip_array = []
@@ -127,17 +128,18 @@ def get_blank_chip_array():
 
         tooltip = dmc.Tooltip(label=sdg['name'],
                               children=[
-                                dcc.Store(
-                                    id={'type': 'sdg-store', 'index': i},
-                                    storage_type='memory',
-                                    data={'clicked': False}),
-                                button],
+            dcc.Store(
+                id={'type': 'sdg-store', 'index': i},
+                storage_type='memory',
+                data={'clicked': False}),
+            button],
             withArrow=True
         )
         chip_array.append(tooltip)
         i += 1
 
     return chip_array
+
 
 def get_checked_chip_array(ids):
     chip_array = []
@@ -150,61 +152,61 @@ def get_checked_chip_array(ids):
                 id={'type': 'sdg-button', 'index': i},
                 value=str(i-1),
                 style={
-                'height': '11vh',
-                'width': '11vh',
-                'max-height': '11vh',
-                'max-width': '11vh',
-                'background-image': 'url("../assets/SDG_icons/SDG'+str(i)+'.png")',
-                'background-size': 'cover',
-                'transition': '0.3s',
-                'border': '2px solid '+ SDG_COLORS[i-1],
-                'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
-                'border-radius': '5px'
-            }
+                    'height': '11vh',
+                    'width': '11vh',
+                    'max-height': '11vh',
+                    'max-width': '11vh',
+                    'background-image': 'url("../assets/SDG_icons/SDG'+str(i)+'.png")',
+                    'background-size': 'cover',
+                    'transition': '0.3s',
+                    'border': '2px solid ' + SDG_COLORS[i-1],
+                    'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
+                    'border-radius': '5px'
+                }
             )
 
             tooltip = dmc.Tooltip(label=sdg['name'],
-                              children=[
-                                dcc.Store(
-                                    id={'type': 'sdg-store', 'index': i},
-                                    storage_type='memory',
-                                    data={'clicked': True}),
-                                button],
-            withArrow=True
-        )
+                                  children=[
+                dcc.Store(
+                    id={'type': 'sdg-store', 'index': i},
+                    storage_type='memory',
+                    data={'clicked': True}),
+                button],
+                withArrow=True
+            )
         else:
             button = html.Button(
                 className='sdg-img-button',
                 id={'type': 'sdg-button', 'index': i},
                 value=str(i-1),
                 style={
-                'height': '10vh',
-                'width': '10vh',
-                'max-height': '10vh',
-                'max-width': '10vh',
-                'background-image': 'url("../assets/SDG_icons/SDG'+str(i)+'.png")',
-                'background-size': 'cover',
-                'transition': '0.3s',
-                'border': '2px solid ' + SDG_COLORS[i-1],
-                'border-radius': '5px'
-            }
+                    'height': '10vh',
+                    'width': '10vh',
+                    'max-height': '10vh',
+                    'max-width': '10vh',
+                    'background-image': 'url("../assets/SDG_icons/SDG'+str(i)+'.png")',
+                    'background-size': 'cover',
+                    'transition': '0.3s',
+                    'border': '2px solid ' + SDG_COLORS[i-1],
+                    'border-radius': '5px'
+                }
             )
 
             tooltip = dmc.Tooltip(label=sdg['name'],
-                              children=[
-                                dcc.Store(
-                                    id={'type': 'sdg-store', 'index': i},
-                                    storage_type='memory',
-                                    data={'clicked': False}),
-                                button],
-            withArrow=True
-        )
+                                  children=[
+                dcc.Store(
+                    id={'type': 'sdg-store', 'index': i},
+                    storage_type='memory',
+                    data={'clicked': False}),
+                button],
+                withArrow=True
+            )
 
-        
         chip_array.append(tooltip)
         i += 1
 
     return chip_array
+
 
 def get_button_container():
     return html.Div(
@@ -280,6 +282,7 @@ def get_start_layout():
                             size=20
                         ),
                         dmc.Space(h=50),
+                        
                         dmc.Slider(
                             className='slider',
                             id='slider',
@@ -296,6 +299,14 @@ def get_start_layout():
                             ],
                             value=30,
                             style={'width': '45%'}
+                        ),
+                        
+                        dmc.Space(h=50),
+                        dmc.TextInput(
+                            id='email-input',
+                            label='Enter your email',
+                            placeholder='Enter your email',
+                            style={'width': '15%'},
                         ),
                         dmc.Space(h=50),
                         dmc.Button(
