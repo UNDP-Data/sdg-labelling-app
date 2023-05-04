@@ -1,7 +1,8 @@
 from bson import ObjectId
 from datetime import datetime, timedelta
-import os 
+import os
 import pymongo
+
 
 def get_document_collection(collection_name):
     client = pymongo.MongoClient(os.getenv('MONGO_URI'))
@@ -10,28 +11,34 @@ def get_document_collection(collection_name):
     return collection
 
 
-def get_paragraph(doc_ids : list, recent_ids : list):
+def get_paragraph(doc_ids: list, recent_ids: list):
     mongo_collection = get_document_collection('test')
 
-
     pipeline = [
-        # Filter out documents with null labels
+        # Replace null label arrays with empty arrays, so that the size operator is applied correctly
+        {
+            '$addFields': {
+                'labels': {
+                    '$ifNull': ['$labels', []]
+                }
+            }
+        },
+        # Filter out documents in the queue
         {
             '$match': {
-                'labels': { '$ne': None },
-                '_id': { '$nin': [ObjectId(_id) for _id in recent_ids] },
-                '$expr': { '$lte': [{ '$size': '$labels' }, 2] }
+                '_id': {'$nin': [ObjectId(_id) for _id in recent_ids]},
+                '$expr': {'$lte': [{'$size': '$labels'}, 2]}
             }
         },
         # Add a count field to each document
         {
             '$addFields': {
-                'count': { '$size': '$labels' }
+                'count': {'$size': '$labels'}
             }
         },
         # Sort by count in descending order
         {
-            '$sort': { 'count': -1 }
+            '$sort': {'count': -1}
         },
         # Limit to first 100 documents
         {
@@ -47,27 +54,29 @@ def get_paragraph(doc_ids : list, recent_ids : list):
                 update_queue(doc['_id'])
                 doc_ids.append(doc['_id'])
                 return doc, doc_ids, recent_ids
-    
+
     raise Exception('No documents found')
 
 
 def get_recent_ids():
     collection = get_document_collection('paragraph_queue')
-    docs = collection.find({'date': {'$gt': datetime.now() - timedelta(hours=1)}}, {'_id': 1})
+    docs = collection.find(
+        {'date': {'$gt': datetime.now() - timedelta(hours=1)}}, {'_id': 1})
     return [doc['_id'] for doc in docs]
-    
+
+
 def update_queue(_id):
     collection = get_document_collection('paragraph_queue')
 
     doc = collection.find_one({'_id': _id})
     if doc:
-        collection.replace_one({'_id': _id}, {'_id' : _id, 'date' : datetime.now()})
+        collection.replace_one(
+            {'_id': _id}, {'_id': _id, 'date': datetime.now()})
     else:
-        collection.insert_one({'_id' : _id, 'date' : datetime.now()})
-        
+        collection.insert_one({'_id': _id, 'date': datetime.now()})
 
 
-def update_paragraph( _id, labels): 
+def update_paragraph(_id, labels):
     _id = ObjectId(_id)
     collection = get_document_collection('test')
     document = collection.find_one({'_id': _id})
@@ -75,7 +84,7 @@ def update_paragraph( _id, labels):
     if document:
         document['labels'] += [labels]
         collection.replace_one({'_id': _id}, document)
-    else :
+    else:
         raise Exception('Document not found')
 
 
