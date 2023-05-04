@@ -11,7 +11,7 @@ def get_document_collection(collection_name):
     return collection
 
 
-def get_paragraph(doc_ids: list, recent_ids: list):
+def get_paragraph(doc_ids: list, recent_ids: list, email):
     mongo_collection = get_document_collection('test')
     pipeline = [
         # Replace null label arrays with empty arrays, so that the size operator is applied correctly
@@ -49,12 +49,19 @@ def get_paragraph(doc_ids: list, recent_ids: list):
     if documents:
         for doc in documents:
             doc['_id'] = str(doc['_id'])
-            if doc['_id'] not in doc_ids and doc['_id'] not in recent_ids:
+            if doc['_id'] not in doc_ids and doc['_id'] not in recent_ids and not check_user_email(doc, email):
                 update_queue(doc['_id'])
                 doc_ids.append(doc['_id'])
                 return doc, doc_ids, recent_ids
 
     raise Exception('No documents found')
+
+
+def check_user_email(doc, email):
+    for user in doc['labels']:
+        if user['email'] == email:
+            return True
+    return False
 
 
 def get_recent_ids():

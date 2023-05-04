@@ -59,7 +59,7 @@ def change_to_main_layout(n_clicks, input_value, email):
 
     if n_clicks is not None:
         if re.fullmatch(regex, email):
-            doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids()))
+            doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids(), email))
             aux = {
                 'N_CLICKS': 0,
                 'MAX_CLICKS': input_value,
@@ -154,7 +154,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
             if doc_ids[-1] != doc['_id']:
                 doc = database.get_paragraph_by_id(doc_ids[user_clicks])
             else:
-                doc, doc_ids, recent_ids = database.get_paragraph(doc_ids, recent_ids)
+                doc, doc_ids, recent_ids = database.get_paragraph(doc_ids, recent_ids, email)
     
             # check chips if neccesary
             
