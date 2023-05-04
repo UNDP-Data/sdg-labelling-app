@@ -1,6 +1,7 @@
 
 import dash_mantine_components as dmc
 from dash import html, dcc
+from dash_iconify import DashIconify
 
 SDG_LIST = [
     {'name': 'No poverty', 'code': '1'},
@@ -50,6 +51,18 @@ def get_header():
         height=120,
         withBorder=True,
         children=[
+            dmc.NavLink(
+                label='Want to learn more about SDGs?',
+                href='https://www.undp.org/sustainable-development-goals',
+                icon = DashIconify(icon='bi:house-door-fill', height=16),
+                active=True,
+                variant='subtle',
+                color='blue.8',
+                style={
+                    'width': 'fit-content',
+                },
+                rightSection=DashIconify(icon="tabler-chevron-right")
+            ),
             dmc.Text(
                 'SDG LABELLING PAGE',
                 color="#1D3557",
