@@ -232,7 +232,7 @@ def get_button_container():
 
 def get_body_title():
     return dmc.Text(
-        'ASSIGN EACH PARAGRAPH TO THEIR MOST RELEVANT SDGs',
+        'SELECT THE MOST RELEVANT SDGs FOR EACH PARAGRAPH',
         className='app-body-text',
         color="#1D3557",
         weight=700,
@@ -259,7 +259,7 @@ def get_start_layout():
             color="#1D3557",
             variant='solid'
         ),
-        dmc.Space(h=100),
+        dmc.Space(h=50),
         dmc.Center(
             children=[
                 html.Div(
@@ -377,7 +377,8 @@ def get_quit_modal():
                 children=[
                     dmc.Text("Are you sure you want to quit?",
                              weight=700, size=20, color="#1D3557"),
-                    dmc.Text("Your progress will be saved.",
+                    dmc.Text("Please note that once you quit this session, you will not be able to return to your progress.  However, your answers up to this point have been saved.",
+                             style={'text-align': 'center'},
                              weight=400, size=15, color="#1D3557"),
                     dmc.Space(h=20),
                     dmc.Group(
