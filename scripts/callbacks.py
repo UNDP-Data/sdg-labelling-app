@@ -38,7 +38,7 @@ def quit_app(n1, is_open):
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
     if button_id == 'quit-modal-button' and n1 is not None:
-        return components.get_start_layout(), False
+        return components.get_finish_layout(), False
     else:
         return dash.no_update, is_open
     
