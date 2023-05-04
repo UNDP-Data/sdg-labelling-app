@@ -13,7 +13,6 @@ def get_document_collection(collection_name):
 
 def get_paragraph(doc_ids: list, recent_ids: list):
     mongo_collection = get_document_collection('test')
-
     pipeline = [
         # Replace null label arrays with empty arrays, so that the size operator is applied correctly
         {
@@ -76,14 +75,27 @@ def update_queue(_id):
         collection.insert_one({'_id': _id, 'date': datetime.now()})
 
 
-def update_paragraph(_id, labels):
+def update_paragraph(_id, labels, email):
     _id = ObjectId(_id)
     collection = get_document_collection('test')
     document = collection.find_one({'_id': _id})
 
     if document:
-        document['labels'] += [labels]
-        collection.replace_one({'_id': _id}, document)
+        if document['labels'] != None:
+            aux = list(document['labels'])
+            flag = False
+            i = 0
+            while i < len(aux) and not flag:
+                if aux[i]['email'] == email:
+                    flag = True
+                    aux[i]['user_labels'] = labels
+                i += 1
+            if not flag:
+                aux.append({'email': email, 'user_labels': labels})
+            collection.replace_one({'_id': _id}, document)
+        else:
+            document['labels'] = [{'email' : email, 'user_labels' : [labels]}]
+            collection.replace_one({'_id': _id}, document)
     else:
         raise Exception('Document not found')
 

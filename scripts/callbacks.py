@@ -124,6 +124,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     labels = data['LABELS']
     doc_ids = data['DOC_IDS']
     recent_ids = data['RECENT_IDS']
+    email = data['USER_EMAIL']
 
     ctx = dash.callback_context
     if not ctx.triggered:
@@ -145,7 +146,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
 
         # update database with the current state of the labeling
         if aux != []:
-            database.update_paragraph(doc['_id'], aux)
+            database.update_paragraph(doc['_id'], aux, email)
 
         # get next paragraph
         if user_clicks < max_clicks:
@@ -188,7 +189,8 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         'LABELS': labels,
         'CURRENT_DOC': doc,
         'DOC_IDS': doc_ids,
-        'RECENT_IDS': recent_ids
+        'RECENT_IDS': recent_ids,
+        'USER_EMAIL' : email
     }
 
     # get next paragraph
