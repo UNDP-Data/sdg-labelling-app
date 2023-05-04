@@ -1,4 +1,4 @@
-dash==2.9
-dash-mantine-components==0.12
-pymongo==4.3
-python-dotenv==1.0
+dash~=2.9
+dash-mantine-components==0.12.*
+pymongo~=4.3
+python-dotenv>=1.0
