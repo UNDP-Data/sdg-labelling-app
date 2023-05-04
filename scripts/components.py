@@ -81,10 +81,12 @@ def get_chips():
                 'transition': '0.3s',
                 'border': '2px solid ' + SDG_COLORS[i-1],
                 'border-radius': '5px',
+                'cursor' : 'pointer'
             }
         )
 
         tooltip = dmc.Tooltip(label=sdg['name'],
+                            style={'cursor' : 'pointer'},
                               children=[
             dcc.Store(
                 id={'type': 'sdg-store', 'index': i},
@@ -123,10 +125,12 @@ def get_blank_chip_array():
                 'transition': '0.3s',
                 'border': '2px solid ' + SDG_COLORS[i-1],
                 'border-radius': '5px',
+                'cursor' : 'pointer'
             }
         )
 
         tooltip = dmc.Tooltip(label=sdg['name'],
+                              style={'cursor' : 'pointer'},
                               children=[
             dcc.Store(
                 id={'type': 'sdg-store', 'index': i},
@@ -161,11 +165,13 @@ def get_checked_chip_array(ids):
                     'transition': '0.3s',
                     'border': '2px solid ' + SDG_COLORS[i-1],
                     'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
-                    'border-radius': '5px'
+                    'border-radius': '5px',
+                    'cursor' : 'pointer'
                 }
             )
 
             tooltip = dmc.Tooltip(label=sdg['name'],
+                                  style={'cursor' : 'pointer'},
                                   children=[
                 dcc.Store(
                     id={'type': 'sdg-store', 'index': i},
@@ -188,11 +194,14 @@ def get_checked_chip_array(ids):
                     'background-size': 'cover',
                     'transition': '0.3s',
                     'border': '2px solid ' + SDG_COLORS[i-1],
-                    'border-radius': '5px'
+                    'border-radius': '5px',
+                    'cursor' : 'pointer'
+                    
                 }
             )
 
             tooltip = dmc.Tooltip(label=sdg['name'],
+                                  style={'cursor' : 'pointer'},
                                   children=[
                 dcc.Store(
                     id={'type': 'sdg-store', 'index': i},

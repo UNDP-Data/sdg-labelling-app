@@ -221,7 +221,8 @@ def change_sdg_img(n_clicks, button_id, data):
                 'border': '2px solid '+ components.SDG_COLORS[index-1],
                 'transition': '0.3s',
                 'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
-                'border-radius': '5px'
+                'border-radius': '5px',
+                'cursor' : 'pointer'
             }, {'clicked': True}
         else:
             return {
@@ -234,4 +235,5 @@ def change_sdg_img(n_clicks, button_id, data):
                     'transition': '0.3s',
                     'border': '2px solid '+ components.SDG_COLORS[index-1],
                     'border-radius': '5px',
+                    'cursor' : 'pointer'
                 }, {'clicked': False}
