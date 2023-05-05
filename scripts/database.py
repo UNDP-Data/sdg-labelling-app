@@ -3,16 +3,20 @@ from datetime import datetime, timedelta
 import os
 import pymongo
 
-
-def get_document_collection(collection_name):
+def get_document_collection():
     client = pymongo.MongoClient(os.getenv('MONGO_URI'))
-    db = client['sdg_text_corpora']
-    collection = db[collection_name]
+    db = client[os.getenv('DBNAME')]
+    collection = db[os.getenv('DOC_COLL')]
     return collection
 
+def get_queue_collection():
+    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
+    db = client[os.getenv('DBNAME')]
+    collection = db[os.getenv('QUEUE_COLL')]
+    return collection
 
 def get_paragraph(doc_ids: list, recent_ids: list, email):
-    mongo_collection = get_document_collection('test')
+    mongo_collection = get_document_collection()
     pipeline = [
         # Replace null label arrays with empty arrays, so that the size operator is applied correctly
         {
@@ -65,14 +69,14 @@ def check_user_email(doc, email):
 
 
 def get_recent_ids():
-    collection = get_document_collection('paragraph_queue')
+    collection = get_queue_collection()
     docs = collection.find(
         {'date': {'$gt': datetime.now() - timedelta(hours=1)}}, {'_id': 1})
     return [doc['_id'] for doc in docs]
 
 
 def update_queue(_id):
-    collection = get_document_collection('paragraph_queue')
+    collection = get_queue_collection()
 
     doc = collection.find_one({'_id': _id})
     if doc:
@@ -84,7 +88,7 @@ def update_queue(_id):
 
 def update_paragraph(_id, labels, email):
     _id = ObjectId(_id)
-    collection = get_document_collection('test')
+    collection = get_document_collection()
     document = collection.find_one({'_id': _id})
 
     if document:
@@ -109,7 +113,7 @@ def update_paragraph(_id, labels, email):
 
 def get_paragraph_by_id(_id):
     _id = ObjectId(_id)
-    collection = get_document_collection('test')
+    collection = get_document_collection()
     document = collection.find_one({'_id': _id})
     if document:
         document['_id'] = str(document['_id'])
