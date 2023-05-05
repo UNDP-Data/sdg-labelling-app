@@ -87,7 +87,8 @@ def update_paragraph(_id, labels, email):
                     aux[i]['user_labels'] = labels
                 i += 1
             if not flag:
-                aux.append({'email': email, 'user_labels': labels})
+                aux.append({'email': email, 'user_labels': [labels]})
+            document['labels'] = aux
             collection.replace_one({'_id': _id}, document)
         else:
             document['labels'] = [{'email' : email, 'user_labels' : [labels]}]
