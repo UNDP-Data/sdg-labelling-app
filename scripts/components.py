@@ -322,13 +322,29 @@ def get_start_layout():
                             value=30,
                             style={'width': '45%'}
                         ),
-                        
                         dmc.Space(h=50),
+                        dmc.Select(
+                            id='language-input',
+                            label='Language',
+                            description='Select a language.',
+                            placeholder='Select a language',
+                            data=[
+                            {'label': 'en', 'value': 'en'},
+                            {'label': 'fr', 'value': 'fr'},
+                            {'label': 'es', 'value': 'es'},
+                            {'label': 'ru', 'value': 'ru'},
+                            ],
+                            required=True,
+                            style={'width': '15%'},
+                            value='en',
+                        ),
+                        dmc.Space(h=20),
                         dmc.TextInput(
                             id='email-input',
                             label='Enter your email',
                             placeholder='Enter your email',
                             style={'width': '15%'},
+                            required=True,
                         ),
                         dmc.Space(h=50),
                         dmc.Button(
