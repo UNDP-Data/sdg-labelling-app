@@ -48,10 +48,11 @@ def quit_app(n1, is_open):
      Output('email-input', 'error')],
     Input('start-button', 'n_clicks'),
     [State('slider', 'value'),
+    State('language-input', 'value'),
     State('email-input', 'value')],
     prevent_initial_call=True
 )
-def change_to_main_layout(n_clicks, input_value, email):
+def change_to_main_layout(n_clicks, input_value, language, email):
     """Change start layout to main layout."""
 
     # RFC5322-compliant Regular Expression
@@ -59,7 +60,7 @@ def change_to_main_layout(n_clicks, input_value, email):
 
     if n_clicks is not None:
         if re.fullmatch(regex, email):
-            doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids(), email))
+            doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids(), language, email))
             aux = {
                 'N_CLICKS': 0,
                 'MAX_CLICKS': input_value,
@@ -67,7 +68,8 @@ def change_to_main_layout(n_clicks, input_value, email):
                 'CURRENT_DOC': doc,
                 'DOC_IDS': doc_ids,
                 'RECENT_IDS': recent_ids,
-                'USER_EMAIL' : email
+                'USER_LANGUAGE' : language,
+                'USER_EMAIL' : email,
             }
             return components.get_main_layout(doc['text']), aux, dash.no_update
         else:
@@ -125,6 +127,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     doc_ids = data['DOC_IDS']
     recent_ids = data['RECENT_IDS']
     email = data['USER_EMAIL']
+    language = data['USER_LANGUAGE']
 
     ctx = dash.callback_context
     if not ctx.triggered:
@@ -154,7 +157,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
             if doc_ids[-1] != doc['_id']:
                 doc = database.get_paragraph_by_id(doc_ids[user_clicks])
             else:
-                doc, doc_ids, recent_ids = database.get_paragraph(doc_ids, recent_ids, email)
+                doc, doc_ids, recent_ids = database.get_paragraph(doc_ids, recent_ids, language, email)
     
             # check chips if neccesary
             
@@ -190,6 +193,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         'CURRENT_DOC': doc,
         'DOC_IDS': doc_ids,
         'RECENT_IDS': recent_ids,
+        'USER_LANGUAGE' : language,
         'USER_EMAIL' : email
     }
 
@@ -218,7 +222,7 @@ def change_sdg_img(n_clicks, button_id, data):
                 'width': '11vh',
                 'max-height': '11vh',
                 'max-width': '11vh',
-                'background-image': 'url("../assets/SDG_icons/sdg_'+str(index)+'.png")',
+                'background-image': 'url("../assets/SDG_icons/color/en/sdg_'+str(index)+'.png")',
                 'background-size': 'cover',
                 'border': '2px solid '+ components.SDG_COLORS[index-1],
                 'transition': '0.3s',
@@ -232,10 +236,10 @@ def change_sdg_img(n_clicks, button_id, data):
                     'width': '10vh',
                     'max-height': '10vh',
                     'max-width': '10vh',
-                    'background-image': 'url("../assets/SDG_icons/sdg_'+str(index)+'.png")',
+                    'background-image': 'url("../assets/SDG_icons/black/en/sdg_'+str(index)+'.png")',
                     'background-size': 'cover',
                     'transition': '0.3s',
-                    'border': '2px solid '+ components.SDG_COLORS[index-1],
+                    'border': '2px solid '+ '#000000',
                     'border-radius': '5px',
                     'cursor' : 'pointer'
                 }, {'clicked': False}

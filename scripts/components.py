@@ -54,6 +54,7 @@ def get_header():
             dmc.NavLink(
                 label='Want to learn more about SDGs?',
                 href='https://www.undp.org/sustainable-development-goals',
+                target='_blank',
                 icon = DashIconify(icon='bi:house-door-fill', height=16),
                 active=True,
                 variant='subtle',
@@ -89,10 +90,10 @@ def get_chips():
                 'width': '10vh',
                 'max-height': '10vh',
                 'max-width': '10vh',
-                'background-image': 'url("../assets/SDG_icons/sdg_' + str(i) + '.png")',
+                'background-image': 'url("../assets/SDG_icons/black/en/sdg_' + str(i) + '.png")',
                 'background-size': 'cover',
                 'transition': '0.3s',
-                'border': '2px solid ' + SDG_COLORS[i-1],
+                'border': '2px solid ' + '#000000',
                 'border-radius': '5px',
                 'cursor' : 'pointer'
             }
@@ -133,10 +134,10 @@ def get_blank_chip_array():
                 'width': '10vh',
                 'max-height': '10vh',
                 'max-width': '10vh',
-                'background-image': 'url("../assets/SDG_icons/sdg_' + str(i) + '.png")',
+                'background-image': 'url("../assets/SDG_icons/black/en/sdg_' + str(i) + '.png")',
                 'background-size': 'cover',
                 'transition': '0.3s',
-                'border': '2px solid ' + SDG_COLORS[i-1],
+                'border': '2px solid ' + '#000000',
                 'border-radius': '5px',
                 'cursor' : 'pointer'
             }
@@ -173,7 +174,7 @@ def get_checked_chip_array(ids):
                     'width': '11vh',
                     'max-height': '11vh',
                     'max-width': '11vh',
-                    'background-image': 'url("../assets/SDG_icons/sdg_'+str(i)+'.png")',
+                    'background-image': 'url("../assets/SDG_icons/color/en/sdg_'+str(i)+'.png")',
                     'background-size': 'cover',
                     'transition': '0.3s',
                     'border': '2px solid ' + SDG_COLORS[i-1],
@@ -203,10 +204,10 @@ def get_checked_chip_array(ids):
                     'width': '10vh',
                     'max-height': '10vh',
                     'max-width': '10vh',
-                    'background-image': 'url("../assets/SDG_icons/sdg_'+str(i)+'.png")',
+                    'background-image': 'url("../assets/SDG_icons/black/en/sdg_'+str(i)+'.png")',
                     'background-size': 'cover',
                     'transition': '0.3s',
-                    'border': '2px solid ' + SDG_COLORS[i-1],
+                    'border': '2px solid ' + '#000000',
                     'border-radius': '5px',
                     'cursor' : 'pointer'
                     
@@ -254,7 +255,7 @@ def get_button_container():
 
 def get_body_title():
     return dmc.Text(
-        'SELECT THE MOST RELEVANT SDGs FOR EACH PARAGRAPH',
+        'SELECT ONE OR MORE RELEVANT SDGs FOR EACH PARAGRAPH',
         className='app-body-text',
         color="#1D3557",
         weight=700,
@@ -322,13 +323,29 @@ def get_start_layout():
                             value=30,
                             style={'width': '45%'}
                         ),
-                        
                         dmc.Space(h=50),
+                        dmc.Select(
+                            id='language-input',
+                            label='Language',
+                            description='Select a language.',
+                            placeholder='Select a language',
+                            data=[
+                            {'label': 'en', 'value': 'en'},
+                            {'label': 'fr', 'value': 'fr'},
+                            {'label': 'es', 'value': 'es'},
+                            {'label': 'ru', 'value': 'ru'},
+                            ],
+                            required=True,
+                            style={'width': '15%'},
+                            value='en',
+                        ),
+                        dmc.Space(h=20),
                         dmc.TextInput(
                             id='email-input',
                             label='Enter your email',
                             placeholder='Enter your email',
                             style={'width': '15%'},
+                            required=True,
                         ),
                         dmc.Space(h=50),
                         dmc.Button(
