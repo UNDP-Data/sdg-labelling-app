@@ -54,6 +54,7 @@ def get_header():
             dmc.NavLink(
                 label='Want to learn more about SDGs?',
                 href='https://www.undp.org/sustainable-development-goals',
+                target='_blank',
                 icon = DashIconify(icon='bi:house-door-fill', height=16),
                 active=True,
                 variant='subtle',
