@@ -222,7 +222,7 @@ def change_sdg_img(n_clicks, button_id, data):
                 'width': '11vh',
                 'max-height': '11vh',
                 'max-width': '11vh',
-                'background-image': 'url("../assets/SDG_icons/sdg_'+str(index)+'.png")',
+                'background-image': 'url("../assets/SDG_icons/color/en/sdg_'+str(index)+'.png")',
                 'background-size': 'cover',
                 'border': '2px solid '+ components.SDG_COLORS[index-1],
                 'transition': '0.3s',
@@ -236,10 +236,10 @@ def change_sdg_img(n_clicks, button_id, data):
                     'width': '10vh',
                     'max-height': '10vh',
                     'max-width': '10vh',
-                    'background-image': 'url("../assets/SDG_icons/sdg_'+str(index)+'.png")',
+                    'background-image': 'url("../assets/SDG_icons/black/en/sdg_'+str(index)+'.png")',
                     'background-size': 'cover',
                     'transition': '0.3s',
-                    'border': '2px solid '+ components.SDG_COLORS[index-1],
+                    'border': '2px solid '+ '#000000',
                     'border-radius': '5px',
                     'cursor' : 'pointer'
                 }, {'clicked': False}

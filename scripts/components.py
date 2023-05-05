@@ -89,10 +89,10 @@ def get_chips():
                 'width': '10vh',
                 'max-height': '10vh',
                 'max-width': '10vh',
-                'background-image': 'url("../assets/SDG_icons/sdg_' + str(i) + '.png")',
+                'background-image': 'url("../assets/SDG_icons/black/en/sdg_' + str(i) + '.png")',
                 'background-size': 'cover',
                 'transition': '0.3s',
-                'border': '2px solid ' + SDG_COLORS[i-1],
+                'border': '2px solid ' + '#000000',
                 'border-radius': '5px',
                 'cursor' : 'pointer'
             }
@@ -133,10 +133,10 @@ def get_blank_chip_array():
                 'width': '10vh',
                 'max-height': '10vh',
                 'max-width': '10vh',
-                'background-image': 'url("../assets/SDG_icons/sdg_' + str(i) + '.png")',
+                'background-image': 'url("../assets/SDG_icons/black/en/sdg_' + str(i) + '.png")',
                 'background-size': 'cover',
                 'transition': '0.3s',
-                'border': '2px solid ' + SDG_COLORS[i-1],
+                'border': '2px solid ' + '#000000',
                 'border-radius': '5px',
                 'cursor' : 'pointer'
             }
@@ -173,7 +173,7 @@ def get_checked_chip_array(ids):
                     'width': '11vh',
                     'max-height': '11vh',
                     'max-width': '11vh',
-                    'background-image': 'url("../assets/SDG_icons/sdg_'+str(i)+'.png")',
+                    'background-image': 'url("../assets/SDG_icons/color/en/sdg_'+str(i)+'.png")',
                     'background-size': 'cover',
                     'transition': '0.3s',
                     'border': '2px solid ' + SDG_COLORS[i-1],
@@ -203,10 +203,10 @@ def get_checked_chip_array(ids):
                     'width': '10vh',
                     'max-height': '10vh',
                     'max-width': '10vh',
-                    'background-image': 'url("../assets/SDG_icons/sdg_'+str(i)+'.png")',
+                    'background-image': 'url("../assets/SDG_icons/black/en/sdg_'+str(i)+'.png")',
                     'background-size': 'cover',
                     'transition': '0.3s',
-                    'border': '2px solid ' + SDG_COLORS[i-1],
+                    'border': '2px solid ' + '#000000',
                     'border-radius': '5px',
                     'cursor' : 'pointer'
                     
