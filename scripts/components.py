@@ -1,6 +1,7 @@
 
 import dash_mantine_components as dmc
-from dash import html
+from dash import html, dcc
+from dash_iconify import DashIconify
 
 SDG_LIST = [
     {'name': 'No poverty', 'code': '1'},
@@ -24,23 +25,23 @@ SDG_LIST = [
 
 
 SDG_COLORS = [
-    'red.7',
-    'yellow.5',
-    'green.7',
-    'red.9',
-    'orange.8',
-    'blue.3',
-    'yellow.4',
-    'pink.8',
-    'orange.6',
-    'pink.5',
-    'yellow.7',
-    'yellow.6',
-    'green.9',
-    'blue.5',
-    'lime.5',
-    'blue.7',
-    'blue.9'
+    '#e5243b',
+    '#DDA63A',
+    '#4C9F38',
+    '#C5192D',
+    '#FF3A21',
+    '#26BDE2',
+    '#FCC30B',
+    '#A21942',
+    '#FD6925',
+    '#DD1367',
+    '#FD9D24',
+    '#BF8B2E',
+    '#3F7E44',
+    '#0A97D9',
+    '#56C02B',
+    '#00689D',
+    '#19486A'
 ]
 
 
@@ -50,6 +51,18 @@ def get_header():
         height=120,
         withBorder=True,
         children=[
+            dmc.NavLink(
+                label='Want to learn more about SDGs?',
+                href='https://www.undp.org/sustainable-development-goals',
+                icon = DashIconify(icon='bi:house-door-fill', height=16),
+                active=True,
+                variant='subtle',
+                color='blue.8',
+                style={
+                    'width': 'fit-content',
+                },
+                rightSection=DashIconify(icon="tabler-chevron-right")
+            ),
             dmc.Text(
                 'SDG LABELLING PAGE',
                 color="#1D3557",
@@ -63,27 +76,158 @@ def get_header():
 
 def get_chips():
     chip_array = []
+    i = 1
 
     for sdg in SDG_LIST:
-        chip = dmc.Chip(
-            "SDG " + sdg['code'],
-            className='chip',
-            value=sdg['code'],
-            variant='filled',
-            radius='md',
-            color=SDG_COLORS[int(sdg['code'])-1],
-            checked=False,
+
+        button = html.Button(
+            className='sdg-img-button',
+            id={'type': 'sdg-button', 'index': i},
+            value=str(i-1),
+            style={
+                'height': '10vh',
+                'width': '10vh',
+                'max-height': '10vh',
+                'max-width': '10vh',
+                'background-image': 'url("../assets/SDG_icons/sdg_' + str(i) + '.png")',
+                'background-size': 'cover',
+                'transition': '0.3s',
+                'border': '2px solid ' + SDG_COLORS[i-1],
+                'border-radius': '5px',
+                'cursor' : 'pointer'
+            }
         )
 
-        tooltip = dmc.Tooltip(label=sdg['name'], children=[
-                              chip], withArrow=True)
+        tooltip = dmc.Tooltip(label=sdg['name'],
+                            style={'cursor' : 'pointer'},
+                              children=[
+            dcc.Store(
+                id={'type': 'sdg-store', 'index': i},
+                storage_type='memory',
+                data={'clicked': False}),
+            button],
+            withArrow=True
+        )
         chip_array.append(tooltip)
+        i += 1
 
     return dmc.Container(
         id='chip-container',
         className='chip-container',
         children=chip_array,
     )
+
+
+def get_blank_chip_array():
+    chip_array = []
+    i = 1
+
+    for sdg in SDG_LIST:
+
+        button = html.Button(
+            className='sdg-img-button',
+            id={'type': 'sdg-button', 'index': i},
+            value=str(i-1),
+            style={
+                'height': '10vh',
+                'width': '10vh',
+                'max-height': '10vh',
+                'max-width': '10vh',
+                'background-image': 'url("../assets/SDG_icons/sdg_' + str(i) + '.png")',
+                'background-size': 'cover',
+                'transition': '0.3s',
+                'border': '2px solid ' + SDG_COLORS[i-1],
+                'border-radius': '5px',
+                'cursor' : 'pointer'
+            }
+        )
+
+        tooltip = dmc.Tooltip(label=sdg['name'],
+                              style={'cursor' : 'pointer'},
+                              children=[
+            dcc.Store(
+                id={'type': 'sdg-store', 'index': i},
+                storage_type='memory',
+                data={'clicked': False}),
+            button],
+            withArrow=True
+        )
+        chip_array.append(tooltip)
+        i += 1
+
+    return chip_array
+
+
+def get_checked_chip_array(ids):
+    chip_array = []
+    i = 1
+
+    for sdg in SDG_LIST:
+        if i - 1 in ids:
+            button = html.Button(
+                className='sdg-img-button',
+                id={'type': 'sdg-button', 'index': i},
+                value=str(i-1),
+                style={
+                    'height': '11vh',
+                    'width': '11vh',
+                    'max-height': '11vh',
+                    'max-width': '11vh',
+                    'background-image': 'url("../assets/SDG_icons/sdg_'+str(i)+'.png")',
+                    'background-size': 'cover',
+                    'transition': '0.3s',
+                    'border': '2px solid ' + SDG_COLORS[i-1],
+                    'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
+                    'border-radius': '5px',
+                    'cursor' : 'pointer'
+                }
+            )
+
+            tooltip = dmc.Tooltip(label=sdg['name'],
+                                  style={'cursor' : 'pointer'},
+                                  children=[
+                dcc.Store(
+                    id={'type': 'sdg-store', 'index': i},
+                    storage_type='memory',
+                    data={'clicked': True}),
+                button],
+                withArrow=True
+            )
+        else:
+            button = html.Button(
+                className='sdg-img-button',
+                id={'type': 'sdg-button', 'index': i},
+                value=str(i-1),
+                style={
+                    'height': '10vh',
+                    'width': '10vh',
+                    'max-height': '10vh',
+                    'max-width': '10vh',
+                    'background-image': 'url("../assets/SDG_icons/sdg_'+str(i)+'.png")',
+                    'background-size': 'cover',
+                    'transition': '0.3s',
+                    'border': '2px solid ' + SDG_COLORS[i-1],
+                    'border-radius': '5px',
+                    'cursor' : 'pointer'
+                    
+                }
+            )
+
+            tooltip = dmc.Tooltip(label=sdg['name'],
+                                  style={'cursor' : 'pointer'},
+                                  children=[
+                dcc.Store(
+                    id={'type': 'sdg-store', 'index': i},
+                    storage_type='memory',
+                    data={'clicked': False}),
+                button],
+                withArrow=True
+            )
+
+        chip_array.append(tooltip)
+        i += 1
+
+    return chip_array
 
 
 def get_button_container():
@@ -110,14 +254,12 @@ def get_button_container():
 
 def get_body_title():
     return dmc.Text(
-        'ASSIGN EACH PARAGRAPH TO THEIR MOST RELEVANT SDGs',
+        'SELECT THE MOST RELEVANT SDGs FOR EACH PARAGRAPH',
         className='app-body-text',
         color="#1D3557",
         weight=700,
         size=25
     )
-
-
 
 
 def get_progress_bar():
@@ -139,7 +281,7 @@ def get_start_layout():
             color="#1D3557",
             variant='solid'
         ),
-        dmc.Space(h=100),
+        dmc.Space(h=50),
         dmc.Center(
             children=[
                 html.Div(
@@ -162,6 +304,7 @@ def get_start_layout():
                             size=20
                         ),
                         dmc.Space(h=50),
+                        
                         dmc.Slider(
                             className='slider',
                             id='slider',
@@ -178,6 +321,14 @@ def get_start_layout():
                             ],
                             value=30,
                             style={'width': '45%'}
+                        ),
+                        
+                        dmc.Space(h=50),
+                        dmc.TextInput(
+                            id='email-input',
+                            label='Enter your email',
+                            placeholder='Enter your email',
+                            style={'width': '15%'},
                         ),
                         dmc.Space(h=50),
                         dmc.Button(
@@ -231,6 +382,7 @@ def get_finish_layout():
                 )])
     ]
 
+
 def get_quit_modal():
     return dmc.Modal(
         id='modal',
@@ -246,9 +398,10 @@ def get_quit_modal():
                 },
                 children=[
                     dmc.Text("Are you sure you want to quit?",
-                            weight=700, size=20, color="#1D3557"),
-                    dmc.Text("Your progress will be saved.",
-                            weight=400, size=15, color="#1D3557"),
+                             weight=700, size=20, color="#1D3557"),
+                    dmc.Text("Please note that once you quit this session, you will not be able to return to your progress.  However, your answers up to this point have been saved.",
+                             style={'text-align': 'center'},
+                             weight=400, size=15, color="#1D3557"),
                     dmc.Space(h=20),
                     dmc.Group(
                         children=[

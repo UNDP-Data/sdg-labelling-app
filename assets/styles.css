@@ -18,8 +18,9 @@
 .app-header {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-content: center;
-  justify-content:end;
+  justify-content: space-between;
 }
 
 .app-start-title {
@@ -39,7 +40,7 @@
 .app-header-text {
     padding-right: 15vh;
     display: flex;
-    align-items: center
+    align-items: end;
 }
 
 .paper {
@@ -49,7 +50,7 @@
 }
 
 .chip-container {
-    width: 45%;
+    width: 62%;
     margin: auto;
     display: flex;
     flex-wrap: wrap;
@@ -63,6 +64,11 @@
     display: flex;
     justify-content: space-between;
 }
+
+.app-header-logo {
+    padding-left: 3rem;
+}
+
 
 
 /* Media Queries */

@@ -1,33 +1,47 @@
 from bson import ObjectId
 from datetime import datetime, timedelta
-import os 
+import os
 import pymongo
 
 def get_document_collection():
     client = pymongo.MongoClient(os.getenv('MONGO_URI'))
-    db = client['sdg_text_corpora']
-    collection = db['test']
+    db = client[os.getenv('DBNAME')]
+    collection = db[os.getenv('DOC_COLL')]
     return collection
 
+def get_queue_collection():
+    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
+    db = client[os.getenv('DBNAME')]
+    collection = db[os.getenv('QUEUE_COLL')]
+    return collection
 
-def get_paragraph(mongo_collection, doc_ids : list):
+def get_paragraph(doc_ids: list, recent_ids: list, email):
+    mongo_collection = get_document_collection()
     pipeline = [
-        # Filter out documents with null labels
+        # Replace null label arrays with empty arrays, so that the size operator is applied correctly
+        {
+            '$addFields': {
+                'labels': {
+                    '$ifNull': ['$labels', []]
+                }
+            }
+        },
+        # Filter out documents in the queue
         {
             '$match': {
-                'labels': { '$ne': None },
-                '$expr': { '$lte': [{ '$size': '$labels' }, 2] }
+                '_id': {'$nin': [ObjectId(_id) for _id in recent_ids]},
+                '$expr': {'$lte': [{'$size': '$labels'}, 2]}
             }
         },
         # Add a count field to each document
         {
             '$addFields': {
-                'count': { '$size': '$labels' }
+                'count': {'$size': '$labels'}
             }
         },
         # Sort by count in descending order
         {
-            '$sort': { 'count': -1 }
+            '$sort': {'count': -1}
         },
         # Limit to first 100 documents
         {
@@ -39,52 +53,67 @@ def get_paragraph(mongo_collection, doc_ids : list):
     if documents:
         for doc in documents:
             doc['_id'] = str(doc['_id'])
-            if doc['_id'] not in doc_ids and check_queue(doc['_id']):
+            if doc['_id'] not in doc_ids and doc['_id'] not in recent_ids and not check_user_email(doc, email):
                 update_queue(doc['_id'])
                 doc_ids.append(doc['_id'])
-                return doc, doc_ids
-    
+                return doc, doc_ids, recent_ids
+
     raise Exception('No documents found')
-    
+
+
+def check_user_email(doc, email):
+    for user in doc['labels']:
+        if user['email'] == email:
+            return True
+    return False
+
+
+def get_recent_ids():
+    collection = get_queue_collection()
+    docs = collection.find(
+        {'date': {'$gt': datetime.now() - timedelta(hours=1)}}, {'_id': 1})
+    return [doc['_id'] for doc in docs]
+
+
 def update_queue(_id):
-    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
-    db = client['sdg_text_corpora']
-    collection = db['paragraph_queue']
+    collection = get_queue_collection()
 
     doc = collection.find_one({'_id': _id})
     if doc:
-        collection.replace_one({'_id': _id}, {'_id' : _id, 'date' : datetime.now()})
+        collection.replace_one(
+            {'_id': _id}, {'_id': _id, 'date': datetime.now()})
     else:
-        collection.insert_one({'_id' : _id, 'date' : datetime.now()})
-
-def check_queue(_id):
-    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
-    db = client['sdg_text_corpora']
-    collection = db['paragraph_queue']
-    doc = collection.find_one({'_id' : _id})
-    
-    if doc:
-        if datetime.now() - doc['date'] >= timedelta(hours=1):
-            return True
-        return False
-    else:
-        return True
-        
+        collection.insert_one({'_id': _id, 'date': datetime.now()})
 
 
-def update_paragraph(collection, _id, labels): 
+def update_paragraph(_id, labels, email):
     _id = ObjectId(_id)
+    collection = get_document_collection()
     document = collection.find_one({'_id': _id})
 
     if document:
-        document['labels'] += [labels]
-        collection.replace_one({'_id': _id}, document)
-    else :
+        if document['labels'] != None:
+            aux = list(document['labels'])
+            flag = False
+            i = 0
+            while i < len(aux) and not flag:
+                if aux[i]['email'] == email:
+                    flag = True
+                    aux[i]['user_labels'] = labels
+                i += 1
+            if not flag:
+                aux.append({'email': email, 'user_labels': labels})
+            collection.replace_one({'_id': _id}, document)
+        else:
+            document['labels'] = [{'email' : email, 'user_labels' : [labels]}]
+            collection.replace_one({'_id': _id}, document)
+    else:
         raise Exception('Document not found')
 
 
-def get_paragraph_by_id(collection, _id):
+def get_paragraph_by_id(_id):
     _id = ObjectId(_id)
+    collection = get_document_collection()
     document = collection.find_one({'_id': _id})
     if document:
         document['_id'] = str(document['_id'])
