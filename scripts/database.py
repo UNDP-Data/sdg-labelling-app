@@ -65,7 +65,7 @@ def get_recent_ids():
     collection = get_document_collection()
     docs = collection.find(
         {'date': {'$gt': datetime.now() - timedelta(minutes=10)}}, {'_id': 1})
-    return [doc['_id'] for doc in docs]
+    return [str(doc['_id']) for doc in docs]
 
 def update_queue(_id):
     collection = get_document_collection()
