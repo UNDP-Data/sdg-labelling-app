@@ -255,7 +255,7 @@ def get_button_container():
 
 def get_body_title():
     return dmc.Text(
-        'SELECT THE MOST RELEVANT SDGs FOR EACH PARAGRAPH',
+        'SELECT ONE OR MORE RELEVANT SDGs FOR EACH PARAGRAPH',
         className='app-body-text',
         color="#1D3557",
         weight=700,
