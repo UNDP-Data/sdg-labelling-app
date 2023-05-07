@@ -1,12 +1,16 @@
-# Import packages
+# standard library
+import re
+from math import floor
+
+# dash
 from dash import callback, MATCH, ALL
 from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 import dash._callback_context
-from math import floor
+
+# local packages
 from . import database
 from . import components
-import re
 
 
 @callback(

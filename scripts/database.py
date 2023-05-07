@@ -1,7 +1,11 @@
-from bson import ObjectId
-from datetime import datetime, timedelta
+# standard library
 import os
+from datetime import datetime, timedelta
+
+# database
 import pymongo
+from bson import ObjectId
+
 
 def get_document_collection():
     client = pymongo.MongoClient(os.getenv('MONGO_URI'))

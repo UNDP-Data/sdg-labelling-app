@@ -1,7 +1,11 @@
-# Import packages
-from dash import Dash, html, dcc
+# dash
 import dash_mantine_components as dmc
-from dotenv import load_dotenv
+from dash import Dash, html, dcc
+
+# utils
+from dotenv import load_dotenv; load_dotenv()
+
+# local packages
 from scripts.components import get_start_layout
 import scripts.callbacks as callbacks
 
