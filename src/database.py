@@ -77,7 +77,7 @@ def get_recent_ids():
 
 def update_queue(_id):
     collection = get_document_collection()
-    collection.update_one({'_id': ObjectId(_id)}, {"$set": {'date': datetime.now()}}, upsert=True)
+    collection.update_one({'_id': ObjectId(_id)}, {'$set': {'date': datetime.now()}}, upsert=True)
 
 
 def update_paragraph(_id, labels, email):
