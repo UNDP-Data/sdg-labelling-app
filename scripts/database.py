@@ -84,15 +84,21 @@ def update_paragraph(_id, labels, email):
             while i < len(aux) and not flag:
                 if aux[i]['email'] == email:
                     flag = True
-                    aux[i]['user_labels'] = [label+1 for label in labels]
+                    if labels != []:
+                        aux[i]['user_labels'] = [label+1 for label in labels]
+                    else:
+                        del aux[i]
                 i += 1
             if not flag:
                 aux.append({'email': email, 'user_labels': [label+1 for label in labels]})
             document['labels'] = aux
             collection.replace_one({'_id': _id}, document)
         else:
-            document['labels'] = [{'email' : email, 'user_labels' : [label+1 for label in labels]}]
-            collection.replace_one({'_id': _id}, document)
+            if labels != []:
+                document['labels'] = [{'email' : email, 'user_labels' : [label+1 for label in labels]}]
+                collection.replace_one({'_id': _id}, document)
+
+            
     else:
         raise Exception('Document not found')
 

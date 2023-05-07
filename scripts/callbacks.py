@@ -104,7 +104,7 @@ def change_to_finish_layout(n_clicks, data):
 def toggle_modal(n_clicks):
     """Toggle the modal."""
     return True if n_clicks is not None else False
-
+   
 @callback(
     [Output('progress-bar', 'value'),
      Output('progress-bar', 'label'),
@@ -113,12 +113,15 @@ def toggle_modal(n_clicks):
      Output('app-wrapper', 'children', allow_duplicate=True),
      Output('memory-output', 'data', allow_duplicate=True)],
     [Input('next-button', 'n_clicks'),
-     Input('back-button', 'n_clicks')],
+     Input('back-button', 'n_clicks'),
+     Input('skip-button', 'n_clicks'),
+     Input('irrelevant-button', 'n_clicks')],
     State('chip-container', 'children'),
     State('memory-output', 'data'),
     prevent_initial_call=True
 )
-def update_components(n_clicks_next, n_clicks_back, chip_container_children, data):
+def update_components(n_clicks_next, n_clicks_back, n_clicks_skip, 
+                      n_clicks_irrelevant, chip_container_children, data):
     """Update the components of the main layout and the database with the current state of the labeling."""
     user_clicks = data['N_CLICKS']
     max_clicks = data['MAX_CLICKS']
@@ -140,8 +143,6 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     for sdg in chip_container_children:
         if sdg['props']['children'][0]['props']['data']['clicked'] == True:
             aux.append(int(sdg['props']['children'][1]['props']['value']))
-    
-        
 
     if button_id == 'next-button' and n_clicks_next is not None:
         labels[user_clicks] = aux
@@ -164,6 +165,45 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
             if labels[user_clicks] != []:
                 chip_container_children = components.get_checked_chip_array(labels[user_clicks])
             
+    if button_id == 'skip-button' and n_clicks_skip is not None:
+        labels[user_clicks] = []
+        user_clicks += 1
+        # update database with the current state of the labeling
+        database.update_paragraph(doc['_id'], [], email)
+
+        # get next paragraph
+        if user_clicks < max_clicks:
+            aux = labels[user_clicks]
+            if doc_ids[-1] != doc['_id']:
+                doc = database.get_paragraph_by_id(doc_ids[user_clicks])
+            else:
+                doc, doc_ids, recent_ids = database.get_paragraph(doc_ids, recent_ids, language, email)
+    
+            # check chips if neccesary
+            
+            if labels[user_clicks] != []:
+                chip_container_children = components.get_checked_chip_array(labels[user_clicks])
+
+    if button_id == 'irrelevant-button' and n_clicks_irrelevant is not None:
+        aux = [-1]
+        labels[user_clicks] = []
+        user_clicks += 1
+
+        # update database label 0
+        database.update_paragraph(doc['_id'], aux, email)
+
+        # get next paragraph, 
+        if user_clicks < max_clicks:
+            aux = labels[user_clicks]
+            if doc_ids[-1] != doc['_id']:
+                doc = database.get_paragraph_by_id(doc_ids[user_clicks])
+            else:
+                doc, doc_ids, recent_ids = database.get_paragraph(doc_ids, recent_ids, language, email)
+    
+            # check chips if neccesary
+            
+            if labels[user_clicks] != []:
+                chip_container_children = components.get_checked_chip_array(labels[user_clicks])
 
     elif button_id == 'back-button' and n_clicks_back is not None and user_clicks > 0:
         labels[user_clicks] = aux
@@ -243,3 +283,17 @@ def change_sdg_img(n_clicks, button_id, data):
                     'border-radius': '5px',
                     'cursor' : 'pointer'
                 }, {'clicked': False}
+
+@dash.callback(
+    Output('next-button', 'style'),
+    Output('skip-button', 'style'),
+    Output('irrelevant-button', 'style'),
+    Input({'type': 'sdg-store', 'index': ALL}, 'data')
+)
+def get_next_button(sdg_data):
+    sdg_clicked = any([sdg['clicked'] for sdg in sdg_data])
+    if sdg_clicked:
+        return {'display': 'block'}, {'display': 'none'}, {'display': 'none'}
+    else:
+        return {'display': 'none'}, {'display': 'block'}, {'display': 'block'}
+    

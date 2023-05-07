@@ -247,7 +247,24 @@ def get_button_container():
                 id='next-button',
                 size="md",
                 radius='md',
-                color='#50779A'
+                color='#50779A',
+                style=({'display': 'none'}),
+            ),
+            dmc.Button(
+                'Skip',
+                id='skip-button',
+                size="md",
+                radius='md',
+                color='#50779A',
+                style=({'display': 'none'}),
+            ),
+            dmc.Button(
+                'No relevant SDGs',
+                id='irrelevant-button',
+                size="md",
+                radius='md',
+                color='#50779A',
+                style=({'display': 'none'}),
             )
         ]
     )
