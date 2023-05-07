@@ -13,6 +13,7 @@ def get_document_collection():
     collection = db[os.getenv('DOC_COLL')]
     return collection
 
+
 def get_paragraph(doc_ids: list, recent_ids: list, language, email):
     mongo_collection = get_document_collection()
     pipeline = [
@@ -59,11 +60,13 @@ def get_paragraph(doc_ids: list, recent_ids: list, language, email):
 
     raise Exception('No documents found')
 
+
 def check_user_email(doc, email):
     for user in doc['labels']:
         if user['email'] == email:
             return True
     return False
+
 
 def get_recent_ids():
     collection = get_document_collection()
@@ -71,9 +74,11 @@ def get_recent_ids():
         {'date': {'$gt': datetime.now() - timedelta(minutes=10)}}, {'_id': 1})
     return [str(doc['_id']) for doc in docs]
 
+
 def update_queue(_id):
     collection = get_document_collection()
     collection.update_one({'_id': ObjectId(_id)}, {"$set": {'date': datetime.now()}}, upsert=True)
+
 
 def update_paragraph(_id, labels, email):
     _id = ObjectId(_id)
@@ -95,10 +100,11 @@ def update_paragraph(_id, labels, email):
             document['labels'] = aux
             collection.replace_one({'_id': _id}, document)
         else:
-            document['labels'] = [{'email' : email, 'user_labels' : labels}]
+            document['labels'] = [{'email': email, 'user_labels': labels}]
             collection.replace_one({'_id': _id}, document)
     else:
         raise Exception('Document not found')
+
 
 def get_paragraph_by_id(_id):
     _id = ObjectId(_id)
