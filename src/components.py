@@ -147,25 +147,35 @@ def get_start_layout():
 
     select_language = dmc.Select(
         id='language-input',
-        label='Language',
-        description='Select a language.',
-        placeholder='Select a language',
+        label='Select a Language',
+        description='If you are fluent in a language other than English, please select it.',
         data=[
-            {'label': 'en', 'value': 'en'},
-            {'label': 'fr', 'value': 'fr'},
-            {'label': 'es', 'value': 'es'},
-            {'label': 'ru', 'value': 'ru'},
+            {'label': 'English', 'value': 'en'},
+            {'label': 'French', 'value': 'fr'},
+            {'label': 'Russian', 'value': 'ru'},
+            {'label': 'Spanish', 'value': 'es'},
         ],
         required=True,
-        style={'width': '15%'},
+        style={'width': '40%'},
         value='en',
     )
 
     input_email = dmc.TextInput(
         id='email-input',
-        label='Enter your email',
-        placeholder='Enter your email',
-        style={'width': '15%'},
+        label='Enter Your Email',
+        description='This must be your official UNDP email. It is only used for verification.',
+        placeholder='john.doe@undp.org',
+        style={'width': '40%'},
+        required=True,
+    )
+
+    input_code = dmc.TextInput(
+        id='code-input',
+        label='Enter Your Invitation Code',
+        description='This has been shared with you in the invitation email.',
+        # value='',
+        placeholder='Invitation Code',
+        style={'width': '40%'},
         required=True,
     )
 
@@ -185,6 +195,7 @@ def get_start_layout():
             slider,
             select_language,
             input_email,
+            input_code,
             button_start,
         ],
         align='center',
