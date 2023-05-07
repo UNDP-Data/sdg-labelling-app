@@ -84,6 +84,7 @@ def get_chips():
         button = html.Button(
             className='sdg-img-button',
             id={'type': 'sdg-button', 'index': i},
+            n_clicks=0,
             value=str(i-1),
             style={
                 'height': '10vh',
@@ -128,6 +129,7 @@ def get_blank_chip_array():
         button = html.Button(
             className='sdg-img-button',
             id={'type': 'sdg-button', 'index': i},
+            n_clicks=0,
             value=str(i-1),
             style={
                 'height': '10vh',
@@ -168,6 +170,7 @@ def get_checked_chip_array(ids):
             button = html.Button(
                 className='sdg-img-button',
                 id={'type': 'sdg-button', 'index': i},
+                n_clicks=1,
                 value=str(i-1),
                 style={
                     'height': '11vh',
@@ -198,6 +201,7 @@ def get_checked_chip_array(ids):
             button = html.Button(
                 className='sdg-img-button',
                 id={'type': 'sdg-button', 'index': i},
+                n_clicks=0,
                 value=str(i-1),
                 style={
                     'height': '10vh',

@@ -102,12 +102,15 @@ def toggle_modal(n_clicks):
     Output('memory-output', 'data', allow_duplicate=True),
     Input('next-button', 'n_clicks'),
     Input('back-button', 'n_clicks'),
-    State('chip-container', 'children'),
-    State('memory-output', 'data'),
+    {
+        'data': State('memory-output', 'data'),
+        'sdgs': [State({'type': 'sdg-button', 'index': i}, 'n_clicks') for i in range(1, 18)]
+    },
     prevent_initial_call=True
 )
-def update_components(n_clicks_next, n_clicks_back, chip_container_children, data):
+def update_components(n_clicks_next, n_clicks_back, states):
     """Update the components of the main layout and the database with the current state of the labeling."""
+    data = states['data']
     user_clicks = data['N_CLICKS']
     max_clicks = data['MAX_CLICKS']
     doc = data['CURRENT_DOC']
@@ -121,11 +124,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     button_id = ctx.triggered_id
 
     # get labels from chips
-    aux = []
-    for sdg in chip_container_children:
-        if sdg['props']['children'][0]['props']['data']['clicked']:
-            aux.append(int(sdg['props']['children'][1]['props']['value']))
-
+    aux = [sdg_id for sdg_id, n_clicks in enumerate(states['sdgs'], start=1) if n_clicks % 2 == 1]
     if button_id == 'next-button' and n_clicks_next is not None:
         labels[user_clicks] = aux
         user_clicks += 1
@@ -188,38 +187,39 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
 
 @callback(
     Output({'type': 'sdg-button', 'index': MATCH}, 'style'),
-    Output({'type': 'sdg-store', 'index': MATCH}, 'data'),
     Input({'type': 'sdg-button', 'index': MATCH}, 'n_clicks'),
     State({'type': 'sdg-button', 'index': MATCH}, 'id'),
-    State({'type': 'sdg-store', 'index': MATCH}, 'data'),
     prevent_initial_call=True
 )
-def change_sdg_img(n_clicks, button_id, data):
-    index = int(button_id['index'])
-    if not data['clicked']:
-        return {
-            'height': '11vh',
-            'width': '11vh',
-            'max-height': '11vh',
-            'max-width': '11vh',
-            'background-image': 'url("../assets/SDG_icons/color/en/sdg_'+str(index)+'.png")',
-            'background-size': 'cover',
-            'border': '2px solid ' + components.SDG_COLORS[index-1],
-            'transition': '0.3s',
-            'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
-            'border-radius': '5px',
-            'cursor': 'pointer'
-        }, {'clicked': True}
-    else:
-        return {
-                'height': '10vh',
-                'width': '10vh',
-                'max-height': '10vh',
-                'max-width': '10vh',
-                'background-image': 'url("../assets/SDG_icons/black/en/sdg_'+str(index)+'.png")',
-                'background-size': 'cover',
-                'transition': '0.3s',
-                'border': '2px solid ' + '#000000',
-                'border-radius': '5px',
-                'cursor': 'pointer'
-            }, {'clicked': False}
+def change_sdg_img(n_clicks, button_id):
+    is_selected = n_clicks % 2 == 1
+    sdg_id = button_id['index']
+    style_selected = {
+        'height': '11vh',
+        'width': '11vh',
+        'max-height': '11vh',
+        'max-width': '11vh',
+        'background-image': f'url("../assets/SDG_icons/color/en/sdg_{sdg_id}.png")',
+        'background-size': 'cover',
+        'border': '2px solid transparent',
+        'transition': '0.3s',
+        'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
+        'border-radius': '5px',
+        'cursor': 'pointer'
+    }
+    style_unselected = {
+        'height': '10vh',
+        'width': '10vh',
+        'max-height': '10vh',
+        'max-width': '10vh',
+        'background-image': f'url("../assets/SDG_icons/black/en/sdg_{sdg_id}.png")',
+        'background-size': 'cover',
+        'transition': '0.3s',
+        'border': '2px solid transparent',
+        'border-radius': '5px',
+        'cursor': 'pointer'
+    }
+
+    if is_selected:
+        return style_selected
+    return style_unselected
