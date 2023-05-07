@@ -24,7 +24,8 @@ def start_over_button(n_clicks):
         return [components.get_start_layout()]
     else:
         return no_update
-    
+
+
 @callback(
     Output('app-wrapper', 'children'),
     Output('modal', 'opened', allow_duplicate=True),
@@ -45,7 +46,8 @@ def quit_app(n1, is_open):
         return components.get_finish_layout(), False
     else:
         return no_update, is_open
-    
+
+
 @callback(
     Output('app-wrapper', 'children', allow_duplicate=True),
     Output('memory-output', 'data',  allow_duplicate=True),
@@ -69,15 +71,14 @@ def change_to_main_layout(n_clicks, input_value, language, email):
                 'CURRENT_DOC': doc,
                 'DOC_IDS': doc_ids,
                 'RECENT_IDS': recent_ids,
-                'USER_LANGUAGE' : language,
-                'USER_EMAIL' : email,
+                'USER_LANGUAGE': language,
+                'USER_EMAIL': email,
             }
             return components.get_main_layout(doc['text']), aux, no_update
         else:
             return no_update, no_update, 'Invalid email address'
     else:
         raise PreventUpdate
-    
 
 
 @callback(
@@ -105,6 +106,7 @@ def change_to_finish_layout(n_clicks, data):
 def toggle_modal(n_clicks):
     """Toggle the modal."""
     return True if n_clicks is not None else False
+
 
 @callback(
     Output('progress-bar', 'value'),
@@ -141,8 +143,6 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     for sdg in chip_container_children:
         if sdg['props']['children'][0]['props']['data']['clicked'] == True:
             aux.append(int(sdg['props']['children'][1]['props']['value']))
-    
-        
 
     if button_id == 'next-button' and n_clicks_next is not None:
         labels[user_clicks] = aux
@@ -164,17 +164,16 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
             
             if labels[user_clicks] != []:
                 chip_container_children = components.get_checked_chip_array(labels[user_clicks])
-            
 
     elif button_id == 'back-button' and n_clicks_back is not None and user_clicks > 0:
         labels[user_clicks] = aux
         user_clicks -= 1
         aux = labels[user_clicks]
-        doc = database.get_paragraph_by_id( doc_ids[user_clicks])
+        doc = database.get_paragraph_by_id(doc_ids[user_clicks])
 
         # check chips
         if labels[user_clicks] != []:
-                chip_container_children = components.get_checked_chip_array(labels[user_clicks])
+            chip_container_children = components.get_checked_chip_array(labels[user_clicks])
             
     if user_clicks < max_clicks:
         if labels[user_clicks] == []:
@@ -194,8 +193,8 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         'CURRENT_DOC': doc,
         'DOC_IDS': doc_ids,
         'RECENT_IDS': recent_ids,
-        'USER_LANGUAGE' : language,
-        'USER_EMAIL' : email
+        'USER_LANGUAGE': language,
+        'USER_EMAIL': email
     }
 
     # get next paragraph
@@ -215,7 +214,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
 )
 def change_sdg_img(n_clicks, button_id, data):
 
-    if  n_clicks is not None:
+    if n_clicks is not None:
         index = int(button_id['index'])
         if data['clicked'] == False:
             return {
@@ -225,11 +224,11 @@ def change_sdg_img(n_clicks, button_id, data):
                 'max-width': '11vh',
                 'background-image': 'url("../assets/SDG_icons/color/en/sdg_'+str(index)+'.png")',
                 'background-size': 'cover',
-                'border': '2px solid '+ components.SDG_COLORS[index-1],
+                'border': '2px solid ' + components.SDG_COLORS[index-1],
                 'transition': '0.3s',
                 'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
                 'border-radius': '5px',
-                'cursor' : 'pointer'
+                'cursor': 'pointer'
             }, {'clicked': True}
         else:
             return {
@@ -240,7 +239,7 @@ def change_sdg_img(n_clicks, button_id, data):
                     'background-image': 'url("../assets/SDG_icons/black/en/sdg_'+str(index)+'.png")',
                     'background-size': 'cover',
                     'transition': '0.3s',
-                    'border': '2px solid '+ '#000000',
+                    'border': '2px solid ' + '#000000',
                     'border-radius': '5px',
-                    'cursor' : 'pointer'
+                    'cursor': 'pointer'
                 }, {'clicked': False}
