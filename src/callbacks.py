@@ -42,7 +42,7 @@ def quit_app(n_clicks, is_open):
 
 @callback(
     Output('app-wrapper', 'children', allow_duplicate=True),
-    Output('memory-output', 'data',  allow_duplicate=True),
+    Output('session-config', 'data',  allow_duplicate=True),
     Output('email-input', 'error'),
     Input('start-button', 'n_clicks'),
     State('slider', 'value'),
@@ -54,7 +54,7 @@ def change_to_main_layout(n_clicks, input_value, language, email):
     """Change start layout to main layout."""
     if utils.validate_email(email=email):
         doc = database.get_paragraph(language, email)
-        aux = {
+        config = {
             'N_CLICKS': 0,
             'MAX_CLICKS': input_value,
             'LABELS': [[] for _ in range(input_value)],
@@ -63,7 +63,7 @@ def change_to_main_layout(n_clicks, input_value, language, email):
             'USER_LANGUAGE': language,
             'USER_EMAIL': email,
         }
-        return components.get_main_layout(doc['text']), aux, no_update
+        return components.get_main_layout(doc['text']), config, no_update
     else:
         return no_update, no_update, 'Invalid email address'
 
@@ -71,12 +71,12 @@ def change_to_main_layout(n_clicks, input_value, language, email):
 @callback(
     Output('app-wrapper', 'children', allow_duplicate=True),
     Input('next-button', 'n_clicks'),
-    State('memory-output', 'data'),
+    State('session-config', 'data'),
     prevent_initial_call=True
 )
-def change_to_finish_layout(n_clicks, data):
+def change_to_finish_layout(n_clicks, config):
     """Change main layout to finish layout."""
-    if data['N_CLICKS'] == data['MAX_CLICKS']:
+    if config['N_CLICKS'] == config['MAX_CLICKS']:
         return components.get_finish_layout()
     else:
         raise PreventUpdate
@@ -98,52 +98,51 @@ def toggle_modal(n_clicks):
     Output('chip-container', 'children'),
     Output('paper', 'children'),
     Output('app-wrapper', 'children', allow_duplicate=True),
-    Output('memory-output', 'data', allow_duplicate=True),
+    Output('session-config', 'data', allow_duplicate=True),
     Input('next-button', 'n_clicks'),
     Input('back-button', 'n_clicks'),
-    State('memory-output', 'data'),
+    State('session-config', 'data'),
     State({'type': 'sdg-button', 'index': ALL}, 'n_clicks'),
     prevent_initial_call=True
 )
-def update_components(n_clicks_next, n_clicks_back, data, sdgs):
+def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs):
     """Update the components of the main layout and the database with the current state of the labeling."""
-    user_clicks = data['N_CLICKS']
-    max_clicks = data['MAX_CLICKS']
-    doc = data['CURRENT_DOC']
-    labels = data['LABELS']
-    session_ids = data['SESSION_IDS']
-    email = data['USER_EMAIL']
-    language = data['USER_LANGUAGE']
+    user_clicks = config['N_CLICKS']
+    max_clicks = config['MAX_CLICKS']
+    doc = config['CURRENT_DOC']
+    labels = config['LABELS']
+    session_ids = config['SESSION_IDS']
+    email = config['USER_EMAIL']
+    language = config['USER_LANGUAGE']
 
     ctx = callback_context
     button_id = ctx.triggered_id
 
     # get labels from chips
-    aux = [sdg_id for sdg_id, n_clicks in enumerate(sdgs, start=1) if n_clicks % 2 == 1]
+    doc_labels = [sdg_id for sdg_id, n_clicks in enumerate(n_clicks_sdgs, start=1) if n_clicks % 2 == 1]
+    labels[user_clicks] = doc_labels
     if button_id == 'next-button':
-        labels[user_clicks] = aux
         session_ids[user_clicks] = doc['_id']
-        database.update_paragraph(doc['_id'], aux, email)
+        database.update_paragraph(doc['_id'], doc_labels, email)
         user_clicks += 1
 
         if user_clicks == max_clicks:
-            return no_update, no_update, no_update, no_update, components.get_finish_layout(), aux
+            return no_update, no_update, no_update, no_update, components.get_finish_layout(), config
         elif session_ids[user_clicks] is not None:
             doc = database.get_paragraph_by_id(session_ids[user_clicks])
         else:
             doc = database.get_paragraph(language, email)
 
     elif button_id == 'back-button' and user_clicks > 0:
-        labels[user_clicks] = aux
         user_clicks -= 1
         if user_clicks < 0:
             raise PreventUpdate
         doc = database.get_paragraph_by_id(session_ids[user_clicks])
 
     # check chips
-    chip_container_children = components.get_sdg_buttons(labels[user_clicks])
+    sdg_buttons = components.get_sdg_buttons(labels[user_clicks])
     value = user_clicks / max_clicks * 100
-    aux = {
+    config = {
         'N_CLICKS': user_clicks,
         'MAX_CLICKS': max_clicks,
         'LABELS': labels,
@@ -152,7 +151,7 @@ def update_components(n_clicks_next, n_clicks_back, data, sdgs):
         'USER_LANGUAGE': language,
         'USER_EMAIL': email
     }
-    return value, str(floor(value)) + '%', chip_container_children, doc['text'], no_update, aux
+    return value, str(floor(value)) + '%', sdg_buttons, doc['text'], no_update, config
 
 
 @callback(
