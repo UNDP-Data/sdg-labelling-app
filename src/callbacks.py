@@ -31,15 +31,10 @@ def start_over_button(n_clicks):
     prevent_initial_call=True
 
 )
-def quit_app(n1, is_open):
+def quit_app(n_clicks, is_open):
     """Quit the app and change the layout to the start layout."""
     ctx = callback_context
-    if not ctx.triggered:
-        button_id = ''
-    else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-
-    if button_id == 'quit-modal-button' and n1 is not None:
+    if ctx.triggered_id == 'quit-modal-button' and n_clicks is not None:
         return components.get_finish_layout(), False
     else:
         return no_update, is_open
@@ -57,25 +52,21 @@ def quit_app(n1, is_open):
 )
 def change_to_main_layout(n_clicks, input_value, language, email):
     """Change start layout to main layout."""
-
-    if n_clicks is not None:
-        if utils.validate_email(email=email):
-            doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids(), language, email))
-            aux = {
-                'N_CLICKS': 0,
-                'MAX_CLICKS': input_value,
-                'LABELS': [[] for i in range(input_value)],
-                'CURRENT_DOC': doc,
-                'DOC_IDS': doc_ids,
-                'RECENT_IDS': recent_ids,
-                'USER_LANGUAGE': language,
-                'USER_EMAIL': email,
-            }
-            return components.get_main_layout(doc['text']), aux, no_update
-        else:
-            return no_update, no_update, 'Invalid email address'
+    if utils.validate_email(email=email):
+        doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids(), language, email))
+        aux = {
+            'N_CLICKS': 0,
+            'MAX_CLICKS': input_value,
+            'LABELS': [[] for i in range(input_value)],
+            'CURRENT_DOC': doc,
+            'DOC_IDS': doc_ids,
+            'RECENT_IDS': recent_ids,
+            'USER_LANGUAGE': language,
+            'USER_EMAIL': email,
+        }
+        return components.get_main_layout(doc['text']), aux, no_update
     else:
-        raise PreventUpdate
+        return no_update, no_update, 'Invalid email address'
 
 
 @callback(
@@ -86,10 +77,7 @@ def change_to_main_layout(n_clicks, input_value, language, email):
 )
 def change_to_finish_layout(n_clicks, data):
     """Change main layout to finish layout."""
-    clk = data['N_CLICKS']
-    max_clk = data['MAX_CLICKS']
-
-    if n_clicks is not None and clk == max_clk:
+    if data['N_CLICKS'] == data['MAX_CLICKS']:
         return components.get_finish_layout()
     else:
         raise PreventUpdate
@@ -130,10 +118,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     language = data['USER_LANGUAGE']
 
     ctx = callback_context
-    if not ctx.triggered:
-        button_id = ''
-    else:
-        button_id = ctx.triggered[0]['prop_id'].split('.')[0]
+    button_id = ctx.triggered_id
 
     # get labels from chips
     aux = []
@@ -210,33 +195,31 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     prevent_initial_call=True
 )
 def change_sdg_img(n_clicks, button_id, data):
-
-    if n_clicks is not None:
-        index = int(button_id['index'])
-        if not data['clicked']:
-            return {
-                'height': '11vh',
-                'width': '11vh',
-                'max-height': '11vh',
-                'max-width': '11vh',
-                'background-image': 'url("../assets/SDG_icons/color/en/sdg_'+str(index)+'.png")',
+    index = int(button_id['index'])
+    if not data['clicked']:
+        return {
+            'height': '11vh',
+            'width': '11vh',
+            'max-height': '11vh',
+            'max-width': '11vh',
+            'background-image': 'url("../assets/SDG_icons/color/en/sdg_'+str(index)+'.png")',
+            'background-size': 'cover',
+            'border': '2px solid ' + components.SDG_COLORS[index-1],
+            'transition': '0.3s',
+            'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
+            'border-radius': '5px',
+            'cursor': 'pointer'
+        }, {'clicked': True}
+    else:
+        return {
+                'height': '10vh',
+                'width': '10vh',
+                'max-height': '10vh',
+                'max-width': '10vh',
+                'background-image': 'url("../assets/SDG_icons/black/en/sdg_'+str(index)+'.png")',
                 'background-size': 'cover',
-                'border': '2px solid ' + components.SDG_COLORS[index-1],
                 'transition': '0.3s',
-                'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
+                'border': '2px solid ' + '#000000',
                 'border-radius': '5px',
                 'cursor': 'pointer'
-            }, {'clicked': True}
-        else:
-            return {
-                    'height': '10vh',
-                    'width': '10vh',
-                    'max-height': '10vh',
-                    'max-width': '10vh',
-                    'background-image': 'url("../assets/SDG_icons/black/en/sdg_'+str(index)+'.png")',
-                    'background-size': 'cover',
-                    'transition': '0.3s',
-                    'border': '2px solid ' + '#000000',
-                    'border-radius': '5px',
-                    'cursor': 'pointer'
-                }, {'clicked': False}
+            }, {'clicked': False}
