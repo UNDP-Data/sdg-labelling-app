@@ -1,6 +1,3 @@
-# standard library
-from math import floor
-
 # dash
 from dash import callback, callback_context, no_update, MATCH, ALL
 from dash.exceptions import PreventUpdate

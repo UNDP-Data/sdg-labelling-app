@@ -1,6 +1,6 @@
 # dash
 import dash_mantine_components as dmc
-from dash import html, dcc
+from dash import html
 from dash_iconify import DashIconify
 
 # local packages
