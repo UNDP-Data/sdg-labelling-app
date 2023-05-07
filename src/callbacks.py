@@ -1,5 +1,4 @@
 # standard library
-import re
 from math import floor
 
 # dash
@@ -8,9 +7,7 @@ from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 
 # local packages
-from . import database
-from . import components
-from . import utils
+from src import database, components, utils
 
 
 @callback(
