@@ -6,8 +6,7 @@ from dash import Dash, html, dcc
 from dotenv import load_dotenv; load_dotenv()
 
 # local packages
-from scripts.components import get_start_layout
-import scripts.callbacks as callbacks
+from src import components, callbacks
 
 load_dotenv()
 # Initialize the app
@@ -30,7 +29,7 @@ app.layout = dmc.MantineProvider(
         dcc.Store(id='memory-output', storage_type='memory'),
         html.Div(
             id='app-wrapper',
-            children=get_start_layout()
+            children=components.get_start_layout()
         )
     ]
 )
