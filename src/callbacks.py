@@ -123,42 +123,26 @@ def update_components(n_clicks_next, n_clicks_back, data, sdgs):
     if button_id == 'next-button':
         labels[user_clicks] = aux
         session_ids[user_clicks] = doc['_id']
+        database.update_paragraph(doc['_id'], aux, email)
         user_clicks += 1
 
-        # update database with the current state of the labeling
-        if aux:
-            database.update_paragraph(doc['_id'], aux, email)
-
-        # get next paragraph
-        if session_ids[user_clicks] is not None:
+        if user_clicks == max_clicks:
+            return no_update, no_update, no_update, no_update, components.get_finish_layout(), aux
+        elif session_ids[user_clicks] is not None:
             doc = database.get_paragraph_by_id(session_ids[user_clicks])
         else:
             doc = database.get_paragraph(language, email)
-        # check chips if neccesary
-
-        if labels[user_clicks]:
-            chip_container_children = components.get_sdg_buttons(labels[user_clicks])
 
     elif button_id == 'back-button' and user_clicks > 0:
         labels[user_clicks] = aux
         user_clicks -= 1
+        if user_clicks < 0:
+            raise PreventUpdate
         doc = database.get_paragraph_by_id(session_ids[user_clicks])
 
-        # check chips
-        if labels[user_clicks]:
-            chip_container_children = components.get_sdg_buttons(labels[user_clicks])
-            
-    if user_clicks < max_clicks:
-        if not labels[user_clicks]:
-            chip_container_children = components.get_sdg_buttons()
-
-    if user_clicks < 0:
-        user_clicks = 0
-    elif user_clicks > max_clicks:
-        user_clicks = max_clicks
-
+    # check chips
+    chip_container_children = components.get_sdg_buttons(labels[user_clicks])
     value = user_clicks / max_clicks * 100
-
     aux = {
         'N_CLICKS': user_clicks,
         'MAX_CLICKS': max_clicks,
@@ -168,12 +152,7 @@ def update_components(n_clicks_next, n_clicks_back, data, sdgs):
         'USER_LANGUAGE': language,
         'USER_EMAIL': email
     }
-
-    # get next paragraph
-    if value < 100:
-        return value, str(floor(value)) + '%', chip_container_children, doc['text'], no_update, aux
-    else:
-        return no_update, no_update, no_update, no_update, components.get_finish_layout(), aux
+    return value, str(floor(value)) + '%', chip_container_children, doc['text'], no_update, aux
 
 
 @callback(
