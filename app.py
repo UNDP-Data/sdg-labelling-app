@@ -19,6 +19,8 @@ app = Dash(
     }],
     prevent_initial_callbacks='initial_duplicate',
     suppress_callback_exceptions=True,
+    title='SDG App',
+    update_title='Loading...',
 )
 
 # define layout
