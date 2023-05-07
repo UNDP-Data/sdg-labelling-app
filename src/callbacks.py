@@ -18,7 +18,7 @@ from src import database, components, styles, utils
 def start_over_button(n_clicks):
     """This callback resets the app to its initial state when the start over button is clicked."""
     if n_clicks is not None:
-        return [components.get_start_layout()]
+        return components.get_start_layout()
     else:
         return no_update
 
@@ -57,7 +57,7 @@ def change_to_main_layout(n_clicks, input_value, language, email):
         aux = {
             'N_CLICKS': 0,
             'MAX_CLICKS': input_value,
-            'LABELS': [[] for i in range(input_value)],
+            'LABELS': [[] for _ in range(input_value)],
             'CURRENT_DOC': doc,
             'DOC_IDS': doc_ids,
             'RECENT_IDS': recent_ids,
@@ -135,7 +135,6 @@ def update_components(n_clicks_next, n_clicks_back, states):
 
         # get next paragraph
         if user_clicks < max_clicks:
-            aux = labels[user_clicks]
             if doc_ids[-1] != doc['_id']:
                 doc = database.get_paragraph_by_id(doc_ids[user_clicks])
             else:
@@ -149,7 +148,6 @@ def update_components(n_clicks_next, n_clicks_back, states):
     elif button_id == 'back-button' and n_clicks_back is not None and user_clicks > 0:
         labels[user_clicks] = aux
         user_clicks -= 1
-        aux = labels[user_clicks]
         doc = database.get_paragraph_by_id(doc_ids[user_clicks])
 
         # check chips
