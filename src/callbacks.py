@@ -10,6 +10,7 @@ from dash.dependencies import Input, Output, State
 # local packages
 from . import database
 from . import components
+from . import utils
 
 
 @callback(
@@ -58,11 +59,8 @@ def quit_app(n1, is_open):
 def change_to_main_layout(n_clicks, input_value, language, email):
     """Change start layout to main layout."""
 
-    # RFC5322-compliant Regular Expression
-    regex = re.compile(r"([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\[[\t -Z^-~]*])")
-
     if n_clicks is not None:
-        if re.fullmatch(regex, email):
+        if utils.validate_email(email=email):
             doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids(), language, email))
             aux = {
                 'N_CLICKS': 0,
