@@ -1,40 +1,9 @@
-:root {
-    --whiteColor: #FFFFFF;
-
-    /* Blue Colors */
-    --blueColor200: #BAE6FD;
-    --blueColor500: #50779A;
-    --blueColor700: #1D3557;
-}
-
-.app-body {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 5%;
-}
-
 .app-header {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-content: center;
   justify-content: space-between;
-}
-
-.app-start-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--blueColor700);
-    text-align: center;
-}
-
-.app-start-subtitle {
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: var(--blueColor700);
-    text-align: center;
 }
 
 .app-header-text {
@@ -56,46 +25,4 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.7rem;
-}
-
-.button-container {
-    width: 20%;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-}
-
-.app-header-logo {
-    padding-left: 3rem;
-}
-
-
-
-/* Media Queries */
-
-@media screen and (max-width: 768px) {
-    .app-header-text {
-        font-size: 1.5rem;
-        padding-right: 0.5rem;
-    }
-
-    .button-container {
-        width: 80%;
-    }
-
-    .app-body-text {
-        text-align: center;
-    }
-
-    .paper {
-        width: 80%;
-        height: fit-content;
-    }
-
-    .chip-container {
-        width: 80%;
-    }
-    .app-header-logo {
-        padding-left: 0.5rem;
-    }
 }
