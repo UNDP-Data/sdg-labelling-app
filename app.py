@@ -27,9 +27,11 @@ app = Dash(
 app.layout = dmc.MantineProvider(
     children=[
         dcc.Store(id='session-config', storage_type='memory'),
-        html.Div(
-            id='app-wrapper',
-            children=components.get_start_layout()
+        components.get_header(),
+        dmc.Container(
+            id='content',
+            children=components.get_start_layout(),
+            fluid=True,
         )
     ]
 )

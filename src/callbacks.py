@@ -8,7 +8,7 @@ from src import database, components, styles, utils
 
 
 @callback(
-    Output('app-wrapper', 'children', allow_duplicate=True),
+    Output('content', 'children', allow_duplicate=True),
     Input('start-over-button', 'n_clicks'),
     prevent_initial_call=True
 )
@@ -21,7 +21,7 @@ def start_over_button(n_clicks):
 
 
 @callback(
-    Output('app-wrapper', 'children'),
+    Output('content', 'children'),
     Output('modal', 'opened', allow_duplicate=True),
     Input('quit-modal-button', 'n_clicks'),
     State('modal', 'opened'),
@@ -38,7 +38,7 @@ def quit_app(n_clicks, is_open):
 
 
 @callback(
-    Output('app-wrapper', 'children', allow_duplicate=True),
+    Output('content', 'children', allow_duplicate=True),
     Output('session-config', 'data',  allow_duplicate=True),
     Output('email-input', 'error'),
     Input('start-button', 'n_clicks'),
@@ -66,7 +66,7 @@ def change_to_main_layout(n_clicks, input_value, language, email):
 
 
 @callback(
-    Output('app-wrapper', 'children', allow_duplicate=True),
+    Output('content', 'children', allow_duplicate=True),
     Input('next-button', 'n_clicks'),
     State('session-config', 'data'),
     prevent_initial_call=True
@@ -94,7 +94,7 @@ def toggle_modal(n_clicks):
     Output('progress-bar', 'label'),
     Output('chip-container', 'children'),
     Output('paper', 'children'),
-    Output('app-wrapper', 'children', allow_duplicate=True),
+    Output('content', 'children', allow_duplicate=True),
     Output('session-config', 'data', allow_duplicate=True),
     Input('next-button', 'n_clicks'),
     Input('back-button', 'n_clicks'),

@@ -26,11 +26,16 @@ def get_header():
         color=styles.PRIMARY_COLOUR,
     )
 
+    divider = dmc.Divider(
+        color=styles.PRIMARY_COLOUR,
+        variant='solid'
+    )
+
     header = dmc.Header(
         className='app-header',
         height=120,
         withBorder=True,
-        children=[title, nav_link]
+        children=[title, nav_link, divider]
     )
     return header
 
@@ -110,11 +115,6 @@ def get_progress_bar():
 
 
 def get_start_layout():
-    divider = dmc.Divider(
-        color=styles.PRIMARY_COLOUR,
-        variant='solid'
-    )
-
     title = dmc.Title(
         'LET\'S GET STARTED',
         order=2,
@@ -202,15 +202,10 @@ def get_start_layout():
         spacing='xl',
         pt='5%',
     )
-    return [get_header(), divider, stack]
+    return stack
 
 
 def get_finish_layout():
-    divider = dmc.Divider(
-        color=styles.PRIMARY_COLOUR,
-        variant='solid'
-    )
-
     title = dmc.Title(
         'THANK YOU FOR YOUR PARTICIPATION!',
         order=2,
@@ -239,7 +234,7 @@ def get_finish_layout():
         spacing='xl',
         pt='5%',
     )
-    return [get_header(), divider, stack]
+    return stack
 
 
 def get_quit_modal():
@@ -284,11 +279,6 @@ def get_quit_modal():
 
 
 def get_main_layout(paragraph: str):
-    divider = dmc.Divider(
-        color=styles.PRIMARY_COLOUR,
-        variant='solid',
-    )
-
     paper = dmc.Paper(
         paragraph,
         p='xl',
@@ -329,4 +319,4 @@ def get_main_layout(paragraph: str):
         pt='5%',
     )
 
-    return [get_header(), divider, stack]
+    return stack
