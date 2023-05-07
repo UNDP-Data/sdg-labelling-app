@@ -158,7 +158,7 @@ def get_checked_chip_array(ids):
     i = 1
 
     for sdg in SDG_LIST:
-        if i - 1 in ids:
+        if i in ids:
             button = html.Button(
                 className='sdg-img-button',
                 id={'type': 'sdg-button', 'index': i},
