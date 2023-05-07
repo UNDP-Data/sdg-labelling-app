@@ -1,3 +1,7 @@
+
+PRIMARY_COLOUR = '#1F5A95'
+
+
 def get_sdg_style(sdg_id: int, is_selected: bool) -> dict:
     style_base = {
         'background-size': 'cover',

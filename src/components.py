@@ -15,7 +15,7 @@ def get_header():
         icon=DashIconify(icon='bi:house-door-fill', height=16),
         active=True,
         variant='subtle',
-        color='blue.8',
+        color=styles.PRIMARY_COLOUR,
         style={'width': 'fit-content'},
         rightSection=DashIconify(icon='tabler-chevron-right')
     )
@@ -23,7 +23,7 @@ def get_header():
     title = dmc.Title(
         'SDG LABELLING PAGE',
         order=1,
-        color='#1D3557',
+        color=styles.PRIMARY_COLOUR,
         className='app-header-text',
     )
 
@@ -69,7 +69,8 @@ def get_button_container():
         n_clicks=0,
         size='md',
         radius='md',
-        color='#50779A'
+        color=styles.PRIMARY_COLOUR,
+        variant='light',
     )
 
     button_next = dmc.Button(
@@ -78,7 +79,8 @@ def get_button_container():
         n_clicks=0,
         size='md',
         radius='md',
-        color='#50779A'
+        color=styles.PRIMARY_COLOUR,
+        variant='light'
     )
 
     buttons = dmc.Group(
@@ -93,7 +95,7 @@ def get_body_title():
     title = dmc.Title(
         'SELECT ONE OR MORE RELEVANT SDGs FOR EACH PARAGRAPH',
         order=2,
-        color='#1D3557',
+        color=styles.PRIMARY_COLOUR,
     )
     return title
 
@@ -103,7 +105,7 @@ def get_progress_bar():
         id='progress-bar',
         value=0,
         label='0%',
-        color='#50779A',
+        color=styles.PRIMARY_COLOUR,
         radius='sm',
         size='xl',
         style={'width': '60%', 'margin': 'auto'}
@@ -113,20 +115,20 @@ def get_progress_bar():
 
 def get_start_layout():
     divider = dmc.Divider(
-        color='#1D3557',
+        color=styles.PRIMARY_COLOUR,
         variant='solid'
     )
 
     title = dmc.Title(
         'LET\'S GET STARTED',
         order=2,
-        color='#1D3557',
+        color=styles.PRIMARY_COLOUR,
     )
 
     text = dmc.Text(
         'Select the number of paragraphs you want to label',
         style={'text-align': 'center'},
-        color='#1D3557',
+        color=styles.PRIMARY_COLOUR,
     )
 
     slider = dmc.Slider(
@@ -138,7 +140,7 @@ def get_start_layout():
         size='lg',
         radius='md',
         showLabelOnHover=True,
-        color='cyan.9',
+        color=styles.PRIMARY_COLOUR,
         marks=[
             {'value': 5, 'label': '5'},
             {'value': 100, 'label': '100'}
@@ -176,7 +178,8 @@ def get_start_layout():
         id='start-button',
         size='lg',
         radius='md',
-        color='#50779A'
+        color=styles.PRIMARY_COLOUR,
+        variant='filled',
     )
 
     stack = dmc.Stack(
@@ -197,19 +200,19 @@ def get_start_layout():
 
 def get_finish_layout():
     divider = dmc.Divider(
-        color='#1D3557',
+        color=styles.PRIMARY_COLOUR,
         variant='solid'
     )
 
     title = dmc.Title(
         'THANK YOU FOR YOUR PARTICIPATION!',
         order=2,
-        color='#1D3557',
+        color=styles.PRIMARY_COLOUR,
     )
 
     text = dmc.Text(
         'If you want to start again, click on the button below',
-        color='#1D3557',
+        color=styles.PRIMARY_COLOUR,
     )
 
     button_start_over = dmc.Button(
@@ -217,7 +220,7 @@ def get_finish_layout():
         id='start-over-button',
         size='md',
         radius='md',
-        color='#50779A',
+        color=styles.PRIMARY_COLOUR,
     )
     stack = dmc.Stack(
         children=[
@@ -246,10 +249,11 @@ def get_quit_modal():
 
     button_quit = dmc.Button(
         'Quit',
+        id='quit-modal-button',
+        radius='md',
+        size='lg',
         color='red',
         variant='outline',
-        id='quit-modal-button',
-        size='lg'
     )
 
     stack = dmc.Stack(
@@ -274,7 +278,7 @@ def get_quit_modal():
 
 def get_main_layout(paragraph: str):
     divider = dmc.Divider(
-        color='#1D3557',
+        color=styles.PRIMARY_COLOUR,
         variant='solid',
     )
 
@@ -298,8 +302,9 @@ def get_main_layout(paragraph: str):
         'Quit',
         id='quit-button',
         size='lg',
+        radius='md',
         color='red',
-        variant='subtle',
+        variant='light',
     )
 
     stack = dmc.Stack(
