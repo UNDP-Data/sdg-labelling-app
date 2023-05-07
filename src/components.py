@@ -39,94 +39,27 @@ def get_header():
     return header
 
 
-def get_chips():
-    chip_array = []
+def get_sdg_buttons(selected_sdg_ids: list[int] = None):
+    sdg_button_list = []
     sdgs = utils.read_sdg_metadata()
     for sdg in sdgs:
-
+        is_selected = selected_sdg_ids is not None and sdg.id in selected_sdg_ids
         button = html.Button(
             className='sdg-img-button',
             id={'type': 'sdg-button', 'index': sdg.id},
-            n_clicks=0,
-            style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=False)
+            n_clicks=int(is_selected),  # 1 if selected, 0 otherwise
+            style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=is_selected),
         )
-
         tooltip = dmc.Tooltip(
             label=sdg.name,
             style={'cursor': 'pointer'},
             children=button,
             withArrow=True
         )
-        chip_array.append(tooltip)
 
-    return dmc.Container(
-        id='chip-container',
-        className='chip-container',
-        children=chip_array,
-    )
+        sdg_button_list.append(tooltip)
 
-
-def get_blank_chip_array():
-    chip_array = []
-    sdgs = utils.read_sdg_metadata()
-
-    for sdg in sdgs:
-
-        button = html.Button(
-            className='sdg-img-button',
-            id={'type': 'sdg-button', 'index': sdg.id},
-            n_clicks=0,
-            style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=False)
-        )
-
-        tooltip = dmc.Tooltip(
-            label=sdg.name,
-            style={'cursor': 'pointer'},
-            children=button,
-            withArrow=True
-        )
-        chip_array.append(tooltip)
-
-    return chip_array
-
-
-def get_checked_chip_array(ids):
-    chip_array = []
-    sdgs = utils.read_sdg_metadata()
-
-    for sdg in sdgs:
-        if sdg.id in ids:
-            button = html.Button(
-                className='sdg-img-button',
-                id={'type': 'sdg-button', 'index': sdg.id},
-                n_clicks=1,
-                style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=True),
-            )
-
-            tooltip = dmc.Tooltip(
-                label=sdg.name,
-                style={'cursor': 'pointer'},
-                children=button,
-                withArrow=True
-            )
-        else:
-            button = html.Button(
-                className='sdg-img-button',
-                id={'type': 'sdg-button', 'index': sdg.id},
-                n_clicks=0,
-                style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=False),
-            )
-
-            tooltip = dmc.Tooltip(
-                label=sdg.name,
-                style={'cursor': 'pointer'},
-                children=button,
-                withArrow=True
-            )
-
-        chip_array.append(tooltip)
-
-    return chip_array
+    return sdg_button_list
 
 
 def get_button_container():
@@ -353,6 +286,12 @@ def get_main_layout(paragraph: str):
         className='paper'
     )
 
+    labels = dmc.Container(
+        id='chip-container',
+        className='chip-container',
+        children=get_sdg_buttons(),
+    )
+
     button_quit = dmc.Button(
         'Quit',
         id='quit-button',
@@ -365,7 +304,7 @@ def get_main_layout(paragraph: str):
         children=[
             get_body_title(),
             paper,
-            get_chips(),
+            labels,
             get_button_container(),
             get_progress_bar(),
             button_quit,
