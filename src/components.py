@@ -52,13 +52,7 @@ def get_chips():
         tooltip = dmc.Tooltip(
             label=sdg.name,
             style={'cursor': 'pointer'},
-            children=[
-                dcc.Store(
-                    id={'type': 'sdg-store', 'index': sdg.id},
-                    storage_type='memory',
-                    data={'clicked': False}),
-                button
-            ],
+            children=button,
             withArrow=True
         )
         chip_array.append(tooltip)
@@ -86,13 +80,7 @@ def get_blank_chip_array():
         tooltip = dmc.Tooltip(
             label=sdg.name,
             style={'cursor': 'pointer'},
-            children=[
-                dcc.Store(
-                    id={'type': 'sdg-store', 'index': sdg.id},
-                    storage_type='memory',
-                    data={'clicked': False}),
-                button,
-            ],
+            children=button,
             withArrow=True
         )
         chip_array.append(tooltip)
@@ -116,13 +104,7 @@ def get_checked_chip_array(ids):
             tooltip = dmc.Tooltip(
                 label=sdg.name,
                 style={'cursor': 'pointer'},
-                children=[
-                    dcc.Store(
-                        id={'type': 'sdg-store', 'index': sdg.id},
-                        storage_type='memory',
-                        data={'clicked': True}),
-                    button,
-                ],
+                children=button,
                 withArrow=True
             )
         else:
@@ -136,13 +118,7 @@ def get_checked_chip_array(ids):
             tooltip = dmc.Tooltip(
                 label=sdg.name,
                 style={'cursor': 'pointer'},
-                children=[
-                    dcc.Store(
-                        id={'type': 'sdg-store', 'index': sdg.id},
-                        storage_type='memory',
-                        data={'clicked': False}),
-                    button,
-                ],
+                children=button,
                 withArrow=True
             )
 
