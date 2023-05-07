@@ -53,14 +53,13 @@ def quit_app(n_clicks, is_open):
 def change_to_main_layout(n_clicks, input_value, language, email):
     """Change start layout to main layout."""
     if utils.validate_email(email=email):
-        doc, doc_ids, recent_ids = list(database.get_paragraph([], database.get_recent_ids(), language, email))
+        doc = database.get_paragraph(language, email)
         aux = {
             'N_CLICKS': 0,
             'MAX_CLICKS': input_value,
             'LABELS': [[] for _ in range(input_value)],
             'CURRENT_DOC': doc,
-            'DOC_IDS': doc_ids,
-            'RECENT_IDS': recent_ids,
+            'SESSION_IDS': [None] * input_value,
             'USER_LANGUAGE': language,
             'USER_EMAIL': email,
         }
@@ -112,8 +111,7 @@ def update_components(n_clicks_next, n_clicks_back, data, sdgs):
     max_clicks = data['MAX_CLICKS']
     doc = data['CURRENT_DOC']
     labels = data['LABELS']
-    doc_ids = data['DOC_IDS']
-    recent_ids = data['RECENT_IDS']
+    session_ids = data['SESSION_IDS']
     email = data['USER_EMAIL']
     language = data['USER_LANGUAGE']
 
@@ -122,8 +120,9 @@ def update_components(n_clicks_next, n_clicks_back, data, sdgs):
 
     # get labels from chips
     aux = [sdg_id for sdg_id, n_clicks in enumerate(sdgs, start=1) if n_clicks % 2 == 1]
-    if button_id == 'next-button' and n_clicks_next is not None:
+    if button_id == 'next-button':
         labels[user_clicks] = aux
+        session_ids[user_clicks] = doc['_id']
         user_clicks += 1
 
         # update database with the current state of the labeling
@@ -131,21 +130,19 @@ def update_components(n_clicks_next, n_clicks_back, data, sdgs):
             database.update_paragraph(doc['_id'], aux, email)
 
         # get next paragraph
-        if user_clicks < max_clicks:
-            if doc_ids[-1] != doc['_id']:
-                doc = database.get_paragraph_by_id(doc_ids[user_clicks])
-            else:
-                doc, doc_ids, recent_ids = database.get_paragraph(doc_ids, recent_ids, language, email)
-    
-            # check chips if neccesary
-            
-            if labels[user_clicks]:
-                chip_container_children = components.get_sdg_buttons(labels[user_clicks])
+        if session_ids[user_clicks] is not None:
+            doc = database.get_paragraph_by_id(session_ids[user_clicks])
+        else:
+            doc = database.get_paragraph(language, email)
+        # check chips if neccesary
 
-    elif button_id == 'back-button' and n_clicks_back is not None and user_clicks > 0:
+        if labels[user_clicks]:
+            chip_container_children = components.get_sdg_buttons(labels[user_clicks])
+
+    elif button_id == 'back-button' and user_clicks > 0:
         labels[user_clicks] = aux
         user_clicks -= 1
-        doc = database.get_paragraph_by_id(doc_ids[user_clicks])
+        doc = database.get_paragraph_by_id(session_ids[user_clicks])
 
         # check chips
         if labels[user_clicks]:
@@ -167,8 +164,7 @@ def update_components(n_clicks_next, n_clicks_back, data, sdgs):
         'MAX_CLICKS': max_clicks,
         'LABELS': labels,
         'CURRENT_DOC': doc,
-        'DOC_IDS': doc_ids,
-        'RECENT_IDS': recent_ids,
+        'SESSION_IDS': session_ids,
         'USER_LANGUAGE': language,
         'USER_EMAIL': email
     }

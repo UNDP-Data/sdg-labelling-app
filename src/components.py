@@ -66,6 +66,7 @@ def get_button_container():
     button_back = dmc.Button(
         'Back',
         id='back-button',
+        n_clicks=0,
         size='md',
         radius='md',
         color='#50779A'
@@ -74,6 +75,7 @@ def get_button_container():
     button_next = dmc.Button(
         'Next',
         id='next-button',
+        n_clicks=0,
         size='md',
         radius='md',
         color='#50779A'

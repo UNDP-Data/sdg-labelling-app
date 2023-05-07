@@ -14,7 +14,7 @@ def get_document_collection():
     return collection
 
 
-def get_paragraph(doc_ids: list, recent_ids: list, language, email):
+def get_paragraph(language, email):
     collection = get_document_collection()
     pipeline = [
         # Replace null label arrays with empty arrays, so that the size operator is applied correctly
@@ -25,12 +25,13 @@ def get_paragraph(doc_ids: list, recent_ids: list, language, email):
                 }
             }
         },
-        # Filter out documents in the queue
+        # Find matching documents
         {
             '$match': {
-                'language': language,
-                '_id': {'$nin': [ObjectId(_id) for _id in recent_ids]},
-                '$expr': {'$lte': [{'$size': '$labels'}, 2]}
+                'language': language,  # match text langauge
+                'labels': {'$not': {'$elemMatch': {'email': email}}},  # exclude texts labelled by the user
+                'date': {'$lte': datetime.now() - timedelta(minutes=10)},  # exclude texts that have just been labelled
+                '$expr': {'$lte': [{'$size': '$labels'}, 2]}  # exclude texts with already 3 labels
             }
         },
         # Add a count field to each document
@@ -43,36 +44,17 @@ def get_paragraph(doc_ids: list, recent_ids: list, language, email):
         {
             '$sort': {'count': -1}
         },
-        # Limit to first 100 documents
         {
-            '$limit': 100
+            '$sample': {'size': 1},
         }
     ]
-    documents = list(collection.aggregate(pipeline))
 
-    if documents:
-        for doc in documents:
-            doc['_id'] = str(doc['_id'])
-            if doc['_id'] not in doc_ids and doc['_id'] not in recent_ids and not check_user_email(doc, email):
-                update_queue(doc['_id'])
-                doc_ids.append(doc['_id'])
-                return doc, doc_ids, recent_ids
-
+    docs = list(collection.aggregate(pipeline))
+    if docs:
+        doc = docs[0]
+        doc['_id'] = str(doc['_id'])
+        return doc
     raise Exception('No documents found')
-
-
-def check_user_email(doc, email):
-    for user in doc['labels']:
-        if user['email'] == email:
-            return True
-    return False
-
-
-def get_recent_ids():
-    collection = get_document_collection()
-    docs = collection.find(
-        {'date': {'$gt': datetime.now() - timedelta(minutes=10)}}, {'_id': 1})
-    return [str(doc['_id']) for doc in docs]
 
 
 def update_queue(_id):
