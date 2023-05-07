@@ -144,7 +144,7 @@ def update_components(n_clicks_next, n_clicks_back, states):
             # check chips if neccesary
             
             if labels[user_clicks]:
-                chip_container_children = components.get_checked_chip_array(labels[user_clicks])
+                chip_container_children = components.get_sdg_buttons(labels[user_clicks])
 
     elif button_id == 'back-button' and n_clicks_back is not None and user_clicks > 0:
         labels[user_clicks] = aux
@@ -154,11 +154,11 @@ def update_components(n_clicks_next, n_clicks_back, states):
 
         # check chips
         if labels[user_clicks]:
-            chip_container_children = components.get_checked_chip_array(labels[user_clicks])
+            chip_container_children = components.get_sdg_buttons(labels[user_clicks])
             
     if user_clicks < max_clicks:
         if not labels[user_clicks]:
-            chip_container_children = components.get_blank_chip_array()
+            chip_container_children = components.get_sdg_buttons()
 
     if user_clicks < 0:
         user_clicks = 0
