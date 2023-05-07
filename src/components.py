@@ -24,11 +24,11 @@ def get_header():
                 style={
                     'width': 'fit-content',
                 },
-                rightSection=DashIconify(icon="tabler-chevron-right")
+                rightSection=DashIconify(icon='tabler-chevron-right')
             ),
             dmc.Text(
                 'SDG LABELLING PAGE',
-                color="#1D3557",
+                color='#1D3557',
                 className='app-header-text',
                 weight=700,
                 size=40
@@ -158,14 +158,14 @@ def get_button_container():
             dmc.Button(
                 'Back',
                 id='back-button',
-                size="md",
+                size='md',
                 radius='md',
                 color='#50779A'
             ),
             dmc.Button(
                 'Next',
                 id='next-button',
-                size="md",
+                size='md',
                 radius='md',
                 color='#50779A'
             )
@@ -177,7 +177,7 @@ def get_body_title():
     return dmc.Text(
         'SELECT ONE OR MORE RELEVANT SDGs FOR EACH PARAGRAPH',
         className='app-body-text',
-        color="#1D3557",
+        color='#1D3557',
         weight=700,
         size=25
     )
@@ -187,8 +187,8 @@ def get_progress_bar():
     return dmc.Progress(
         id='progress-bar',
         value=0,
-        label="0%",
-        color="#50779A",
+        label='0%',
+        color='#50779A',
         radius='sm',
         size='xl',
         style={'width': '60%', 'margin': 'auto'}
@@ -199,7 +199,7 @@ def get_start_layout():
     return [
         get_header(),
         dmc.Divider(
-            color="#1D3557",
+            color='#1D3557',
             variant='solid'
         ),
         dmc.Space(h=50),
@@ -209,8 +209,8 @@ def get_start_layout():
                     className='app-body',
                     children=[
                         dmc.Text(
-                            "LET'S GET STARTED",
-                            color="#1D3557",
+                            'LET\'S GET STARTED',
+                            color='#1D3557',
                             className='app-start-title',
                             weight=700,
                             size=40
@@ -220,7 +220,7 @@ def get_start_layout():
                             style={
                                 'text-align': 'center'
                             },
-                            color="#1D3557",
+                            color='#1D3557',
                             weight=400,
                             size=20
                         ),
@@ -271,7 +271,7 @@ def get_start_layout():
                         dmc.Button(
                             'Start',
                             id='start-button',
-                            size="lg",
+                            size='lg',
                             radius='md',
                             color='#50779A'
                         )
@@ -284,7 +284,7 @@ def get_finish_layout():
     return [
         get_header(),
         dmc.Divider(
-            color="#1D3557",
+            color='#1D3557',
             variant='solid'
         ),
         dmc.Space(h=100),
@@ -295,14 +295,14 @@ def get_finish_layout():
                     children=[
                         dmc.Text(
                             'THANK YOU FOR YOUR PARTICIPATION!',
-                            color="#1D3557",
+                            color='#1D3557',
                             className='app-start-title',
                             weight=700,
                             size=40
                         ),
                         dmc.Text(
                             'If you want to start again, click on the button below',
-                            color="#1D3557",
+                            color='#1D3557',
                             className='app-start-subtitle',
                             weight=200,
                             size=20
@@ -311,7 +311,7 @@ def get_finish_layout():
                         dmc.Button(
                             'Start Over',
                             id='start-over-button',
-                            size="md",
+                            size='md',
                             radius='md',
                             color='#50779A'
                         )
@@ -334,18 +334,18 @@ def get_quit_modal():
                     'align-items': 'center',
                 },
                 children=[
-                    dmc.Text("Are you sure you want to quit?",
-                             weight=700, size=20, color="#1D3557"),
-                    dmc.Text("Please note that once you quit this session, you will not be able to return to your progress.  However, your answers up to this point have been saved.",
+                    dmc.Text('Are you sure you want to quit?',
+                             weight=700, size=20, color='#1D3557'),
+                    dmc.Text('Please note that once you quit this session, you will not be able to return to your progress.  However, your answers up to this point have been saved.',
                              style={'text-align': 'center'},
-                             weight=400, size=15, color="#1D3557"),
+                             weight=400, size=15, color='#1D3557'),
                     dmc.Space(h=20),
                     dmc.Group(
                         children=[
                             dmc.Button(
                                 'Quit',
-                                color="red",
-                                variant="outline",
+                                color='red',
+                                variant='outline',
                                 id='quit-modal-button',
                                 size='lg'
                             )
@@ -363,7 +363,7 @@ def get_main_layout(paragraph: str):
         children=[
             get_header(),
             dmc.Divider(
-                color="#1D3557",
+                color='#1D3557',
                 variant='solid'
             ),
             html.Div(
@@ -373,10 +373,10 @@ def get_main_layout(paragraph: str):
                     dmc.Space(h=30),
                     dmc.Paper(
                         paragraph,
-                        p="xl",
+                        p='xl',
                         id='paper',
-                        shadow="lg",
-                        radius="md",
+                        shadow='lg',
+                        radius='md',
                         withBorder=True,
                         className='paper'
                     ),
@@ -397,11 +397,11 @@ def get_main_layout(paragraph: str):
                     'justify-content': 'end'
                 },
                 children=[
-                    dmc.Button("Quit",
-                               id="quit-button",
-                               size="lg",
-                               color="red",
-                               variant="subtle")
+                    dmc.Button('Quit',
+                               id='quit-button',
+                               size='lg',
+                               color='red',
+                               variant='subtle')
                 ]
             ),
             get_quit_modal()
