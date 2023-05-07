@@ -4,48 +4,7 @@ from dash import html, dcc
 from dash_iconify import DashIconify
 
 # local packages
-from src import styles
-
-SDG_LIST = [
-    {'name': 'No poverty', 'code': '1'},
-    {'name': 'Zero hunger', 'code': '2'},
-    {'name': 'Good health and well-being', 'code': '3'},
-    {'name': 'Quality education', 'code': '4'},
-    {'name': 'Gender equality', 'code': '5'},
-    {'name': 'Clean water and sanitation', 'code': '6'},
-    {'name': 'Affordable and clean energy', 'code': '7'},
-    {'name': 'Decent work and economic growth', 'code': '8'},
-    {'name': 'Industry, innovation and infrastructure', 'code': '9'},
-    {'name': 'Reduced inequalities', 'code': '10'},
-    {'name': 'Sustainable cities and communities', 'code': '11'},
-    {'name': 'Responsible consumption and production', 'code': '12'},
-    {'name': 'Climate action', 'code': '13'},
-    {'name': 'Life below water', 'code': '14'},
-    {'name': 'Life on land', 'code': '15'},
-    {'name': 'Peace, justice and strong institutions', 'code': '16'},
-    {'name': 'Partnerships for the goals', 'code': '17'}
-]
-
-
-SDG_COLORS = [
-    '#e5243b',
-    '#DDA63A',
-    '#4C9F38',
-    '#C5192D',
-    '#FF3A21',
-    '#26BDE2',
-    '#FCC30B',
-    '#A21942',
-    '#FD6925',
-    '#DD1367',
-    '#FD9D24',
-    '#BF8B2E',
-    '#3F7E44',
-    '#0A97D9',
-    '#56C02B',
-    '#00689D',
-    '#19486A'
-]
+from src import styles, utils
 
 
 def get_header():
@@ -80,29 +39,27 @@ def get_header():
 
 def get_chips():
     chip_array = []
-    i = 1
-
-    for sdg in SDG_LIST:
+    sdgs = utils.read_sdg_metadata()
+    for sdg in sdgs:
 
         button = html.Button(
             className='sdg-img-button',
-            id={'type': 'sdg-button', 'index': i},
+            id={'type': 'sdg-button', 'index': sdg.id},
             n_clicks=0,
             style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=False)
         )
 
-        tooltip = dmc.Tooltip(label=sdg['name'],
+        tooltip = dmc.Tooltip(label=sdg.name,
                             style={'cursor' : 'pointer'},
                               children=[
             dcc.Store(
-                id={'type': 'sdg-store', 'index': i},
+                id={'type': 'sdg-store', 'index': sdg.id},
                 storage_type='memory',
                 data={'clicked': False}),
             button],
             withArrow=True
         )
         chip_array.append(tooltip)
-        i += 1
 
     return dmc.Container(
         id='chip-container',
@@ -113,53 +70,50 @@ def get_chips():
 
 def get_blank_chip_array():
     chip_array = []
-    i = 1
+    sdgs = utils.read_sdg_metadata()
 
-    for sdg in SDG_LIST:
+    for sdg in sdgs:
 
         button = html.Button(
             className='sdg-img-button',
-            id={'type': 'sdg-button', 'index': i},
+            id={'type': 'sdg-button', 'index': sdg.id},
             n_clicks=0,
-            value=str(i-1),
-            style=styles.get_sdg_style(sdg_id=i, is_selected=False)
+            style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=False)
         )
 
-        tooltip = dmc.Tooltip(label=sdg['name'],
+        tooltip = dmc.Tooltip(label=sdg.name,
                               style={'cursor' : 'pointer'},
                               children=[
             dcc.Store(
-                id={'type': 'sdg-store', 'index': i},
+                id={'type': 'sdg-store', 'index': sdg.id},
                 storage_type='memory',
                 data={'clicked': False}),
             button],
             withArrow=True
         )
         chip_array.append(tooltip)
-        i += 1
 
     return chip_array
 
 
 def get_checked_chip_array(ids):
     chip_array = []
-    i = 1
+    sdgs = utils.read_sdg_metadata()
 
-    for sdg in SDG_LIST:
-        if i in ids:
+    for sdg in sdgs:
+        if sdg.id in ids:
             button = html.Button(
                 className='sdg-img-button',
-                id={'type': 'sdg-button', 'index': i},
+                id={'type': 'sdg-button', 'index': sdg.id},
                 n_clicks=1,
-                value=str(i-1),
-                style=styles.get_sdg_style(sdg_id=i, is_selected=True),
+                style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=True),
             )
 
-            tooltip = dmc.Tooltip(label=sdg['name'],
+            tooltip = dmc.Tooltip(label=sdg.name,
                                   style={'cursor' : 'pointer'},
                                   children=[
                 dcc.Store(
-                    id={'type': 'sdg-store', 'index': i},
+                    id={'type': 'sdg-store', 'index': sdg.id},
                     storage_type='memory',
                     data={'clicked': True}),
                 button],
@@ -168,17 +122,16 @@ def get_checked_chip_array(ids):
         else:
             button = html.Button(
                 className='sdg-img-button',
-                id={'type': 'sdg-button', 'index': i},
+                id={'type': 'sdg-button', 'index': sdg.id},
                 n_clicks=0,
-                value=str(i-1),
-                style=styles.get_sdg_style(sdg_id=i, is_selected=False),
+                style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=False),
             )
 
-            tooltip = dmc.Tooltip(label=sdg['name'],
+            tooltip = dmc.Tooltip(label=sdg.name,
                                   style={'cursor' : 'pointer'},
                                   children=[
                 dcc.Store(
-                    id={'type': 'sdg-store', 'index': i},
+                    id={'type': 'sdg-store', 'index': sdg.id},
                     storage_type='memory',
                     data={'clicked': False}),
                 button],
@@ -186,7 +139,6 @@ def get_checked_chip_array(ids):
             )
 
         chip_array.append(tooltip)
-        i += 1
 
     return chip_array
 
