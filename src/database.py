@@ -15,7 +15,7 @@ def get_document_collection():
 
 
 def get_paragraph(doc_ids: list, recent_ids: list, language, email):
-    mongo_collection = get_document_collection()
+    collection = get_document_collection()
     pipeline = [
         # Replace null label arrays with empty arrays, so that the size operator is applied correctly
         {
@@ -48,7 +48,7 @@ def get_paragraph(doc_ids: list, recent_ids: list, language, email):
             '$limit': 100
         }
     ]
-    documents = list(mongo_collection.aggregate(pipeline))
+    documents = list(collection.aggregate(pipeline))
 
     if documents:
         for doc in documents:
