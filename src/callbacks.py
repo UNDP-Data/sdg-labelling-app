@@ -3,10 +3,9 @@ import re
 from math import floor
 
 # dash
-from dash import callback, MATCH, ALL
+from dash import callback, callback_context, no_update, MATCH
 from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
-import dash._callback_context
 
 # local packages
 from . import database
@@ -23,7 +22,7 @@ def start_over_button(n_clicks):
     if n_clicks is not None:
         return [components.get_start_layout()]
     else:
-        return dash.no_update
+        return no_update
     
 @callback(
     [Output('app-wrapper', 'children'),
@@ -35,7 +34,7 @@ def start_over_button(n_clicks):
 )
 def quit_app(n1, is_open):
     """Quit the app and change the layout to the start layout."""
-    ctx = dash.callback_context
+    ctx = callback_context
     if not ctx.triggered:
         button_id = ''
     else:
@@ -44,7 +43,7 @@ def quit_app(n1, is_open):
     if button_id == 'quit-modal-button' and n1 is not None:
         return components.get_finish_layout(), False
     else:
-        return dash.no_update, is_open
+        return no_update, is_open
     
 @callback(
     [Output('app-wrapper', 'children', allow_duplicate=True),
@@ -75,9 +74,9 @@ def change_to_main_layout(n_clicks, input_value, language, email):
                 'USER_LANGUAGE' : language,
                 'USER_EMAIL' : email,
             }
-            return components.get_main_layout(doc['text']), aux, dash.no_update
+            return components.get_main_layout(doc['text']), aux, no_update
         else:
-            return dash.no_update, dash.no_update, 'Invalid email address'
+            return no_update, no_update, 'Invalid email address'
     else:
         raise PreventUpdate
     
@@ -133,7 +132,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     email = data['USER_EMAIL']
     language = data['USER_LANGUAGE']
 
-    ctx = dash.callback_context
+    ctx = callback_context
     if not ctx.triggered:
         button_id = ''
     else:
@@ -203,9 +202,9 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
 
     # get next paragraph
     if value < 100:
-        return value, str(floor(value)) + '%', chip_container_children, doc['text'], dash.no_update, aux
+        return value, str(floor(value)) + '%', chip_container_children, doc['text'], no_update, aux
     else:
-        return dash.no_update, dash.no_update, dash.no_update, dash.no_update, components.get_finish_layout(), aux
+        return no_update, no_update, no_update, no_update, components.get_finish_layout(), aux
 
 
 @callback(
