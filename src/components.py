@@ -21,20 +21,16 @@ def get_header():
     )
 
     title = dmc.Title(
-        'SDG LABELLING PAGE',
+        'SDG Labelling Application',
         order=1,
         color=styles.PRIMARY_COLOUR,
-        className='app-header-text',
     )
 
     header = dmc.Header(
         className='app-header',
         height=120,
         withBorder=True,
-        children=[
-            nav_link,
-            title,
-        ]
+        children=[title, nav_link]
     )
     return header
 
@@ -140,7 +136,7 @@ def get_start_layout():
         size='lg',
         radius='md',
         showLabelOnHover=True,
-        color=styles.PRIMARY_COLOUR,
+        color='blue.8',
         marks=[
             {'value': 5, 'label': '5'},
             {'value': 100, 'label': '100'}
