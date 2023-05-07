@@ -13,8 +13,8 @@ from . import components
 
 
 @callback(
-    [Output('app-wrapper', 'children', allow_duplicate=True)],
-    [Input('start-over-button', 'n_clicks')],
+    Output('app-wrapper', 'children', allow_duplicate=True),
+    Input('start-over-button', 'n_clicks'),
     prevent_initial_call=True
 )
 def start_over_button(n_clicks):
@@ -25,8 +25,8 @@ def start_over_button(n_clicks):
         return no_update
     
 @callback(
-    [Output('app-wrapper', 'children'),
-     Output('modal', 'opened', allow_duplicate=True)],
+    Output('app-wrapper', 'children'),
+    Output('modal', 'opened', allow_duplicate=True),
     Input('quit-modal-button', 'n_clicks'),
     State('modal', 'opened'),
     prevent_initial_call=True
@@ -46,13 +46,13 @@ def quit_app(n1, is_open):
         return no_update, is_open
     
 @callback(
-    [Output('app-wrapper', 'children', allow_duplicate=True),
-     Output('memory-output', 'data',  allow_duplicate=True),
-     Output('email-input', 'error')],
+    Output('app-wrapper', 'children', allow_duplicate=True),
+    Output('memory-output', 'data',  allow_duplicate=True),
+    Output('email-input', 'error'),
     Input('start-button', 'n_clicks'),
-    [State('slider', 'value'),
+    State('slider', 'value'),
     State('language-input', 'value'),
-    State('email-input', 'value')],
+    State('email-input', 'value'),
     prevent_initial_call=True
 )
 def change_to_main_layout(n_clicks, input_value, language, email):
@@ -83,8 +83,8 @@ def change_to_main_layout(n_clicks, input_value, language, email):
 
 
 @callback(
-    [Output('app-wrapper', 'children', allow_duplicate=True)],
-    [Input('next-button', 'n_clicks')],
+    Output('app-wrapper', 'children', allow_duplicate=True),
+    Input('next-button', 'n_clicks'),
     State('memory-output', 'data'),
     prevent_initial_call=True
 )
@@ -109,14 +109,14 @@ def toggle_modal(n_clicks):
     return True if n_clicks is not None else False
 
 @callback(
-    [Output('progress-bar', 'value'),
-     Output('progress-bar', 'label'),
-     Output('chip-container', 'children'),
-     Output('paper', 'children'),
-     Output('app-wrapper', 'children', allow_duplicate=True),
-     Output('memory-output', 'data', allow_duplicate=True)],
-    [Input('next-button', 'n_clicks'),
-     Input('back-button', 'n_clicks')],
+    Output('progress-bar', 'value'),
+    Output('progress-bar', 'label'),
+    Output('chip-container', 'children'),
+    Output('paper', 'children'),
+    Output('app-wrapper', 'children', allow_duplicate=True),
+    Output('memory-output', 'data', allow_duplicate=True),
+    Input('next-button', 'n_clicks'),
+    Input('back-button', 'n_clicks'),
     State('chip-container', 'children'),
     State('memory-output', 'data'),
     prevent_initial_call=True
@@ -208,11 +208,11 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
 
 
 @callback(
-    [Output({'type': 'sdg-button', 'index': MATCH}, 'style'),
-     Output({'type': 'sdg-store', 'index': MATCH}, 'data')],
+    Output({'type': 'sdg-button', 'index': MATCH}, 'style'),
+    Output({'type': 'sdg-store', 'index': MATCH}, 'data'),
     Input({'type': 'sdg-button', 'index': MATCH}, 'n_clicks'),
-    [State({'type': 'sdg-button', 'index': MATCH}, 'id'),
-     State({'type': 'sdg-store', 'index': MATCH}, 'data')],
+    State({'type': 'sdg-button', 'index': MATCH}, 'id'),
+    State({'type': 'sdg-store', 'index': MATCH}, 'data'),
     prevent_initial_call=True
 )
 def change_sdg_img(n_clicks, button_id, data):
