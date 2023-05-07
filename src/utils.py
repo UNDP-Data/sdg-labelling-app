@@ -1,5 +1,16 @@
 # standard library
 import re
+import json
+from importlib import resources
+from collections import namedtuple
+
+
+def read_sdg_metadata():
+    with resources.open_text('src', 'sdgs.json') as file:
+        sdgs = json.load(file)
+    SDG = namedtuple('SustainableDevelopmentGoal', sdgs[0])
+    sdgs = [SDG(**sdg) for sdg in sdgs]
+    return sdgs
 
 
 def validate_email(email: str) -> bool:
