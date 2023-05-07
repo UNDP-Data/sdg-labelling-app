@@ -151,7 +151,7 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs):
         'USER_LANGUAGE': language,
         'USER_EMAIL': email
     }
-    return value, str(floor(value)) + '%', sdg_buttons, doc['text'], no_update, config
+    return value, f'{value:.0f}%', sdg_buttons, doc['text'], no_update, config
 
 
 @callback(
