@@ -3,6 +3,9 @@ import dash_mantine_components as dmc
 from dash import html, dcc
 from dash_iconify import DashIconify
 
+# local packages
+from src import styles
+
 SDG_LIST = [
     {'name': 'No poverty', 'code': '1'},
     {'name': 'Zero hunger', 'code': '2'},
@@ -131,18 +134,7 @@ def get_blank_chip_array():
             id={'type': 'sdg-button', 'index': i},
             n_clicks=0,
             value=str(i-1),
-            style={
-                'height': '10vh',
-                'width': '10vh',
-                'max-height': '10vh',
-                'max-width': '10vh',
-                'background-image': 'url("../assets/SDG_icons/black/en/sdg_' + str(i) + '.png")',
-                'background-size': 'cover',
-                'transition': '0.3s',
-                'border': '2px solid ' + '#000000',
-                'border-radius': '5px',
-                'cursor' : 'pointer'
-            }
+            style=styles.get_sdg_style(sdg_id=i, is_selected=False)
         )
 
         tooltip = dmc.Tooltip(label=sdg['name'],
@@ -172,19 +164,7 @@ def get_checked_chip_array(ids):
                 id={'type': 'sdg-button', 'index': i},
                 n_clicks=1,
                 value=str(i-1),
-                style={
-                    'height': '11vh',
-                    'width': '11vh',
-                    'max-height': '11vh',
-                    'max-width': '11vh',
-                    'background-image': 'url("../assets/SDG_icons/color/en/sdg_'+str(i)+'.png")',
-                    'background-size': 'cover',
-                    'transition': '0.3s',
-                    'border': '2px solid ' + SDG_COLORS[i-1],
-                    'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
-                    'border-radius': '5px',
-                    'cursor' : 'pointer'
-                }
+                style=styles.get_sdg_style(sdg_id=i, is_selected=True),
             )
 
             tooltip = dmc.Tooltip(label=sdg['name'],
@@ -203,19 +183,7 @@ def get_checked_chip_array(ids):
                 id={'type': 'sdg-button', 'index': i},
                 n_clicks=0,
                 value=str(i-1),
-                style={
-                    'height': '10vh',
-                    'width': '10vh',
-                    'max-height': '10vh',
-                    'max-width': '10vh',
-                    'background-image': 'url("../assets/SDG_icons/black/en/sdg_'+str(i)+'.png")',
-                    'background-size': 'cover',
-                    'transition': '0.3s',
-                    'border': '2px solid ' + '#000000',
-                    'border-radius': '5px',
-                    'cursor' : 'pointer'
-                    
-                }
+                style=styles.get_sdg_style(sdg_id=i, is_selected=False),
             )
 
             tooltip = dmc.Tooltip(label=sdg['name'],

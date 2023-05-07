@@ -7,7 +7,7 @@ from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 
 # local packages
-from src import database, components, utils
+from src import database, components, styles, utils
 
 
 @callback(
@@ -194,32 +194,5 @@ def update_components(n_clicks_next, n_clicks_back, states):
 def change_sdg_img(n_clicks, button_id):
     is_selected = n_clicks % 2 == 1
     sdg_id = button_id['index']
-    style_selected = {
-        'height': '11vh',
-        'width': '11vh',
-        'max-height': '11vh',
-        'max-width': '11vh',
-        'background-image': f'url("../assets/SDG_icons/color/en/sdg_{sdg_id}.png")',
-        'background-size': 'cover',
-        'border': '2px solid transparent',
-        'transition': '0.3s',
-        'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
-        'border-radius': '5px',
-        'cursor': 'pointer'
-    }
-    style_unselected = {
-        'height': '10vh',
-        'width': '10vh',
-        'max-height': '10vh',
-        'max-width': '10vh',
-        'background-image': f'url("../assets/SDG_icons/black/en/sdg_{sdg_id}.png")',
-        'background-size': 'cover',
-        'transition': '0.3s',
-        'border': '2px solid transparent',
-        'border-radius': '5px',
-        'cursor': 'pointer'
-    }
-
-    if is_selected:
-        return style_selected
-    return style_unselected
+    style = styles.get_sdg_style(sdg_id=sdg_id, is_selected=is_selected)
+    return style
