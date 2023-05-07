@@ -17,7 +17,7 @@ def get_header():
                 label='Want to learn more about SDGs?',
                 href='https://www.undp.org/sustainable-development-goals',
                 target='_blank',
-                icon = DashIconify(icon='bi:house-door-fill', height=16),
+                icon=DashIconify(icon='bi:house-door-fill', height=16),
                 active=True,
                 variant='subtle',
                 color='blue.8',
@@ -49,14 +49,16 @@ def get_chips():
             style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=False)
         )
 
-        tooltip = dmc.Tooltip(label=sdg.name,
-                            style={'cursor' : 'pointer'},
-                              children=[
-            dcc.Store(
-                id={'type': 'sdg-store', 'index': sdg.id},
-                storage_type='memory',
-                data={'clicked': False}),
-            button],
+        tooltip = dmc.Tooltip(
+            label=sdg.name,
+            style={'cursor': 'pointer'},
+            children=[
+                dcc.Store(
+                    id={'type': 'sdg-store', 'index': sdg.id},
+                    storage_type='memory',
+                    data={'clicked': False}),
+                button
+            ],
             withArrow=True
         )
         chip_array.append(tooltip)
@@ -81,14 +83,16 @@ def get_blank_chip_array():
             style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=False)
         )
 
-        tooltip = dmc.Tooltip(label=sdg.name,
-                              style={'cursor' : 'pointer'},
-                              children=[
-            dcc.Store(
-                id={'type': 'sdg-store', 'index': sdg.id},
-                storage_type='memory',
-                data={'clicked': False}),
-            button],
+        tooltip = dmc.Tooltip(
+            label=sdg.name,
+            style={'cursor': 'pointer'},
+            children=[
+                dcc.Store(
+                    id={'type': 'sdg-store', 'index': sdg.id},
+                    storage_type='memory',
+                    data={'clicked': False}),
+                button,
+            ],
             withArrow=True
         )
         chip_array.append(tooltip)
@@ -109,14 +113,16 @@ def get_checked_chip_array(ids):
                 style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=True),
             )
 
-            tooltip = dmc.Tooltip(label=sdg.name,
-                                  style={'cursor' : 'pointer'},
-                                  children=[
-                dcc.Store(
-                    id={'type': 'sdg-store', 'index': sdg.id},
-                    storage_type='memory',
-                    data={'clicked': True}),
-                button],
+            tooltip = dmc.Tooltip(
+                label=sdg.name,
+                style={'cursor': 'pointer'},
+                children=[
+                    dcc.Store(
+                        id={'type': 'sdg-store', 'index': sdg.id},
+                        storage_type='memory',
+                        data={'clicked': True}),
+                    button,
+                ],
                 withArrow=True
             )
         else:
@@ -127,14 +133,16 @@ def get_checked_chip_array(ids):
                 style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=False),
             )
 
-            tooltip = dmc.Tooltip(label=sdg.name,
-                                  style={'cursor' : 'pointer'},
-                                  children=[
-                dcc.Store(
-                    id={'type': 'sdg-store', 'index': sdg.id},
-                    storage_type='memory',
-                    data={'clicked': False}),
-                button],
+            tooltip = dmc.Tooltip(
+                label=sdg.name,
+                style={'cursor': 'pointer'},
+                children=[
+                    dcc.Store(
+                        id={'type': 'sdg-store', 'index': sdg.id},
+                        storage_type='memory',
+                        data={'clicked': False}),
+                    button,
+                ],
                 withArrow=True
             )
 
@@ -242,10 +250,10 @@ def get_start_layout():
                             description='Select a language.',
                             placeholder='Select a language',
                             data=[
-                            {'label': 'en', 'value': 'en'},
-                            {'label': 'fr', 'value': 'fr'},
-                            {'label': 'es', 'value': 'es'},
-                            {'label': 'ru', 'value': 'ru'},
+                                {'label': 'en', 'value': 'en'},
+                                {'label': 'fr', 'value': 'fr'},
+                                {'label': 'es', 'value': 'es'},
+                                {'label': 'ru', 'value': 'ru'},
                             ],
                             required=True,
                             style={'width': '15%'},
