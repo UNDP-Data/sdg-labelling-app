@@ -102,7 +102,7 @@ def change_to_finish_layout(n_clicks, data):
 )
 def toggle_modal(n_clicks):
     """Toggle the modal."""
-    return True if n_clicks is not None else False
+    return n_clicks is not None
 
 
 @callback(
@@ -138,7 +138,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     # get labels from chips
     aux = []
     for sdg in chip_container_children:
-        if sdg['props']['children'][0]['props']['data']['clicked'] == True:
+        if sdg['props']['children'][0]['props']['data']['clicked']:
             aux.append(int(sdg['props']['children'][1]['props']['value']))
 
     if button_id == 'next-button' and n_clicks_next is not None:
@@ -146,7 +146,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         user_clicks += 1
 
         # update database with the current state of the labeling
-        if aux != []:
+        if aux:
             database.update_paragraph(doc['_id'], aux, email)
 
         # get next paragraph
@@ -159,7 +159,7 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
     
             # check chips if neccesary
             
-            if labels[user_clicks] != []:
+            if labels[user_clicks]:
                 chip_container_children = components.get_checked_chip_array(labels[user_clicks])
 
     elif button_id == 'back-button' and n_clicks_back is not None and user_clicks > 0:
@@ -169,11 +169,11 @@ def update_components(n_clicks_next, n_clicks_back, chip_container_children, dat
         doc = database.get_paragraph_by_id(doc_ids[user_clicks])
 
         # check chips
-        if labels[user_clicks] != []:
+        if labels[user_clicks]:
             chip_container_children = components.get_checked_chip_array(labels[user_clicks])
             
     if user_clicks < max_clicks:
-        if labels[user_clicks] == []:
+        if not labels[user_clicks]:
             chip_container_children = components.get_blank_chip_array()
 
     if user_clicks < 0:
@@ -213,7 +213,7 @@ def change_sdg_img(n_clicks, button_id, data):
 
     if n_clicks is not None:
         index = int(button_id['index'])
-        if data['clicked'] == False:
+        if not data['clicked']:
             return {
                 'height': '11vh',
                 'width': '11vh',
