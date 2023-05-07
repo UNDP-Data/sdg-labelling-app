@@ -2,7 +2,7 @@
 from math import floor
 
 # dash
-from dash import callback, callback_context, no_update, MATCH
+from dash import callback, callback_context, no_update, MATCH, ALL
 from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 
@@ -102,15 +102,12 @@ def toggle_modal(n_clicks):
     Output('memory-output', 'data', allow_duplicate=True),
     Input('next-button', 'n_clicks'),
     Input('back-button', 'n_clicks'),
-    {
-        'data': State('memory-output', 'data'),
-        'sdgs': [State({'type': 'sdg-button', 'index': i}, 'n_clicks') for i in range(1, 18)]
-    },
+    State('memory-output', 'data'),
+    State({'type': 'sdg-button', 'index': ALL}, 'n_clicks'),
     prevent_initial_call=True
 )
-def update_components(n_clicks_next, n_clicks_back, states):
+def update_components(n_clicks_next, n_clicks_back, data, sdgs):
     """Update the components of the main layout and the database with the current state of the labeling."""
-    data = states['data']
     user_clicks = data['N_CLICKS']
     max_clicks = data['MAX_CLICKS']
     doc = data['CURRENT_DOC']
@@ -124,7 +121,7 @@ def update_components(n_clicks_next, n_clicks_back, states):
     button_id = ctx.triggered_id
 
     # get labels from chips
-    aux = [sdg_id for sdg_id, n_clicks in enumerate(states['sdgs'], start=1) if n_clicks % 2 == 1]
+    aux = [sdg_id for sdg_id, n_clicks in enumerate(sdgs, start=1) if n_clicks % 2 == 1]
     if button_id == 'next-button' and n_clicks_next is not None:
         labels[user_clicks] = aux
         user_clicks += 1
