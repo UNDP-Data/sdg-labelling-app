@@ -86,7 +86,7 @@ def update_paragraph(_id, labels, email):
     document = collection.find_one({'_id': _id})
 
     if document:
-        if document['labels'] != None:
+        if document.get('labels'):
             aux = list(document['labels'])
             flag = False
             i = 0
