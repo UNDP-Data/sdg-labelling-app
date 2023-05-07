@@ -88,19 +88,7 @@ def get_chips():
             className='sdg-img-button',
             id={'type': 'sdg-button', 'index': i},
             n_clicks=0,
-            value=str(i-1),
-            style={
-                'height': '10vh',
-                'width': '10vh',
-                'max-height': '10vh',
-                'max-width': '10vh',
-                'background-image': 'url("../assets/SDG_icons/black/en/sdg_' + str(i) + '.png")',
-                'background-size': 'cover',
-                'transition': '0.3s',
-                'border': '2px solid ' + '#000000',
-                'border-radius': '5px',
-                'cursor' : 'pointer'
-            }
+            style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=False)
         )
 
         tooltip = dmc.Tooltip(label=sdg['name'],
