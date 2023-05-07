@@ -26,7 +26,7 @@ def start_over_button(n_clicks):
     
 @callback(
     [Output('app-wrapper', 'children'),
-     Output("modal", "opened", allow_duplicate=True)],
+     Output('modal', 'opened', allow_duplicate=True)],
     Input('quit-modal-button', 'n_clicks'),
     State('modal', 'opened'),
     prevent_initial_call=True
@@ -100,8 +100,8 @@ def change_to_finish_layout(n_clicks, data):
     
 
 @callback(
-    Output("modal", "opened", allow_duplicate=True),
-    Input("quit-button", "n_clicks"),
+    Output('modal', 'opened', allow_duplicate=True),
+    Input('quit-button', 'n_clicks'),
     prevent_initial_call=True
 )
 def toggle_modal(n_clicks):
