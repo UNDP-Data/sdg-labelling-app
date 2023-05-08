@@ -142,10 +142,13 @@ def get_start_layout():
         showLabelOnHover=True,
         color='blue.8',
         marks=[
-            {'value': 5, 'label': '5'},
-            {'value': 100, 'label': '100'}
+            {'value': 5, 'label': 'Just exploring'},
+            {'value': 25, 'label': '25'},
+            {'value': 50, 'label': '50'},
+            {'value': 75, 'label': '75'},
+            {'value': 100, 'label': 'I really want to contribute'}
         ],
-        value=30,
+        value=25,
         style={'width': '45%'}
     )
 
