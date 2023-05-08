@@ -82,13 +82,15 @@ def toggle_modal(n_clicks):
     Output('paper', 'children'),
     Output('content', 'children', allow_duplicate=True),
     Output('session-config', 'data', allow_duplicate=True),
+    Output('comment', 'value'),
     Input('next-button', 'n_clicks'),
     Input('back-button', 'n_clicks'),
     State('session-config', 'data'),
     State({'type': 'sdg-button', 'index': ALL}, 'n_clicks'),
+    State('comment', 'value'),
     prevent_initial_call=True
 )
-def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs):
+def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comment):
     """Update the components of the main layout and the database with the current state of the labeling."""
     idx_current = config['IDX_CURRENT']
     session_ids = config['SESSION_IDS']
@@ -99,7 +101,7 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs):
     if idx_current >= 0:
         doc_id = session_ids[idx_current]
         doc_labels = [sdg_id for sdg_id, n_clicks in enumerate(n_clicks_sdgs, start=1) if n_clicks % 2 == 1]
-        database.update_paragraph(doc_id, doc_labels, email)
+        database.update_paragraph(doc_id, doc_labels, email, comment)
 
     ctx = callback_context
     # increase counter on first load automatically
@@ -114,15 +116,16 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs):
     doc_id = session_ids[idx_next]
     if doc_id is None:
         doc = database.get_paragraph(language, email)
-        selected_sgds = None
+        selected_sgds, comment = None, None
     else:
         doc = database.get_paragraph_by_id(doc_id)
-        selected_sgds = utils.get_user_labels(doc, email)
+        annotation = utils.get_user_annotation(doc, email)
+        selected_sgds, comment = annotation['labels'], annotation['comment']
 
     if idx_next == len(session_ids):
-        return no_update, no_update, no_update, no_update, components.get_finish_layout(reason='session_done'), config
+        return no_update, no_update, no_update, no_update, components.get_finish_layout(reason='session_done'), config, no_update
     elif doc is None:
-        return no_update, no_update, no_update, no_update, components.get_finish_layout(reason='no_tasks'), config
+        return no_update, no_update, no_update, no_update, components.get_finish_layout(reason='no_tasks'), config, no_update
     else:
         session_ids[idx_next] = doc['_id']
 
@@ -130,7 +133,7 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs):
     value = idx_current / len(session_ids) * 100
     config['IDX_CURRENT'] = idx_next
     config['SESSION_IDS'] = session_ids
-    return value, f'{value:.0f}%', sdg_buttons, doc['text'], no_update, config
+    return value, f'{value:.0f}%', sdg_buttons, doc['text'], no_update, config, comment
 
 
 @callback(

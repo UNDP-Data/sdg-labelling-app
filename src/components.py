@@ -300,6 +300,22 @@ def get_main_layout():
         children=get_sdg_buttons(),
     )
 
+    input_comment = dmc.Select(
+        id='comment',
+        data=[
+            'The text is irrelevant to SDGs.',
+            'The text is malformed, e.g., contains only URLs, references or numbers.',
+            'The text is in a language other than the one I selected.',
+        ],
+        label='Add a comment (optional)',
+        description='Select a value or start typing to add a custom comment.',
+        value=None,
+        clearable=True,
+        searchable=True,
+        creatable=True,
+        style={'max-width': '80%'},
+    )
+
     button_quit = dmc.Button(
         'Quit',
         id='quit-button',
@@ -315,6 +331,7 @@ def get_main_layout():
             paper,
             labels,
             get_button_container(),
+            input_comment,
             get_progress_bar(),
             button_quit,
             get_quit_modal(),

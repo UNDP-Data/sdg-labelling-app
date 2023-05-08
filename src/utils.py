@@ -70,9 +70,9 @@ def validate_code(code: str) -> bool:
     return is_valid
 
 
-def get_user_labels(doc: dict, email: str):
+def get_user_annotation(doc: dict, email: str):
     for annotation in doc.get('annotations', list()):
         if annotation['email'] == email:
-            return annotation['labels']
+            return annotation
     else:
         return None
