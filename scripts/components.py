@@ -235,39 +235,72 @@ def get_button_container():
     return html.Div(
         className='button-container',
         children=[
-            dmc.Button(
-                'Back',
-                id='back-button',
-                size="md",
-                radius='md',
-                color='#50779A'
+            dmc.Tooltip(
+                label='Go back to previous text.',
+                style={'cursor' : 'pointer'},
+                children=[
+                    dmc.Button(
+                    'Back',
+                    id='back-button',
+                    size="md",
+                    radius='md',
+                    color='#50779A',
+                    ),
+                ]
             ),
-            dmc.Button(
-                'Next',
-                id='next-button',
-                size="md",
-                radius='md',
-                color='#50779A',
-                style=({'display': 'none'}),
+            dmc.Tooltip(
+                label='Assign selected SDG labels and go to next text.',
+                style={'cursor' : 'pointer'},
+                children=[
+                    dmc.Button(
+                    'Next',
+                    id='next-button',
+                    size="md",
+                    radius='md',
+                    color='#50779A',
+                    style=({'display': 'none'}),
+                    ),
+                ]
             ),
-            dmc.Button(
-                'Skip',
-                id='skip-button',
-                size="md",
-                radius='md',
-                color='#50779A',
-                style=({'display': 'none'}),
-            ),
-            dmc.Button(
-                'No relevant SDGs',
-                id='irrelevant-button',
-                size="md",
-                radius='md',
-                color='#50779A',
-                style=({'display': 'none'}),
+            html.Div(
+                style={
+                    'display': 'flex',
+                    'flex-direction': 'column'
+                },
+                children=[
+                    dmc.Tooltip(
+                        label='Select if there are no relevant SDGs in the text.',
+                        style={'cursor' : 'pointer'},
+                        children=[
+                            dmc.Button(
+                            'No SDGs',
+                            id='irrelevant-button',
+                            size="md",
+                            radius='md',
+                            color='#50779A',
+                            style=({'display': 'none'}),
+                            ),
+                        ]
+                    ),
+                    dmc.Tooltip(
+                        label='Select if you are not sure and want to skip this text.',
+                        style={'cursor' : 'pointer'},
+                        children=[
+                            dmc.Button(
+                            'Skip',
+                            id='skip-button',
+                            size="md",
+                            radius='md',
+                            color='#50779A',
+                            style=({'display': 'none'}),
+                            ),
+                        ]
+                    ),    
+                ]
             )
         ]
     )
+
 
 
 def get_body_title():
@@ -299,7 +332,6 @@ def get_start_layout():
             color="#1D3557",
             variant='solid'
         ),
-        dmc.Space(h=50),
         dmc.Center(
             children=[
                 html.Div(
@@ -364,7 +396,7 @@ def get_start_layout():
                             style={'width': '15%'},
                             required=True,
                         ),
-                        dmc.Space(h=50),
+                        dmc.Space(h=20),
                         dmc.Button(
                             'Start',
                             id='start-button',
