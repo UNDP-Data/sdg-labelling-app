@@ -167,6 +167,7 @@ def get_start_layout():
         id='email-input',
         label='Enter Your Email',
         description='This must be your official UNDP email. It is only used for verification.',
+        # value='john.doe@undp.org',
         placeholder='john.doe@undp.org',
         style={'width': '40%'},
         required=True,
