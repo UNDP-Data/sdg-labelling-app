@@ -123,9 +123,11 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
         selected_sgds, comment = annotation['labels'], annotation['comment']
 
     if idx_next == len(session_ids):
-        return no_update, no_update, no_update, no_update, components.get_finish_layout(reason='session_done'), config, no_update
+        final_layout = components.get_finish_layout(reason='session_done')
+        return no_update, no_update, no_update, no_update, final_layout, config, no_update
     elif doc is None:
-        return no_update, no_update, no_update, no_update, components.get_finish_layout(reason='no_tasks'), config, no_update
+        final_layout = components.get_finish_layout(reason='no_tasks')
+        return no_update, no_update, no_update, no_update, final_layout, config, no_update
     else:
         session_ids[idx_next] = doc['_id']
 
