@@ -22,6 +22,9 @@ def get_paragraph(language, email):
             '$addFields': {
                 'annotations': {
                     '$ifNull': ['$annotations', []]
+                },
+                'retrieved_at': {
+                    '$ifNull': ['$retrieved_at', datetime(2023, 1, 1)]
                 }
             }
         },
@@ -63,29 +66,27 @@ def update_queue(_id):
 
 
 def update_paragraph(_id, labels, email):
-    _id = ObjectId(_id)
     collection = get_document_collection()
-    document = collection.find_one({'_id': _id})
-
-    if document:
-        if document.get('annotations'):
-            aux = list(document['annotations'])
-            flag = False
-            i = 0
-            while i < len(aux) and not flag:
-                if aux[i]['email'] == email:
-                    flag = True
-                    aux[i]['labels'] = labels
-                i += 1
-            if not flag:
-                aux.append({'email': email, 'labels': labels})
-            document['annotations'] = aux
-            collection.replace_one({'_id': _id}, document)
-        else:
-            document['annotations'] = [{'email': email, 'labels': labels}]
-            collection.replace_one({'_id': _id}, document)
+    _id = ObjectId(_id)
+    doc = collection.find_one({'_id': _id}, {'annotations': 1})
+    to_filter = {
+        '_id': _id,
+        'annotations': {'$elemMatch': {'email': email}},
+    }
+    to_update = {
+        '$set': {'annotations.$.labels': labels},
+    }
+    for annotation in doc.get('annotations', list()):
+        if annotation['email'] == email:
+            result = collection.update_one(to_filter, to_update)
+            break
     else:
-        raise Exception('Document not found')
+        to_filter.pop('annotations')
+        to_update = {
+            '$push': {'annotations': {'email': email, 'labels': labels}},
+        }
+        result = collection.update_one(to_filter, to_update)
+    return result.upserted_id
 
 
 def get_paragraph_by_id(_id):
