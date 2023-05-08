@@ -40,24 +40,29 @@ def quit_app(n_clicks, is_open):
     Output('content', 'children', allow_duplicate=True),
     Output('session-config', 'data',  allow_duplicate=True),
     Output('email-input', 'error'),
+    Output('code-input', 'error'),
     Input('start-button', 'n_clicks'),
     State('slider', 'value'),
     State('language-input', 'value'),
     State('email-input', 'value'),
+    State('code-input', 'value'),
     prevent_initial_call=True
 )
-def change_to_main_layout(n_clicks, input_value, language, email):
+def change_to_main_layout(n_clicks, input_value, language, email, code):
     """Change start layout to main layout."""
-    if utils.validate_email(email=email):
+    if not utils.validate_email(email=email):
+        return no_update, no_update, 'Invalid email address', no_update
+    elif not utils.validate_code(code=code):
+        return no_update, no_update, no_update, 'Invalid invitation code'
+    else:
         config = {
             'IDX_CURRENT': -1,  # increases on load
             'SESSION_IDS': [None] * input_value,  # track doc ids the use has seen in this session
             'USER_LANGUAGE': language,
             'USER_EMAIL': email,
         }
-        return components.get_main_layout(), config, no_update
-    else:
-        return no_update, no_update, 'Invalid email address'
+        return components.get_main_layout(), config, no_update, no_update
+
 
 
 @callback(

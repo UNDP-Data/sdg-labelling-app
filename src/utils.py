@@ -1,4 +1,5 @@
 # standard library
+import os
 import re
 import json
 from importlib import resources
@@ -47,6 +48,25 @@ def validate_email(email: str) -> bool:
     pattern = r'^[a-z][\w.]*@undp.org$'
     match = re.match(pattern=pattern, string=email, flags=re.IGNORECASE)
     is_valid = bool(match)
+    return is_valid
+
+
+def validate_code(code: str) -> bool:
+    """
+    Check if the invitation code is valid.
+
+    Parameters
+    ----------
+    code : str
+        Invitation code.
+
+    Returns
+    -------
+    is_valid : bool
+        True if the invitation code is valid and False otherwise.
+    """
+    valid_codes = set(os.environ['INVITATION_CODES'].split(','))
+    is_valid = code in valid_codes
     return is_valid
 
 
