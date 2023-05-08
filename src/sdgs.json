@@ -1,0 +1,87 @@
+[
+    {
+        "id": 1,
+        "name": "No poverty",
+        "color": "#e5243b"
+    },
+    {
+        "id": 2,
+        "name": "Zero hunger",
+        "color": "#DDA63A"
+    },
+    {
+        "id": 3,
+        "name": "Good health and well-being",
+        "color": "#4C9F38"
+    },
+    {
+        "id": 4,
+        "name": "Quality education",
+        "color": "#C5192D"
+    },
+    {
+        "id": 5,
+        "name": "Gender equality",
+        "color": "#FF3A21"
+    },
+    {
+        "id": 6,
+        "name": "Clean water and sanitation",
+        "color": "#26BDE2"
+    },
+    {
+        "id": 7,
+        "name": "Affordable and clean energy",
+        "color": "#FCC30B"
+    },
+    {
+        "id": 8,
+        "name": "Decent work and economic growth",
+        "color": "#A21942"
+    },
+    {
+        "id": 9,
+        "name": "Industry, innovation and infrastructure",
+        "color": "#FD6925"
+    },
+    {
+        "id": 10,
+        "name": "Reduced inequalities",
+        "color": "#DD1367"
+    },
+    {
+        "id": 11,
+        "name": "Sustainable cities and communities",
+        "color": "#FD9D24"
+    },
+    {
+        "id": 12,
+        "name": "Responsible consumption and production",
+        "color": "#BF8B2E"
+    },
+    {
+        "id": 13,
+        "name": "Climate action",
+        "color": "#3F7E44"
+    },
+    {
+        "id": 14,
+        "name": "Life below water",
+        "color": "#0A97D9"
+    },
+    {
+        "id": 15,
+        "name": "Life on land",
+        "color": "#56C02B"
+    },
+    {
+        "id": 16,
+        "name": "Peace, justice and strong institutions",
+        "color": "#00689D"
+    },
+    {
+        "id": 17,
+        "name": "Partnerships for the goals",
+        "color": "#19486A"
+    }
+]
