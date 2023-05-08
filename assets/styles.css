@@ -10,6 +10,7 @@
     width: 80%;
     min-height: 20vh;
     max-height: fit-content;
+    font-size: large;
 }
 
 .chip-container {

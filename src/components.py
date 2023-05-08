@@ -1,4 +1,5 @@
 # standard library
+import os
 from typing import Literal
 
 # dash
@@ -19,7 +20,6 @@ def get_header():
         active=True,
         variant='subtle',
         color=styles.PRIMARY_COLOUR,
-        style={'width': 'fit-content'},
         rightSection=DashIconify(icon='tabler-chevron-right')
     )
 
@@ -141,10 +141,13 @@ def get_start_layout():
         showLabelOnHover=True,
         color='blue.8',
         marks=[
-            {'value': 5, 'label': '5'},
-            {'value': 100, 'label': '100'}
+            {'value': 5, 'label': 'Just exploring'},
+            {'value': 25, 'label': '25'},
+            {'value': 50, 'label': '50'},
+            {'value': 75, 'label': '75'},
+            {'value': 100, 'label': 'I really want to contribute'}
         ],
-        value=30,
+        value=25,
         style={'width': '45%'}
     )
 
@@ -300,6 +303,22 @@ def get_main_layout():
         children=get_sdg_buttons(),
     )
 
+    input_comment = dmc.Select(
+        id='comment',
+        data=[
+            'The text is irrelevant to SDGs.',
+            'The text is malformed, e.g., contains only URLs, references or numbers.',
+            'The text is in a language other than the one I selected.',
+        ],
+        label='Add a comment (optional)',
+        description='Select a value or start typing to add a custom comment.',
+        value=None,
+        clearable=True,
+        searchable=True,
+        creatable=True,
+        style={'max-width': '80%'},
+    )
+
     button_quit = dmc.Button(
         'Quit',
         id='quit-button',
@@ -315,6 +334,7 @@ def get_main_layout():
             paper,
             labels,
             get_button_container(),
+            input_comment,
             get_progress_bar(),
             button_quit,
             get_quit_modal(),
@@ -325,3 +345,27 @@ def get_main_layout():
     )
 
     return stack
+
+
+def get_affix():
+    icon = dmc.ActionIcon(
+        DashIconify(
+            icon='ic:outline-feedback',
+        ),
+        size='lg',
+        mb=10,
+    )
+
+    anchor = dmc.Anchor(
+        children=icon,
+        href=os.environ['MAILTO'],
+    )
+
+    affix = dmc.Affix(
+        children=dmc.Group(['Feedback', anchor]),
+        position={
+            'bottom': 20,
+            'right': 20,
+        }
+    )
+    return affix

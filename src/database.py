@@ -66,7 +66,7 @@ def update_queue(_id):
     collection.update_one({'_id': ObjectId(_id)}, {'$set': {'retrieved_at': datetime.now()}})
 
 
-def update_paragraph(_id, labels, email):
+def update_paragraph(_id, labels, email, comment):
     collection = get_document_collection()
     _id = ObjectId(_id)
     doc = collection.find_one({'_id': _id}, {'annotations': 1})
@@ -75,7 +75,10 @@ def update_paragraph(_id, labels, email):
         'annotations': {'$elemMatch': {'email': email}},
     }
     to_update = {
-        '$set': {'annotations.$.labels': labels},
+        '$set': {
+            'annotations.$.labels': labels,
+            'annotations.$.comment': comment,
+        },
     }
     for annotation in doc.get('annotations', list()):
         if annotation['email'] == email:
@@ -84,7 +87,7 @@ def update_paragraph(_id, labels, email):
     else:
         to_filter.pop('annotations')
         to_update = {
-            '$push': {'annotations': {'email': email, 'labels': labels}},
+            '$push': {'annotations': {'email': email, 'labels': labels, 'comment': comment}},
         }
         result = collection.update_one(to_filter, to_update)
     return result.upserted_id

@@ -32,7 +32,8 @@ app.layout = dmc.MantineProvider(
             id='content',
             children=components.get_start_layout(),
             fluid=True,
-        )
+        ),
+        components.get_affix(),
     ]
 )
 
