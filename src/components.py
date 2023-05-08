@@ -20,7 +20,6 @@ def get_header():
         active=True,
         variant='subtle',
         color=styles.PRIMARY_COLOUR,
-        style={'width': 'fit-content'},
         rightSection=DashIconify(icon='tabler-chevron-right')
     )
 
