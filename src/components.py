@@ -278,9 +278,9 @@ def get_quit_modal():
     return modal
 
 
-def get_main_layout(paragraph: str):
+def get_main_layout():
     paper = dmc.Paper(
-        paragraph,
+        '',
         p='xl',
         id='paper',
         shadow='lg',

@@ -1,6 +1,5 @@
 # dash
 from dash import callback, callback_context, no_update, MATCH, ALL
-from dash.exceptions import PreventUpdate
 from dash.dependencies import Input, Output, State
 
 # local packages
@@ -50,34 +49,16 @@ def quit_app(n_clicks, is_open):
 def change_to_main_layout(n_clicks, input_value, language, email):
     """Change start layout to main layout."""
     if utils.validate_email(email=email):
-        doc = database.get_paragraph(language, email)
         config = {
-            'N_CLICKS': 0,
-            'MAX_CLICKS': input_value,
-            'LABELS': [[] for _ in range(input_value)],
-            'CURRENT_DOC': doc,
-            'SESSION_IDS': [None] * input_value,
+            'IDX_CURRENT': -1,  # increases on load
+            'SESSION_IDS': [None] * input_value,  # track doc ids the use has seen in this session
             'USER_LANGUAGE': language,
             'USER_EMAIL': email,
         }
-        return components.get_main_layout(doc['text']), config, no_update
+        return components.get_main_layout(), config, no_update
     else:
         return no_update, no_update, 'Invalid email address'
 
-
-@callback(
-    Output('content', 'children', allow_duplicate=True),
-    Input('next-button', 'n_clicks'),
-    State('session-config', 'data'),
-    prevent_initial_call=True
-)
-def change_to_finish_layout(n_clicks, config):
-    """Change main layout to finish layout."""
-    if config['N_CLICKS'] == config['MAX_CLICKS']:
-        return components.get_finish_layout()
-    else:
-        raise PreventUpdate
-    
 
 @callback(
     Output('modal', 'opened', allow_duplicate=True),
@@ -104,50 +85,46 @@ def toggle_modal(n_clicks):
 )
 def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs):
     """Update the components of the main layout and the database with the current state of the labeling."""
-    user_clicks = config['N_CLICKS']
-    max_clicks = config['MAX_CLICKS']
-    doc = config['CURRENT_DOC']
-    labels = config['LABELS']
+    idx_current = config['IDX_CURRENT']
     session_ids = config['SESSION_IDS']
     email = config['USER_EMAIL']
     language = config['USER_LANGUAGE']
 
+    # update the (previous) text
+    if idx_current >= 0:
+        doc_id = session_ids[idx_current]
+        doc_labels = [sdg_id for sdg_id, n_clicks in enumerate(n_clicks_sdgs, start=1) if n_clicks % 2 == 1]
+        database.update_paragraph(doc_id, doc_labels, email)
+
     ctx = callback_context
-    button_id = ctx.triggered_id
+    # increase counter on first load automatically
+    if ctx.triggered_id == 'next-button' or n_clicks_next == 0:
+        idx_next = idx_current + 1
+    elif ctx.triggered_id == 'back-button':
+        idx_next = max(idx_current - 1, 0)  # prevent from going past before the first
+    else:
+        # probably never triggered
+        idx_next = idx_current
 
-    # get labels from chips
-    doc_labels = [sdg_id for sdg_id, n_clicks in enumerate(n_clicks_sdgs, start=1) if n_clicks % 2 == 1]
-    labels[user_clicks] = doc_labels
-    if button_id == 'next-button':
-        session_ids[user_clicks] = doc['_id']
-        database.update_paragraph(doc['_id'], doc_labels, email)
-        user_clicks += 1
+    doc_id = session_ids[idx_next]
+    if doc_id is None:
+        doc = database.get_paragraph(language, email)
+        selected_sgds = None
+    else:
+        doc = database.get_paragraph_by_id(doc_id)
+        selected_sgds = utils.get_user_labels(doc, email)
 
-        if user_clicks == max_clicks:
-            return no_update, no_update, no_update, no_update, components.get_finish_layout(), config
-        elif session_ids[user_clicks] is not None:
-            doc = database.get_paragraph_by_id(session_ids[user_clicks])
-        else:
-            doc = database.get_paragraph(language, email)
+    if idx_next == len(session_ids):
+        return no_update, no_update, no_update, no_update, components.get_finish_layout(), config
+    elif doc is None:
+        return no_update, no_update, no_update, no_update, components.get_finish_layout(), config
+    else:
+        session_ids[idx_next] = doc['_id']
 
-    elif button_id == 'back-button' and user_clicks > 0:
-        user_clicks -= 1
-        if user_clicks < 0:
-            raise PreventUpdate
-        doc = database.get_paragraph_by_id(session_ids[user_clicks])
-
-    # check chips
-    sdg_buttons = components.get_sdg_buttons(labels[user_clicks])
-    value = user_clicks / max_clicks * 100
-    config = {
-        'N_CLICKS': user_clicks,
-        'MAX_CLICKS': max_clicks,
-        'LABELS': labels,
-        'CURRENT_DOC': doc,
-        'SESSION_IDS': session_ids,
-        'USER_LANGUAGE': language,
-        'USER_EMAIL': email
-    }
+    sdg_buttons = components.get_sdg_buttons(selected_sgds)
+    value = idx_current / len(session_ids) * 100
+    config['IDX_CURRENT'] = idx_next
+    config['SESSION_IDS'] = session_ids
     return value, f'{value:.0f}%', sdg_buttons, doc['text'], no_update, config
 
 

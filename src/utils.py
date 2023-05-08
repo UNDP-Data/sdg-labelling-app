@@ -48,3 +48,11 @@ def validate_email(email: str) -> bool:
     match = re.match(pattern=pattern, string=email, flags=re.IGNORECASE)
     is_valid = bool(match)
     return is_valid
+
+
+def get_user_labels(doc: dict, email: str):
+    for annotation in doc.get('annotations', list()):
+        if annotation['email'] == email:
+            return annotation['labels']
+    else:
+        return None
