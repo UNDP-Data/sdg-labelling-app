@@ -31,7 +31,7 @@ def quit_app(n_clicks, is_open):
     """Quit the app and change the layout to the start layout."""
     ctx = callback_context
     if ctx.triggered_id == 'quit-modal-button' and n_clicks is not None:
-        return components.get_finish_layout(), False
+        return components.get_finish_layout(reason='session_quit'), False
     else:
         return no_update, is_open
 
@@ -115,9 +115,9 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs):
         selected_sgds = utils.get_user_labels(doc, email)
 
     if idx_next == len(session_ids):
-        return no_update, no_update, no_update, no_update, components.get_finish_layout(), config
+        return no_update, no_update, no_update, no_update, components.get_finish_layout(reason='session_done'), config
     elif doc is None:
-        return no_update, no_update, no_update, no_update, components.get_finish_layout(), config
+        return no_update, no_update, no_update, no_update, components.get_finish_layout(reason='no_tasks'), config
     else:
         session_ids[idx_next] = doc['_id']
 

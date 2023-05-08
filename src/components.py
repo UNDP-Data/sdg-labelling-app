@@ -1,3 +1,6 @@
+# standard library
+from typing import Literal
+
 # dash
 import dash_mantine_components as dmc
 from dash import html
@@ -205,30 +208,31 @@ def get_start_layout():
     return stack
 
 
-def get_finish_layout():
+def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks']):
     title = dmc.Title(
-        'THANK YOU FOR YOUR PARTICIPATION!',
+        'Thank You for Your Contribution!',
         order=2,
         color=styles.PRIMARY_COLOUR,
     )
 
-    text = dmc.Text(
-        'If you want to start again, click on the button below',
-        color=styles.PRIMARY_COLOUR,
-    )
+    if reason == 'session_done':
+        message = 'Well done! If you feel like labelling more, simply restart the page in your browser to start over.'
+    elif reason == 'session_quit':
+        message = 'Well done! You can return to the application at any time to contribute more.'
+    elif reason == 'no_tasks':
+        message = '''Well done! Looks like there are no more tasks in this language to be labelled by you. 
+        If you would like to contribute further, restart the page and try selecting a different language.'''
+    else:
+        message = 'Well done! If you want to start again, simply restart the page in your browser.'
 
-    button_start_over = dmc.Button(
-        'Start Over',
-        id='start-over-button',
-        size='md',
-        radius='md',
+    text = dmc.Text(
+        message,
         color=styles.PRIMARY_COLOUR,
     )
     stack = dmc.Stack(
         children=[
             title,
             text,
-            button_start_over,
         ],
         align='center',
         spacing='xl',

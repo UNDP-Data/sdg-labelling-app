@@ -53,11 +53,12 @@ def get_paragraph(language, email):
     ]
 
     docs = list(collection.aggregate(pipeline))
-    if docs:
-        doc = docs[0]
-        doc['_id'] = str(doc['_id'])
-        return doc
-    raise Exception('No documents found')
+    if not docs:
+        return None
+    doc = docs[0]
+    doc['_id'] = str(doc['_id'])
+    update_queue(_id=doc['_id'])
+    return doc
 
 
 def update_queue(_id):
