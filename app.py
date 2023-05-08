@@ -32,10 +32,11 @@ app.layout = dmc.MantineProvider(
             id='content',
             children=components.get_start_layout(),
             fluid=True,
-        )
+        ),
+        components.get_affix(),
     ]
 )
 
 # run the app
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)

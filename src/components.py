@@ -1,4 +1,5 @@
 # standard library
+import os
 from typing import Literal
 
 # dash
@@ -342,3 +343,27 @@ def get_main_layout():
     )
 
     return stack
+
+
+def get_affix():
+    icon = dmc.ActionIcon(
+        DashIconify(
+            icon='ic:outline-feedback',
+        ),
+        size='lg',
+        mb=10,
+    )
+
+    anchor = dmc.Anchor(
+        children=icon,
+        href=os.environ['MAILTO'],
+    )
+
+    affix = dmc.Affix(
+        children=dmc.Group(['Feedback', anchor]),
+        position={
+            'bottom': 20,
+            'right': 20,
+        }
+    )
+    return affix
