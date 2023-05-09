@@ -287,7 +287,6 @@ def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks'
     if reason == 'session_done':
         message = 'Well done! If you feel like labelling more, simply restart the page in your browser to start over.'
     elif reason == 'session_quit':
-        title = 'Thank You for Your Contribution!'
         message = 'Well done! You can return to the application at any time to contribute more.'
     elif reason == 'no_tasks':
         message = '''Well done! Looks like there are no more tasks in this language to be labelled by you. 
