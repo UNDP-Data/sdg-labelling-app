@@ -1,6 +1,6 @@
 # dash
 import dash_mantine_components as dmc
-from dash import Dash, html, dcc
+from dash import Dash, dcc
 
 # utils
 from dotenv import load_dotenv; load_dotenv()
@@ -9,7 +9,7 @@ from dotenv import load_dotenv; load_dotenv()
 from src import components, callbacks
 
 # app definition
-app = Dash(
+dash_app = Dash(
     __name__,
     external_stylesheets=['styles.css'],
     meta_tags=[{
@@ -22,9 +22,10 @@ app = Dash(
     title='SDG App',
     update_title='Loading...',
 )
+app = dash_app.server
 
 # define layout
-app.layout = dmc.MantineProvider(
+dash_app.layout = dmc.MantineProvider(
     children=[
         dcc.Store(id='session-config', storage_type='memory'),
         components.get_header(),
@@ -40,4 +41,4 @@ app.layout = dmc.MantineProvider(
 
 # run the app
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    dash_app.run_server(debug=True)
