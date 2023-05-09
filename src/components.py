@@ -257,15 +257,10 @@ def get_start_layout():
 
 
 def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks']):
-    title = dmc.Title(
-        'Thank You for Your Contribution!',
-        order=2,
-        color=styles.PRIMARY_COLOUR,
-    )
-
     if reason == 'session_done':
         message = 'Well done! If you feel like labelling more, simply restart the page in your browser to start over.'
     elif reason == 'session_quit':
+        title = 'Thank You for Your Contribution!'
         message = 'Well done! You can return to the application at any time to contribute more.'
     elif reason == 'no_tasks':
         message = '''Well done! Looks like there are no more tasks in this language to be labelled by you. 
@@ -273,15 +268,34 @@ def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks'
     else:
         message = 'Well done! If you want to start again, simply restart the page in your browser.'
 
-    text = dmc.Text(
-        message,
+    alert = dmc.Alert(
+        children=message,
+        title='Thank You for Your Contribution!',
+        color='blue',
+    )
+
+    button_restart = dmc.Button(
+        'Label more',
+        radius='md',
+        size='lg',
         color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+        rightIcon=DashIconify(
+            icon='ic:baseline-restart-alt',
+            width=30,
+        )
+    )
+
+    anchor_restart = dmc.Anchor(
+        children=button_restart,
+        href='/',
+        refresh=True,
     )
 
     stack = dmc.Stack(
         children=[
-            title,
-            text,
+            alert,
+            anchor_restart,
         ],
         align='center',
         spacing='xl',
