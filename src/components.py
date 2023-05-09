@@ -41,6 +41,7 @@ def get_header():
         'SDG Labelling Application',
         order=1,
         color=styles.PRIMARY_COLOUR,
+        variant='gradient',
     )
 
     divider = dmc.Divider(
@@ -118,6 +119,7 @@ def get_start_layout():
         'LET\'S GET STARTED',
         order=2,
         color=styles.PRIMARY_COLOUR,
+        variant='gradient'
     )
 
     text = dmc.Text(
@@ -188,7 +190,7 @@ def get_start_layout():
         size='lg',
         radius='md',
         color=styles.PRIMARY_COLOUR,
-        variant='filled',
+        variant='gradient',
     )
 
     stack = dmc.Stack(
@@ -285,9 +287,10 @@ def get_quit_modal():
 
 def get_main_layout():
     title = dmc.Title(
-        'SELECT ONE OR MORE RELEVANT SDGs FOR EACH PARAGRAPH',
+        'SELECT ONE OR MORE SDGs RELEVANT FOR THIS PARAGRAPH',
         order=2,
         color=styles.PRIMARY_COLOUR,
+        variant='gradient',
     )
 
     paper = dmc.Paper(
@@ -366,6 +369,7 @@ def get_affix():
     text = dmc.Text(
         'Feedback',
         color=styles.PRIMARY_COLOUR,
+        variant='gradient'
     )
     icon = dmc.ActionIcon(
         DashIconify(
