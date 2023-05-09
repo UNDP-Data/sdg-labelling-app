@@ -134,6 +134,14 @@ def get_button_container():
         ml='auto',
     )
 
+    tooltip_quit = dmc.Tooltip(
+        children=button_quit,
+        label='Quit the current session',
+        position='top',
+        offset=3,
+        openDelay=500,
+    )
+
     button_back = dmc.Button(
         'Back',
         id='back-button',
@@ -143,6 +151,14 @@ def get_button_container():
         color=styles.PRIMARY_COLOUR,
         variant='light',
         disabled=True,
+    )
+
+    tooltip_back = dmc.Tooltip(
+        children=button_back,
+        label='Go back to the previous example',
+        position='top',
+        offset=3,
+        openDelay=500,
     )
 
     button_next = dmc.Button(
@@ -155,8 +171,16 @@ def get_button_container():
         variant='light'
     )
 
+    tooltip_next = dmc.Tooltip(
+        children=button_next,
+        label='Save and go to the next example',
+        position='top',
+        offset=3,
+        openDelay=500,
+    )
+
     buttons = dmc.Group(
-        children=[button_quit, button_back, button_next],
+        children=[tooltip_quit, tooltip_back, tooltip_next],
         spacing='xl',
     )
 
