@@ -79,13 +79,15 @@ def get_header():
         variant='gradient',
     )
 
+    badge = dmc.Badge('Beta')
+
     divider = dmc.Divider(
         color=styles.PRIMARY_COLOUR,
         variant='solid',
     )
 
     title_row = dmc.Group(
-        children=[title, anchor],
+        children=[title, badge, anchor],
         w='100%',
     )
     header = dmc.Header(
