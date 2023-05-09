@@ -95,28 +95,6 @@ def get_button_container():
     return buttons
 
 
-def get_body_title():
-    title = dmc.Title(
-        'SELECT ONE OR MORE RELEVANT SDGs FOR EACH PARAGRAPH',
-        order=2,
-        color=styles.PRIMARY_COLOUR,
-    )
-    return title
-
-
-def get_progress_bar():
-    bar = dmc.Progress(
-        id='progress-bar',
-        value=0,
-        label='0%',
-        color=styles.PRIMARY_COLOUR,
-        radius='sm',
-        size='xl',
-        style={'width': '60%', 'margin': 'auto'}
-    )
-    return bar
-
-
 def get_start_layout():
     title = dmc.Title(
         'LET\'S GET STARTED',
@@ -233,6 +211,7 @@ def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks'
         message,
         color=styles.PRIMARY_COLOUR,
     )
+
     stack = dmc.Stack(
         children=[
             title,
@@ -287,6 +266,12 @@ def get_quit_modal():
 
 
 def get_main_layout():
+    title = dmc.Title(
+        'SELECT ONE OR MORE RELEVANT SDGs FOR EACH PARAGRAPH',
+        order=2,
+        color=styles.PRIMARY_COLOUR,
+    )
+
     paper = dmc.Paper(
         '',
         p='xl',
@@ -319,6 +304,16 @@ def get_main_layout():
         style={'max-width': '80%'},
     )
 
+    progress_bar = dmc.Progress(
+        id='progress-bar',
+        value=0,
+        label='0%',
+        color=styles.PRIMARY_COLOUR,
+        radius='sm',
+        size='xl',
+        style={'width': '60%', 'margin': 'auto'}
+    )
+
     button_quit = dmc.Button(
         'Quit',
         id='quit-button',
@@ -330,12 +325,12 @@ def get_main_layout():
 
     stack = dmc.Stack(
         children=[
-            get_body_title(),
+            title,
             paper,
             labels,
             get_button_container(),
             input_comment,
-            get_progress_bar(),
+            progress_bar,
             button_quit,
             get_quit_modal(),
         ],
