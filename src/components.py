@@ -142,6 +142,7 @@ def get_button_container():
         radius='md',
         color=styles.PRIMARY_COLOUR,
         variant='light',
+        disabled=True,
     )
 
     button_next = dmc.Button(

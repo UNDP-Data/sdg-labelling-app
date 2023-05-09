@@ -76,6 +76,15 @@ def toggle_modal(n_clicks):
 
 
 @callback(
+    Output('back-button', 'disabled'),
+    Input('session-config', 'data'),
+)
+def disable_button_back(config):
+    is_disabled = config['IDX_CURRENT'] <= 0
+    return is_disabled
+
+
+@callback(
     Output('progress-bar', 'value'),
     Output('progress-bar', 'label'),
     Output('chip-container', 'children'),
@@ -108,7 +117,7 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
     if ctx.triggered_id == 'next-button' or n_clicks_next == 0:
         idx_next = idx_current + 1
     elif ctx.triggered_id == 'back-button':
-        idx_next = max(idx_current - 1, 0)  # prevent from going past before the first
+        idx_next = idx_current - 1
     else:
         # probably never triggered
         idx_next = idx_current
