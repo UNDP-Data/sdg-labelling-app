@@ -8,44 +8,100 @@ from dash import html
 from dash_iconify import DashIconify
 
 # local packages
-from src import styles, utils
+from src import database, styles
 
 
-def get_header():
+def get_sdg__item(sdg):
+    list_targets = dmc.List([dmc.ListItem(target) for target in sdg.targets], spacing=10)
+    item_control = dmc.AccordionControl(f'Goal {sdg.id}: {sdg.name}')
+    item_panel = dmc.AccordionPanel(list_targets)
+    item = dmc.AccordionItem(
+        children=[item_control, item_panel],
+        value=str(sdg.id),
+    )
+    return item
+
+
+def get_sdg_drawer():
+    sdgs = database.read_sdg_metadata()
+    items = [get_sdg__item(sdg) for sdg in sdgs]
+    accordion = dmc.Accordion(children=items,)
+    text = dmc.Text('Click on an SDG below to see more details about it.')
+
     nav_link = dmc.NavLink(
-        label='Want to learn more about SDGs?',
+        label='Want to learn even more about SDGs?',
         href='https://www.undp.org/sustainable-development-goals',
         target='_blank',
         icon=DashIconify(icon='bi:house-door-fill', height=16),
         active=True,
         variant='subtle',
         color=styles.PRIMARY_COLOUR,
-        rightSection=DashIconify(icon='tabler-chevron-right')
+        rightSection=DashIconify(icon='tabler-chevron-right'),
+    )
+
+    stack = dmc.Stack(
+        children=[
+            text,
+            nav_link,
+            dmc.ScrollArea(accordion, h=500),  # this needs some adjustments
+        ]
+    )
+    drawer = dmc.Drawer(
+        title=dmc.Text('SDG Reference', weight=700),  # bold
+        children=stack,
+        id='drawer-reference',
+        size='30%',
+        padding='md',
+        zIndex=10000,
+    )
+    return drawer
+
+
+def get_header():
+    icon = DashIconify(
+        icon='mdi:github',
+        width=40,
+        color='black',
+    )
+
+    anchor = dmc.Anchor(
+        children=icon,
+        href='https://github.com/UNDP-Data/sdg-labelling-app/issues',
+        target='_blank',
+        mr=0,
+        ml='auto',
     )
 
     title = dmc.Title(
         'SDG Labelling Application',
         order=1,
         color=styles.PRIMARY_COLOUR,
+        variant='gradient',
     )
+
+    badge = dmc.Badge('Beta')
 
     divider = dmc.Divider(
         color=styles.PRIMARY_COLOUR,
-        variant='solid'
+        variant='solid',
     )
 
+    title_row = dmc.Group(
+        children=[title, badge, anchor],
+        w='100%',
+    )
     header = dmc.Header(
         className='app-header',
         height=120,
         withBorder=True,
-        children=[title, nav_link, divider]
+        children=[title_row, divider],
     )
     return header
 
 
 def get_sdg_buttons(selected_sdg_ids: list[int] = None):
     sdg_button_list = []
-    sdgs = utils.read_sdg_metadata()
+    sdgs = database.read_sdg_metadata()
     for sdg in sdgs:
         is_selected = selected_sdg_ids is not None and sdg.id in selected_sdg_ids
         button = html.Button(
@@ -67,6 +123,25 @@ def get_sdg_buttons(selected_sdg_ids: list[int] = None):
 
 
 def get_button_container():
+    button_quit = dmc.Button(
+        'Quit',
+        id='quit-button',
+        size='lg',
+        radius='md',
+        color='red',
+        variant='light',
+        mr=0,
+        ml='auto',
+    )
+
+    tooltip_quit = dmc.Tooltip(
+        children=button_quit,
+        label='Quit the current session',
+        position='top',
+        offset=3,
+        openDelay=500,
+    )
+
     button_back = dmc.Button(
         'Back',
         id='back-button',
@@ -75,6 +150,15 @@ def get_button_container():
         radius='md',
         color=styles.PRIMARY_COLOUR,
         variant='light',
+        disabled=True,
+    )
+
+    tooltip_back = dmc.Tooltip(
+        children=button_back,
+        label='Go back to the previous example',
+        position='top',
+        offset=3,
+        openDelay=500,
     )
 
     button_next = dmc.Button(
@@ -87,34 +171,20 @@ def get_button_container():
         variant='light'
     )
 
+    tooltip_next = dmc.Tooltip(
+        children=button_next,
+        label='Save and go to the next example',
+        position='top',
+        offset=3,
+        openDelay=500,
+    )
+
     buttons = dmc.Group(
-        children=[button_back, button_next],
+        children=[tooltip_quit, tooltip_back, tooltip_next],
         spacing='xl',
     )
 
     return buttons
-
-
-def get_body_title():
-    title = dmc.Title(
-        'SELECT ONE OR MORE RELEVANT SDGs FOR EACH PARAGRAPH',
-        order=2,
-        color=styles.PRIMARY_COLOUR,
-    )
-    return title
-
-
-def get_progress_bar():
-    bar = dmc.Progress(
-        id='progress-bar',
-        value=0,
-        label='0%',
-        color=styles.PRIMARY_COLOUR,
-        radius='sm',
-        size='xl',
-        style={'width': '60%', 'margin': 'auto'}
-    )
-    return bar
 
 
 def get_start_layout():
@@ -122,6 +192,7 @@ def get_start_layout():
         'LET\'S GET STARTED',
         order=2,
         color=styles.PRIMARY_COLOUR,
+        variant='gradient'
     )
 
     text = dmc.Text(
@@ -170,17 +241,17 @@ def get_start_layout():
         id='email-input',
         label='Enter Your Email',
         description='This must be your official UNDP email. It is only used for verification.',
-        # value='john.doe@undp.org',
+        # value='john.doe@undp.org',  # uncomment while testing
         placeholder='john.doe@undp.org',
         style={'width': '40%'},
         required=True,
     )
 
-    input_code = dmc.TextInput(
+    input_code = dmc.PasswordInput(
         id='code-input',
         label='Enter Your Invitation Code',
         description='This has been shared with you in the invitation email.',
-        # value='',
+        # value=os.environ['INVITATION_CODES'].split(',')[0],  # uncomment while testing
         placeholder='Invitation Code',
         style={'width': '40%'},
         required=True,
@@ -192,7 +263,7 @@ def get_start_layout():
         size='lg',
         radius='md',
         color=styles.PRIMARY_COLOUR,
-        variant='filled',
+        variant='gradient',
     )
 
     stack = dmc.Stack(
@@ -207,40 +278,54 @@ def get_start_layout():
         ],
         align='center',
         spacing='xl',
-        pt='5%',
+        pt='3%',
     )
     return stack
 
 
 def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks']):
-    title = dmc.Title(
-        'Thank You for Your Contribution!',
-        order=2,
-        color=styles.PRIMARY_COLOUR,
-    )
-
     if reason == 'session_done':
-        message = 'Well done! If you feel like labelling more, simply restart the page in your browser to start over.'
+        message = 'Well done! If you feel like labelling more, click the button below.'
     elif reason == 'session_quit':
         message = 'Well done! You can return to the application at any time to contribute more.'
     elif reason == 'no_tasks':
         message = '''Well done! Looks like there are no more tasks in this language to be labelled by you. 
-        If you would like to contribute further, restart the page and try selecting a different language.'''
+        If you would like to contribute further, click the button below and try selecting a different language.'''
     else:
-        message = 'Well done! If you want to start again, simply restart the page in your browser.'
+        message = 'Well done! If you want to start again, simply click the button below.'
 
-    text = dmc.Text(
-        message,
-        color=styles.PRIMARY_COLOUR,
+    alert = dmc.Alert(
+        children=message,
+        title='Thank You for Your Contribution!',
+        color='blue',
     )
+
+    button_restart = dmc.Button(
+        'Label more',
+        radius='md',
+        size='lg',
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+        rightIcon=DashIconify(
+            icon='ic:baseline-restart-alt',
+            width=30,
+        )
+    )
+
+    anchor_restart = dmc.Anchor(
+        children=button_restart,
+        href='/',
+        refresh=True,
+    )
+
     stack = dmc.Stack(
         children=[
-            title,
-            text,
+            alert,
+            anchor_restart,
         ],
         align='center',
         spacing='xl',
-        pt='5%',
+        pt='3%',
     )
     return stack
 
@@ -287,14 +372,39 @@ def get_quit_modal():
 
 
 def get_main_layout():
+    button_info = dmc.Button(
+        'Open SDG Reference',
+        leftIcon=DashIconify(
+            icon='material-symbols:quick-reference-outline',
+            width=30,
+            color='white',
+        ),
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+        id='drawer-button',
+    )
+
+    title = dmc.Title(
+        'SELECT ONE OR MORE SDGs RELEVANT FOR THIS PARAGRAPH',
+        order=2,
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+
+    scroll = dmc.ScrollArea(
+        children=dmc.Text('', id='paragraph'),
+        h=200,  # may need to be better adjusted
+    )
+
     paper = dmc.Paper(
-        '',
+        children=scroll,
         p='xl',
-        id='paper',
         shadow='lg',
         radius='md',
         withBorder=True,
-        className='paper'
+        ml='10%',
+        mr='10%',
+        style={'font-size': 'large', 'min-height': '20vh'}
     )
 
     labels = dmc.Container(
@@ -316,53 +426,62 @@ def get_main_layout():
         clearable=True,
         searchable=True,
         creatable=True,
-        style={'max-width': '80%'},
+        style={'max-width': '80%', 'min-width': '50%'},
     )
 
-    button_quit = dmc.Button(
-        'Quit',
-        id='quit-button',
-        size='lg',
-        radius='md',
-        color='red',
-        variant='light',
+    progress_bar = dmc.Progress(
+        id='progress-bar',
+        value=0,
+        label='0%',
+        color=styles.PRIMARY_COLOUR,
+        radius='sm',
+        size='xl',
+        style={'width': '60%', 'margin': 'auto'}
     )
 
     stack = dmc.Stack(
         children=[
-            get_body_title(),
-            paper,
+            dmc.Group([title, button_info]),
+            progress_bar,
+            dmc.LoadingOverlay(paper),
             labels,
-            get_button_container(),
             input_comment,
-            get_progress_bar(),
-            button_quit,
+            get_button_container(),
             get_quit_modal(),
+            get_sdg_drawer(),
         ],
         align='center',
         spacing='xl',
-        pt='5%',
+        pt='3%',
     )
 
     return stack
 
 
 def get_affix():
+    text = dmc.Text(
+        'Feedback',
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient'
+    )
     icon = dmc.ActionIcon(
         DashIconify(
             icon='ic:outline-feedback',
+            width=50,
+            color=styles.PRIMARY_COLOUR,
         ),
         size='lg',
         mb=10,
     )
 
     anchor = dmc.Anchor(
-        children=icon,
+        children=dmc.Group([text, icon]),
         href=os.environ['MAILTO'],
+        underline=False,
     )
 
     affix = dmc.Affix(
-        children=dmc.Group(['Feedback', anchor]),
+        children=anchor,
         position={
             'bottom': 20,
             'right': 20,

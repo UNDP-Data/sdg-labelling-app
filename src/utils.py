@@ -1,17 +1,6 @@
 # standard library
 import os
 import re
-import json
-from importlib import resources
-from collections import namedtuple
-
-
-def read_sdg_metadata():
-    with resources.open_text('src', 'sdgs.json') as file:
-        sdgs = json.load(file)
-    SDG = namedtuple('SustainableDevelopmentGoal', sdgs[0])
-    sdgs = [SDG(**sdg) for sdg in sdgs]
-    return sdgs
 
 
 def validate_email(email: str) -> bool:
@@ -70,9 +59,9 @@ def validate_code(code: str) -> bool:
     return is_valid
 
 
-def get_user_annotation(doc: dict, email: str):
+def get_user_label_and_comment(doc: dict, email: str):
     for annotation in doc.get('annotations', list()):
         if annotation['email'] == email:
-            return annotation
+            return annotation.get('labels'), annotation.get('comment')
     else:
-        return None
+        return None, None
