@@ -9,15 +9,15 @@ from bson import ObjectId
 
 
 def get_document_collection():
-    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
-    db = client[os.getenv('DBNAME')]
-    collection = db[os.getenv('DOC_COLL')]
+    client = pymongo.MongoClient(os.environ['MONGO_URI'])
+    db = client[os.environ['DATABASE_NAME']]
+    collection = db[os.environ['COLLECTION_NAME']]
     return collection
 
 
 def read_sdg_metadata():
-    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
-    db = client[os.getenv('DBNAME')]
+    client = pymongo.MongoClient(os.environ['MONGO_URI'])
+    db = client[os.environ['DATABASE_NAME']]
     collection = db['sdgs']
     doc = collection.find_one({}, {'_id': 0})
     SDG = namedtuple('SustainableDevelopmentGoal', doc)
@@ -42,10 +42,17 @@ def get_paragraph(language, email):
         # Find matching documents
         {
             '$match': {
-                'language': language,  # match text langauge
-                'annotations': {'$not': {'$elemMatch': {'email': email}}},  # exclude texts labelled by the user
-                'retrieved_at': {'$lte': datetime.now() - timedelta(minutes=10)},  # exclude texts that have just been labelled
-                '$expr': {'$lte': [{'$size': '$annotations'}, 2]}  # exclude texts with already 3 annotations
+                # match text langauge
+                'language': language,
+
+                # exclude texts labelled by the user
+                'annotations': {'$not': {'$elemMatch': {'email': email}}},
+
+                # exclude texts that have just been labelled to avoid getting more annotations than required
+                'retrieved_at': {'$lte': datetime.now() - timedelta(minutes=10)},
+
+                # exclude texts with already 3 annotations
+                '$expr': {'$lt': [{'$size': '$annotations'}, os.environ['MAX_ANNOTATIONS']]}
             }
         },
         # Add a count field to each document
