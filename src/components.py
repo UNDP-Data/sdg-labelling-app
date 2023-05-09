@@ -176,7 +176,7 @@ def get_start_layout():
         required=True,
     )
 
-    input_code = dmc.TextInput(
+    input_code = dmc.PasswordInput(
         id='code-input',
         label='Enter Your Invitation Code',
         description='This has been shared with you in the invitation email.',
