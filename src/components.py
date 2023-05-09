@@ -168,7 +168,7 @@ def get_start_layout():
         id='email-input',
         label='Enter Your Email',
         description='This must be your official UNDP email. It is only used for verification.',
-        # value='john.doe@undp.org',
+        # value='john.doe@undp.org',  # uncomment while testing
         placeholder='john.doe@undp.org',
         style={'width': '40%'},
         required=True,
@@ -178,7 +178,7 @@ def get_start_layout():
         id='code-input',
         label='Enter Your Invitation Code',
         description='This has been shared with you in the invitation email.',
-        # value='',
+        # value=os.environ['INVITATION_CODES'].split(',')[0],  # uncomment while testing
         placeholder='Invitation Code',
         style={'width': '40%'},
         required=True,

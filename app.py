@@ -34,7 +34,8 @@ app.layout = dmc.MantineProvider(
             fluid=True,
         ),
         components.get_affix(),
-    ]
+    ],
+    # theme={'colorScheme': 'white'}
 )
 
 # run the app
