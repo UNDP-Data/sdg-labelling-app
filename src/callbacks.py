@@ -56,7 +56,7 @@ def change_to_main_layout(n_clicks, input_value, language, email, code):
         return no_update, no_update, no_update, 'Invalid invitation code'
     else:
         config = {
-            'IDX_CURRENT': -1,  # increases on load
+            'IDX_CURRENT': 0,
             'SESSION_IDS': [None] * input_value,  # track doc ids the use has seen in this session
             'USER_LANGUAGE': language,
             'USER_EMAIL': email,
@@ -97,27 +97,26 @@ def disable_button_back(config):
     State('session-config', 'data'),
     State({'type': 'sdg-button', 'index': ALL}, 'n_clicks'),
     State('comment', 'value'),
+    State('progress-bar', 'value'),
     prevent_initial_call=True
 )
-def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comment):
+def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comment, progress):
     """Update the components of the main layout and the database with the current state of the labeling."""
     idx_current = config['IDX_CURRENT']
     session_ids = config['SESSION_IDS']
     email = config['USER_EMAIL']
     language = config['USER_LANGUAGE']
 
-    # update the (previous) text
-    if idx_current >= 0:
+    ctx = callback_context
+    # increase counter on first load automatically
+    if ctx.triggered_id == 'next-button':
+        idx_next = idx_current + 1
         doc_id = session_ids[idx_current]
         doc_labels = [sdg_id for sdg_id, n_clicks in enumerate(n_clicks_sdgs, start=1) if n_clicks % 2 == 1]
         database.update_paragraph(doc_id, doc_labels, email, comment)
-
-    ctx = callback_context
-    # increase counter on first load automatically
-    if ctx.triggered_id == 'next-button' or n_clicks_next == 0:
-        idx_next = idx_current + 1
+        progress = idx_next / len(session_ids) * 100
     elif ctx.triggered_id == 'back-button':
-        idx_next = idx_current - 1
+        idx_next = max(idx_current - 1, 0)
     else:
         # probably never triggered
         idx_next = idx_current
@@ -128,8 +127,8 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
         selected_sgds, comment = None, None
     else:
         doc = database.get_paragraph_by_id(doc_id)
-        annotation = utils.get_user_annotation(doc, email)
-        selected_sgds, comment = annotation['labels'], annotation['comment']
+        selected_sgds, comment = utils.get_user_label_and_comment(doc, email)
+    sdg_buttons = components.get_sdg_buttons(selected_sgds)
 
     if idx_next == len(session_ids):
         final_layout = components.get_finish_layout(reason='session_done')
@@ -139,12 +138,9 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
         return no_update, no_update, no_update, no_update, final_layout, config, no_update
     else:
         session_ids[idx_next] = doc['_id']
-
-    sdg_buttons = components.get_sdg_buttons(selected_sgds)
-    value = idx_next / len(session_ids) * 100
-    config['IDX_CURRENT'] = idx_next
-    config['SESSION_IDS'] = session_ids
-    return value, f'{value:.0f}%', sdg_buttons, doc['text'], no_update, config, comment
+        config['IDX_CURRENT'] = idx_next
+        config['SESSION_IDS'] = session_ids
+        return progress, f'{progress:.0f}%', sdg_buttons, doc['text'], no_update, config, comment
 
 
 @callback(
