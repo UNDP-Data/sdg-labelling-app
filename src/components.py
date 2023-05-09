@@ -285,14 +285,14 @@ def get_start_layout():
 
 def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks']):
     if reason == 'session_done':
-        message = 'Well done! If you feel like labelling more, simply restart the page in your browser to start over.'
+        message = 'Well done! If you feel like labelling more, click the button below.'
     elif reason == 'session_quit':
         message = 'Well done! You can return to the application at any time to contribute more.'
     elif reason == 'no_tasks':
         message = '''Well done! Looks like there are no more tasks in this language to be labelled by you. 
-        If you would like to contribute further, restart the page and try selecting a different language.'''
+        If you would like to contribute further, click the button below and try selecting a different language.'''
     else:
-        message = 'Well done! If you want to start again, simply restart the page in your browser.'
+        message = 'Well done! If you want to start again, simply click the button below.'
 
     alert = dmc.Alert(
         children=message,
