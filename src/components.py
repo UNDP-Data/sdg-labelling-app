@@ -12,6 +12,20 @@ from src import styles, utils
 
 
 def get_header():
+    icon = DashIconify(
+        icon='mdi:github',
+        width=40,
+        color='black',
+    )
+
+    anchor = dmc.Anchor(
+        children=icon,
+        href='https://github.com/UNDP-Data/sdg-labelling-app/issues',
+        target='_blank',
+        mr=0,
+        ml='auto',
+    )
+
     nav_link = dmc.NavLink(
         label='Want to learn more about SDGs?',
         href='https://www.undp.org/sustainable-development-goals',
@@ -20,7 +34,7 @@ def get_header():
         active=True,
         variant='subtle',
         color=styles.PRIMARY_COLOUR,
-        rightSection=DashIconify(icon='tabler-chevron-right')
+        rightSection=DashIconify(icon='tabler-chevron-right'),
     )
 
     title = dmc.Title(
@@ -31,14 +45,18 @@ def get_header():
 
     divider = dmc.Divider(
         color=styles.PRIMARY_COLOUR,
-        variant='solid'
+        variant='solid',
     )
 
+    title_row = dmc.Group(
+        children=[title, anchor],
+        w='100%',
+    )
     header = dmc.Header(
         className='app-header',
         height=120,
         withBorder=True,
-        children=[title, nav_link, divider]
+        children=[title_row, nav_link, divider],
     )
     return header
 
