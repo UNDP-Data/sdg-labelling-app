@@ -297,7 +297,9 @@ def get_main_layout():
         shadow='lg',
         radius='md',
         withBorder=True,
-        className='paper'
+        ml='10%',
+        mr='10%',
+        style={'font-size': 'large', 'min-height': '20vh'}
     )
 
     labels = dmc.Container(
@@ -344,7 +346,7 @@ def get_main_layout():
     stack = dmc.Stack(
         children=[
             title,
-            paper,
+            dmc.LoadingOverlay(paper),
             labels,
             get_button_container(),
             input_comment,
