@@ -382,7 +382,7 @@ def get_main_layout():
         clearable=True,
         searchable=True,
         creatable=True,
-        style={'max-width': '80%'},
+        style={'max-width': '80%', 'min-width': '50%'},
     )
 
     progress_bar = dmc.Progress(

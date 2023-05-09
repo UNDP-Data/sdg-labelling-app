@@ -12,19 +12,19 @@ def get_sdg_style(sdg_id: int, is_selected: bool) -> dict:
     }
     if is_selected:
         style_extra = {
-            'height': '11vh',
-            'width': '11vh',
-            'max-height': '11vh',
-            'max-width': '11vh',
+            'height': '10vh',
+            'width': '10vh',
+            'max-height': '10vh',
+            'max-width': '10vh',
             'background-image': f'url("../assets/SDG_icons/color/en/sdg_{sdg_id}.png")',
             'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
         }
     else:
         style_extra = {
-            'height': '10vh',
-            'width': '10vh',
-            'max-height': '10vh',
-            'max-width': '10vh',
+            'height': '9vh',
+            'width': '9vh',
+            'max-height': '9vh',
+            'max-width': '9vh',
             'background-image': f'url("../assets/SDG_icons/black/en/sdg_{sdg_id}.png")',
         }
     style = style_base | style_extra
