@@ -11,6 +11,52 @@ from dash_iconify import DashIconify
 from src import database, styles
 
 
+def get_sdg__item(sdg):
+    list_targets = dmc.List([dmc.ListItem(target) for target in sdg.targets], spacing=10)
+    item_control = dmc.AccordionControl(f'Goal {sdg.id}: {sdg.name}')
+    item_panel = dmc.AccordionPanel(list_targets)
+    item = dmc.AccordionItem(
+        children=[item_control, item_panel],
+        value=str(sdg.id),
+    )
+    return item
+
+
+def get_sdg_drawer():
+    sdgs = database.read_sdg_metadata()
+    items = [get_sdg__item(sdg) for sdg in sdgs]
+    accordion = dmc.Accordion(children=items,)
+    text = dmc.Text('Click on an SDG below to see more details about it.')
+
+    nav_link = dmc.NavLink(
+        label='Want to learn even more about SDGs?',
+        href='https://www.undp.org/sustainable-development-goals',
+        target='_blank',
+        icon=DashIconify(icon='bi:house-door-fill', height=16),
+        active=True,
+        variant='subtle',
+        color=styles.PRIMARY_COLOUR,
+        rightSection=DashIconify(icon='tabler-chevron-right'),
+    )
+
+    stack = dmc.Stack(
+        children=[
+            text,
+            nav_link,
+            dmc.ScrollArea(accordion, h=500),  # this needs some adjustments
+        ]
+    )
+    drawer = dmc.Drawer(
+        title=dmc.Text('SDG Reference', weight=700),  # bold
+        children=stack,
+        id='drawer-reference',
+        size='30%',
+        padding='md',
+        zIndex=10000,
+    )
+    return drawer
+
+
 def get_header():
     icon = DashIconify(
         icon='mdi:github',
@@ -24,17 +70,6 @@ def get_header():
         target='_blank',
         mr=0,
         ml='auto',
-    )
-
-    nav_link = dmc.NavLink(
-        label='Want to learn more about SDGs?',
-        href='https://www.undp.org/sustainable-development-goals',
-        target='_blank',
-        icon=DashIconify(icon='bi:house-door-fill', height=16),
-        active=True,
-        variant='subtle',
-        color=styles.PRIMARY_COLOUR,
-        rightSection=DashIconify(icon='tabler-chevron-right'),
     )
 
     title = dmc.Title(
@@ -57,7 +92,7 @@ def get_header():
         className='app-header',
         height=120,
         withBorder=True,
-        children=[title_row, nav_link, divider],
+        children=[title_row, divider],
     )
     return header
 
@@ -286,6 +321,18 @@ def get_quit_modal():
 
 
 def get_main_layout():
+    button_info = dmc.Button(
+        'Open SDG Reference',
+        leftIcon=DashIconify(
+            icon='material-symbols:quick-reference-outline',
+            width=30,
+            color='white',
+        ),
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+        id='drawer-button',
+    )
+
     title = dmc.Title(
         'SELECT ONE OR MORE SDGs RELEVANT FOR THIS PARAGRAPH',
         order=2,
@@ -348,7 +395,7 @@ def get_main_layout():
 
     stack = dmc.Stack(
         children=[
-            title,
+            dmc.Group([title, button_info]),
             dmc.LoadingOverlay(paper),
             labels,
             get_button_container(),
@@ -356,6 +403,7 @@ def get_main_layout():
             progress_bar,
             button_quit,
             get_quit_modal(),
+            get_sdg_drawer(),
         ],
         align='center',
         spacing='xl',

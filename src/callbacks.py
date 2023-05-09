@@ -149,3 +149,12 @@ def change_sdg_img(n_clicks, button_id):
     sdg_id = button_id['index']
     style = styles.get_sdg_style(sdg_id=sdg_id, is_selected=is_selected)
     return style
+
+
+@callback(
+    Output('drawer-reference', 'opened'),
+    Input('drawer-button', 'n_clicks'),
+    prevent_initial_call=True,
+)
+def open_sdg_reference(n_clicks):
+    return True
