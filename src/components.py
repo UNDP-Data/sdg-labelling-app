@@ -348,21 +348,28 @@ def get_main_layout():
 
 
 def get_affix():
+    text = dmc.Text(
+        'Feedback',
+        color=styles.PRIMARY_COLOUR,
+    )
     icon = dmc.ActionIcon(
         DashIconify(
             icon='ic:outline-feedback',
+            width=50,
+            color=styles.PRIMARY_COLOUR,
         ),
         size='lg',
         mb=10,
     )
 
     anchor = dmc.Anchor(
-        children=icon,
+        children=dmc.Group([text, icon]),
         href=os.environ['MAILTO'],
+        underline=False,
     )
 
     affix = dmc.Affix(
-        children=dmc.Group(['Feedback', anchor]),
+        children=anchor,
         position={
             'bottom': 20,
             'right': 20,
