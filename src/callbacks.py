@@ -64,7 +64,6 @@ def change_to_main_layout(n_clicks, input_value, language, email, code):
         return components.get_main_layout(), config, no_update, no_update
 
 
-
 @callback(
     Output('modal', 'opened', allow_duplicate=True),
     Input('quit-button', 'n_clicks'),
