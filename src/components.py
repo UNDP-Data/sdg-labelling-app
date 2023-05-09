@@ -121,6 +121,17 @@ def get_sdg_buttons(selected_sdg_ids: list[int] = None):
 
 
 def get_button_container():
+    button_quit = dmc.Button(
+        'Quit',
+        id='quit-button',
+        size='lg',
+        radius='md',
+        color='red',
+        variant='light',
+        mr=0,
+        ml='auto',
+    )
+
     button_back = dmc.Button(
         'Back',
         id='back-button',
@@ -142,7 +153,7 @@ def get_button_container():
     )
 
     buttons = dmc.Group(
-        children=[button_back, button_next],
+        children=[button_quit, button_back, button_next],
         spacing='xl',
     )
 
@@ -384,24 +395,14 @@ def get_main_layout():
         style={'width': '60%', 'margin': 'auto'}
     )
 
-    button_quit = dmc.Button(
-        'Quit',
-        id='quit-button',
-        size='lg',
-        radius='md',
-        color='red',
-        variant='light',
-    )
-
     stack = dmc.Stack(
         children=[
             dmc.Group([title, button_info]),
+            progress_bar,
             dmc.LoadingOverlay(paper),
             labels,
-            get_button_container(),
             input_comment,
-            progress_bar,
-            button_quit,
+            get_button_container(),
             get_quit_modal(),
             get_sdg_drawer(),
         ],
