@@ -132,7 +132,7 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
         session_ids[idx_next] = doc['_id']
 
     sdg_buttons = components.get_sdg_buttons(selected_sgds)
-    value = idx_current / len(session_ids) * 100
+    value = idx_next / len(session_ids) * 100
     config['IDX_CURRENT'] = idx_next
     config['SESSION_IDS'] = session_ids
     return value, f'{value:.0f}%', sdg_buttons, doc['text'], no_update, config, comment
