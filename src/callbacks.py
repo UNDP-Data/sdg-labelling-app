@@ -88,7 +88,7 @@ def disable_button_back(config):
     Output('progress-bar', 'value'),
     Output('progress-bar', 'label'),
     Output('chip-container', 'children'),
-    Output('paper', 'children'),
+    Output('paragraph', 'children'),
     Output('content', 'children', allow_duplicate=True),
     Output('session-config', 'data', allow_duplicate=True),
     Output('comment', 'value'),

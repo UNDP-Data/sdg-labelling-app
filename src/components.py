@@ -391,10 +391,14 @@ def get_main_layout():
         variant='gradient',
     )
 
+    scroll = dmc.ScrollArea(
+        children=dmc.Text('', id='paragraph'),
+        h=200,  # may need to be better adjusted
+    )
+
     paper = dmc.Paper(
-        '',
+        children=scroll,
         p='xl',
-        id='paper',
         shadow='lg',
         radius='md',
         withBorder=True,
