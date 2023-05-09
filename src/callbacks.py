@@ -120,26 +120,29 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
         # probably never triggered
         idx_next = idx_current
 
+    # finish the session once the specified number of examples has been labelled
+    if idx_next == len(session_ids):
+        final_layout = components.get_finish_layout(reason='session_done')
+        return no_update, no_update, no_update, no_update, final_layout, config, no_update
+
     doc_id = session_ids[idx_next]
     if doc_id is None:
         doc = database.get_paragraph(language, email)
         selected_sgds, comment = None, None
+
+        # finish the session if there are no more unlabelled examples for a given user and language
+        if doc is None:
+            final_layout = components.get_finish_layout(reason='no_tasks')
+            return no_update, no_update, no_update, no_update, final_layout, config, no_update
     else:
         doc = database.get_paragraph_by_id(doc_id)
         selected_sgds, comment = utils.get_user_label_and_comment(doc, email)
-    sdg_buttons = components.get_sdg_buttons(selected_sgds)
 
-    if idx_next == len(session_ids):
-        final_layout = components.get_finish_layout(reason='session_done')
-        return no_update, no_update, no_update, no_update, final_layout, config, no_update
-    elif doc is None:
-        final_layout = components.get_finish_layout(reason='no_tasks')
-        return no_update, no_update, no_update, no_update, final_layout, config, no_update
-    else:
-        session_ids[idx_next] = doc['_id']
-        config['IDX_CURRENT'] = idx_next
-        config['SESSION_IDS'] = session_ids
-        return progress, f'{progress:.0f}%', sdg_buttons, doc['text'], no_update, config, comment
+    sdg_buttons = components.get_sdg_buttons(selected_sgds)
+    session_ids[idx_next] = doc['_id']
+    config['IDX_CURRENT'] = idx_next
+    config['SESSION_IDS'] = session_ids
+    return progress, f'{progress:.0f}%', sdg_buttons, doc['text'], no_update, config, comment
 
 
 @callback(
