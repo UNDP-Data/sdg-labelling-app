@@ -1,6 +1,7 @@
 # standard library
 import os
 from datetime import datetime, timedelta
+from collections import namedtuple
 
 # database
 import pymongo
@@ -12,6 +13,16 @@ def get_document_collection():
     db = client[os.getenv('DBNAME')]
     collection = db[os.getenv('DOC_COLL')]
     return collection
+
+
+def read_sdg_metadata():
+    client = pymongo.MongoClient(os.getenv('MONGO_URI'))
+    db = client[os.getenv('DBNAME')]
+    collection = db['sdgs']
+    doc = collection.find_one({}, {'_id': 0})
+    SDG = namedtuple('SustainableDevelopmentGoal', doc)
+    sdgs = [SDG(**sdg) for sdg in collection.find({}, {'_id': 0})]
+    return sdgs
 
 
 def get_paragraph(language, email):

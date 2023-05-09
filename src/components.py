@@ -8,7 +8,7 @@ from dash import html
 from dash_iconify import DashIconify
 
 # local packages
-from src import styles, utils
+from src import database, styles
 
 
 def get_header():
@@ -64,7 +64,7 @@ def get_header():
 
 def get_sdg_buttons(selected_sdg_ids: list[int] = None):
     sdg_button_list = []
-    sdgs = utils.read_sdg_metadata()
+    sdgs = database.read_sdg_metadata()
     for sdg in sdgs:
         is_selected = selected_sdg_ids is not None and sdg.id in selected_sdg_ids
         button = html.Button(
