@@ -79,7 +79,7 @@ def get_header():
         variant='gradient',
     )
 
-    badge = dmc.Badge('Beta')
+    badge = dmc.Badge('v0.1.0')
 
     divider = dmc.Divider(
         color=styles.PRIMARY_COLOUR,
@@ -371,19 +371,27 @@ def get_quit_modal():
     return modal
 
 
-def get_main_layout():
-    button_info = dmc.Button(
+def get_reference_affix():
+    button_reference = dmc.Button(
         'Open SDG Reference',
-        leftIcon=DashIconify(
-            icon='material-symbols:quick-reference-outline',
+        id='drawer-button',
+        rightIcon=DashIconify(
+            icon='mdi:chevron-double-right',
             width=30,
             color='white',
         ),
         color=styles.PRIMARY_COLOUR,
         variant='gradient',
-        id='drawer-button',
     )
 
+    affix = dmc.Affix(
+        children=button_reference,
+        position={'bottom': 5, 'left': 5},
+    )
+    return affix
+
+
+def get_main_layout():
     title = dmc.Title(
         'SELECT ONE OR MORE SDGs RELEVANT FOR THIS PARAGRAPH',
         order=2,
@@ -402,9 +410,12 @@ def get_main_layout():
         shadow='lg',
         radius='md',
         withBorder=True,
-        ml='10%',
-        mr='10%',
         style={'font-size': 'large', 'min-height': '20vh'}
+    )
+
+    loading_paper = dmc.LoadingOverlay(
+        children=paper,
+        style={'width': '90%'},
     )
 
     labels = dmc.Container(
@@ -417,6 +428,7 @@ def get_main_layout():
         id='comment',
         data=[
             'The text is irrelevant to SDGs.',
+            'There is too little context to tell if the text is irrelevant to SDGs.',
             'The text is malformed, e.g., contains only URLs, references or numbers.',
             'The text is in a language other than the one I selected.',
         ],
@@ -436,19 +448,20 @@ def get_main_layout():
         color=styles.PRIMARY_COLOUR,
         radius='sm',
         size='xl',
-        style={'width': '60%', 'margin': 'auto'}
+        style={'width': '90%', 'margin': 'auto'}
     )
 
     stack = dmc.Stack(
         children=[
-            dmc.Group([title, button_info]),
+            title,
             progress_bar,
-            dmc.LoadingOverlay(paper),
+            loading_paper,
             labels,
             input_comment,
             get_button_container(),
             get_quit_modal(),
             get_sdg_drawer(),
+            get_reference_affix(),
         ],
         align='center',
         spacing='xl',
@@ -483,8 +496,8 @@ def get_affix():
     affix = dmc.Affix(
         children=anchor,
         position={
-            'bottom': 20,
-            'right': 20,
+            'bottom': 5,
+            'right': 5,
         }
     )
     return affix
