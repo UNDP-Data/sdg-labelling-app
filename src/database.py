@@ -52,7 +52,7 @@ def get_paragraph(language, email):
                 'retrieved_at': {'$lte': datetime.now() - timedelta(minutes=10)},
 
                 # exclude texts with already 3 annotations
-                '$expr': {'$lt': [{'$size': '$annotations'}, os.environ['MAX_ANNOTATIONS']]}
+                '$expr': {'$lt': [{'$size': '$annotations'}, int(os.environ['MAX_ANNOTATIONS'])]}
             }
         },
         # Add a count field to each document
