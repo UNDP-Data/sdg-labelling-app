@@ -79,7 +79,7 @@ def get_header():
         variant='gradient',
     )
 
-    badge = dmc.Badge('Beta')
+    badge = dmc.Badge('v0.1.0')
 
     divider = dmc.Divider(
         color=styles.PRIMARY_COLOUR,
