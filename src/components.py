@@ -428,6 +428,7 @@ def get_main_layout():
         id='comment',
         data=[
             'The text is irrelevant to SDGs.',
+            'There is too little context to tell if the text is irrelevant to SDGs.',
             'The text is malformed, e.g., contains only URLs, references or numbers.',
             'The text is in a language other than the one I selected.',
         ],
