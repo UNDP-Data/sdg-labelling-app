@@ -61,9 +61,12 @@ def get_paragraph(language, email):
                 'count': {'$size': '$annotations'}
             }
         },
-        # Sort by count in descending order
+        # sample from top n examples by annotation count
         {
             '$sort': {'count': -1}
+        },
+        {
+            '$limit': 100,
         },
         {
             '$sample': {'size': 1},
