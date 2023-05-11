@@ -49,7 +49,7 @@ def get_paragraph(language, email):
                 'annotations': {'$not': {'$elemMatch': {'email': email}}},
 
                 # exclude texts that have just been labelled to avoid getting more annotations than required
-                'retrieved_at': {'$lte': datetime.now() - timedelta(minutes=10)},
+                'retrieved_at': {'$lte': datetime.utcnow() - timedelta(minutes=10)},
 
                 # exclude texts with already 3 annotations
                 '$expr': {'$lt': [{'$size': '$annotations'}, int(os.environ['MAX_ANNOTATIONS'])]}
