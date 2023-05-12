@@ -7,6 +7,9 @@ from collections import namedtuple
 import pymongo
 from bson import ObjectId
 
+# local packages
+from src import entities
+
 
 def get_document_collection():
     client = pymongo.MongoClient(os.environ['MONGO_URI'])
@@ -25,28 +28,17 @@ def read_sdg_metadata():
     return sdgs
 
 
-def get_paragraph(language, email):
+def get_paragraph(config: entities.Config):
     collection = get_document_collection()
     pipeline = [
-        # Replace null label arrays with empty arrays, so that the size operator is applied correctly
-        {
-            '$addFields': {
-                'annotations': {
-                    '$ifNull': ['$annotations', []]
-                },
-                'retrieved_at': {
-                    '$ifNull': ['$retrieved_at', datetime(2023, 1, 1)]
-                }
-            }
-        },
         # Find matching documents
         {
             '$match': {
                 # match text langauge
-                'language': language,
+                'language': config.session_language,
 
                 # exclude texts labelled by the user
-                'annotations': {'$not': {'$elemMatch': {'email': email}}},
+                'annotations': {'$not': {'$elemMatch': {'email': config.session_email}}},
 
                 # exclude texts that have just been labelled to avoid getting more annotations than required
                 'retrieved_at': {'$lte': datetime.utcnow() - timedelta(minutes=10)},
@@ -77,49 +69,38 @@ def get_paragraph(language, email):
     if not docs:
         return None
     doc = docs[0]
+    # "hide" the text from being shown to other labellers for the duration specified in timedelta above
+    collection.update_one({'_id': doc['_id']}, {'$set': {'retrieved_at': datetime.now()}})
     doc['_id'] = str(doc['_id'])
-    update_queue(_id=doc['_id'])
     return doc
 
 
-def update_queue(_id):
+def update_paragraph(_id, annotation: entities.Annotation):
     collection = get_document_collection()
-    collection.update_one({'_id': ObjectId(_id)}, {'$set': {'retrieved_at': datetime.now()}})
-
-
-def update_paragraph(_id, labels, email, comment):
-    collection = get_document_collection()
-    _id = ObjectId(_id)
-    doc = collection.find_one({'_id': _id}, {'annotations': 1})
     to_filter = {
-        '_id': _id,
-        'annotations': {'$elemMatch': {'email': email}},
+        '_id': ObjectId(_id),
+        'annotations': {'$elemMatch': {'email': annotation.email}},
     }
-    to_update = {
-        '$set': {
-            'annotations.$.labels': labels,
-            'annotations.$.comment': comment,
-        },
-    }
-    for annotation in doc.get('annotations', list()):
-        if annotation['email'] == email:
-            result = collection.update_one(to_filter, to_update)
-            break
-    else:
+    document = collection.find_one(to_filter, {'_id': 1})
+    if document is None:
         to_filter.pop('annotations')
         to_update = {
-            '$push': {'annotations': {'email': email, 'labels': labels, 'comment': comment}},
+            '$push': {'annotations': annotation.dict()},
         }
-        result = collection.update_one(to_filter, to_update)
+    else:
+        to_update = {
+            '$set': {
+                'annotations.$.labels': annotation.labels,
+                'annotations.$.comment': annotation.comment,
+            },
+        }
+    result = collection.update_one(to_filter, to_update)
     return result.upserted_id
 
 
 def get_paragraph_by_id(_id):
-    _id = ObjectId(_id)
     collection = get_document_collection()
-    document = collection.find_one({'_id': _id})
+    document = collection.find_one({'_id': ObjectId(_id)})
     if document:
         document['_id'] = str(document['_id'])
-        return document
-    else:
-        raise Exception('Document not found')
+    return document

@@ -3,7 +3,7 @@ from dash import callback, callback_context, no_update, MATCH, ALL
 from dash.dependencies import Input, Output, State
 
 # local packages
-from src import database, components, styles, utils
+from src import database, components, styles, entities, utils
 
 
 @callback(
@@ -55,13 +55,13 @@ def change_to_main_layout(n_clicks, input_value, language, email, code):
     elif not utils.validate_code(code=code):
         return no_update, no_update, no_update, 'Invalid invitation code'
     else:
-        config = {
-            'IDX_CURRENT': 0,
-            'SESSION_IDS': [None] * input_value,  # track doc ids the use has seen in this session
-            'USER_LANGUAGE': language,
-            'USER_EMAIL': email,
-        }
-        return components.get_main_layout(), config, no_update, no_update
+        config = entities.Config(
+            task_idx=0,
+            task_ids=[None] * input_value,
+            session_language=language,
+            session_email=email,
+        )
+        return components.get_main_layout(), config.dict(), no_update, no_update
 
 
 @callback(
@@ -79,7 +79,7 @@ def toggle_modal(n_clicks):
     Input('session-config', 'data'),
 )
 def disable_button_back(config):
-    is_disabled = config['IDX_CURRENT'] <= 0
+    is_disabled = config['task_idx'] <= 0
     return is_disabled
 
 
@@ -101,48 +101,46 @@ def disable_button_back(config):
 )
 def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comment, progress):
     """Update the components of the main layout and the database with the current state of the labeling."""
-    idx_current = config['IDX_CURRENT']
-    session_ids = config['SESSION_IDS']
-    email = config['USER_EMAIL']
-    language = config['USER_LANGUAGE']
-
+    config = entities.Config(**config)
     ctx = callback_context
     # increase counter on first load automatically
     if ctx.triggered_id == 'next-button':
-        idx_next = idx_current + 1
-        doc_id = session_ids[idx_current]
-        doc_labels = [sdg_id for sdg_id, n_clicks in enumerate(n_clicks_sdgs, start=1) if n_clicks % 2 == 1]
-        database.update_paragraph(doc_id, doc_labels, email, comment)
-        progress = idx_next / len(session_ids) * 100
+        doc_id = config.get_task_id()
+        config.task_idx += 1
+        annotation = entities.Annotation(
+            email=config.session_email,
+            labels=[sdg_id for sdg_id, n_clicks in enumerate(n_clicks_sdgs, start=1) if n_clicks % 2 == 1],
+            comment=comment,
+        )
+        database.update_paragraph(doc_id, annotation)
+        progress = config.task_idx / len(config.task_ids) * 100
     elif ctx.triggered_id == 'back-button':
-        idx_next = max(idx_current - 1, 0)
+        config.task_idx = max(config.task_idx - 1, 0)
     else:
         # probably never triggered
-        idx_next = idx_current
+        pass
 
     # finish the session once the specified number of examples has been labelled
-    if idx_next == len(session_ids):
+    if config.task_idx == len(config.task_ids):
         final_layout = components.get_finish_layout(reason='session_done')
-        return no_update, no_update, no_update, no_update, final_layout, config, no_update
+        return no_update, no_update, no_update, no_update, final_layout, config.dict(), no_update
 
-    doc_id = session_ids[idx_next]
+    doc_id = config.get_task_id()
     if doc_id is None:
-        doc = database.get_paragraph(language, email)
+        doc = database.get_paragraph(config)
         selected_sgds, comment = None, None
 
         # finish the session if there are no more unlabelled examples for a given user and language
         if doc is None:
             final_layout = components.get_finish_layout(reason='no_tasks')
-            return no_update, no_update, no_update, no_update, final_layout, config, no_update
+            return no_update, no_update, no_update, no_update, final_layout, config.dict(), no_update
     else:
         doc = database.get_paragraph_by_id(doc_id)
-        selected_sgds, comment = utils.get_user_label_and_comment(doc, email)
+        selected_sgds, comment = utils.get_user_label_and_comment(doc, config.session_email)
 
     sdg_buttons = components.get_sdg_buttons(selected_sgds)
-    session_ids[idx_next] = doc['_id']
-    config['IDX_CURRENT'] = idx_next
-    config['SESSION_IDS'] = session_ids
-    return progress, f'{progress:.0f}%', sdg_buttons, doc['text'], no_update, config, comment
+    config.set_task_id(doc['_id'])
+    return progress, f'{progress:.0f}%', sdg_buttons, doc['text'], no_update, config.dict(), comment
 
 
 @callback(
