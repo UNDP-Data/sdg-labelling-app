@@ -8,7 +8,7 @@ from dash import html
 from dash_iconify import DashIconify
 
 # local packages
-from src import database, styles
+from src import database, styles, entities
 
 
 def get_sdg__item(sdg):
@@ -99,7 +99,7 @@ def get_header():
     return header
 
 
-def get_sdg_buttons(selected_sdg_ids: list[int] = None):
+def get_sdg_buttons(selected_sdg_ids: list[int] = None, language: entities.LANGUAGE = 'en'):
     sdg_button_list = []
     sdgs = database.read_sdg_metadata()
     for sdg in sdgs:
@@ -108,7 +108,7 @@ def get_sdg_buttons(selected_sdg_ids: list[int] = None):
             className='sdg-img-button',
             id={'type': 'sdg-button', 'index': sdg.id},
             n_clicks=int(is_selected),  # 1 if selected, 0 otherwise
-            style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=is_selected),
+            style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=is_selected, language=language),
         )
         tooltip = dmc.Tooltip(
             label=sdg.name,
@@ -421,7 +421,6 @@ def get_main_layout():
     labels = dmc.Container(
         id='chip-container',
         className='chip-container',
-        children=get_sdg_buttons(),
     )
 
     input_comment = dmc.Select(

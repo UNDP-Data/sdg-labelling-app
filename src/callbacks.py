@@ -138,7 +138,7 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
         doc = database.get_paragraph_by_id(doc_id)
         selected_sgds, comment = utils.get_user_label_and_comment(doc, config.session_email)
 
-    sdg_buttons = components.get_sdg_buttons(selected_sgds)
+    sdg_buttons = components.get_sdg_buttons(selected_sgds, language=config.session_language)
     config.set_task_id(doc['_id'])
     return progress, f'{progress:.0f}%', sdg_buttons, doc['text'], no_update, config.dict(), comment
 
@@ -147,12 +147,13 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
     Output({'type': 'sdg-button', 'index': MATCH}, 'style'),
     Input({'type': 'sdg-button', 'index': MATCH}, 'n_clicks'),
     State({'type': 'sdg-button', 'index': MATCH}, 'id'),
+    State('session-config', 'data'),
     prevent_initial_call=True
 )
-def change_sdg_img(n_clicks, button_id):
+def change_sdg_img(n_clicks, button_id, config):
     is_selected = n_clicks % 2 == 1
     sdg_id = button_id['index']
-    style = styles.get_sdg_style(sdg_id=sdg_id, is_selected=is_selected)
+    style = styles.get_sdg_style(sdg_id=sdg_id, is_selected=is_selected, language=config['session_language'])
     return style
 
 
