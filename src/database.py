@@ -1,5 +1,6 @@
 # standard library
 import os
+from random import choice
 from datetime import datetime, timedelta
 
 # database
@@ -49,15 +50,16 @@ def get_paragraph(config: entities.Config):
         {
             '$limit': 100,
         },
-        {
-            '$sample': {'size': 1},
-        }
+        # $sample in Azure Cosmos DB for MongoDB vCore currently has unexpected behaviour
+        # {
+        #     '$sample': {'size': 1},
+        # }
     ]
 
     docs = list(collection.aggregate(pipeline))
     if not docs:
         return None
-    doc = docs[0]
+    doc = choice(docs)
     # "hide" the text from being shown to other labellers for the duration specified in timedelta above
     collection.update_one({'_id': doc['_id']}, {'$set': {'retrieved_at': datetime.now()}})
     doc['_id'] = str(doc['_id'])
