@@ -3,7 +3,7 @@ from . import entities
 PRIMARY_COLOUR = '#1F5A95'
 
 
-def get_sdg_style(sdg_id: int, is_selected: bool, language: entities.LANGUAGE) -> dict:
+def get_sdg_style(sdg_id: int, is_selected: bool, language: entities.LANGUAGE_ISO) -> dict:
     style_base = {
         'background-size': 'cover',
         'transition': '0.3s',

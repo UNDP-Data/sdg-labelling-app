@@ -99,7 +99,7 @@ def get_header():
     return header
 
 
-def get_sdg_buttons(selected_sdg_ids: list[int] = None, language: entities.LANGUAGE = 'en'):
+def get_sdg_buttons(selected_sdg_ids: list[int] = None, language: entities.LANGUAGE_ISO = 'en'):
     sdg_button_list = []
     sdgs = utils.read_sdg_metadata()
     for sdg in sdgs:
@@ -222,16 +222,12 @@ def get_start_layout():
         style={'width': '45%'}
     )
 
+    languages = sorted(zip(get_args(entities.LANGUAGE_ISO), get_args(entities.LANGUAGE_NAME)), key=lambda x: x[1])
     select_language = dmc.Select(
         id='language-input',
         label='Select a Language',
         description='If you are fluent in a language other than English, please select it.',
-        data=[
-            {'label': 'English', 'value': 'en'},
-            {'label': 'French', 'value': 'fr'},
-            {'label': 'Russian', 'value': 'ru'},
-            {'label': 'Spanish', 'value': 'es'},
-        ],
+        data=[{'label': name, 'value': iso} for iso, name in languages],
         required=True,
         style={'width': '40%'},
         value='en',
