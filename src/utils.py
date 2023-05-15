@@ -2,6 +2,7 @@
 import os
 import re
 import json
+import hashlib
 from importlib import resources
 
 # local packages
@@ -69,6 +70,12 @@ def validate_code(code: str) -> bool:
     valid_codes = set(os.environ['INVITATION_CODES'].split(','))
     is_valid = code in valid_codes
     return is_valid
+
+
+def hash_email(email: str) -> str:
+    email = email.lower().strip()
+    email_hashed = hashlib.md5(email.encode(encoding='utf-8')).hexdigest()
+    return email_hashed
 
 
 def get_user_label_and_comment(doc: dict, email: str):

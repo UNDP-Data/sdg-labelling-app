@@ -62,7 +62,7 @@ def change_to_main_layout(n_clicks, input_value, language, email, code):
             task_idx=0,
             task_ids=[None] * input_value,
             session_language=language,
-            session_email=email,
+            session_email=utils.hash_email(email),
         )
         return components.get_main_layout(), config.dict(), no_update, no_update
 

@@ -1,7 +1,6 @@
 from typing import Literal, Optional, Union
-from pydantic import BaseModel, constr
+from pydantic import BaseModel
 
-EMAIL = constr(regex=r'.*@undp.org$', to_lower=True)
 LANGUAGE_ISO = Literal['ar', 'en', 'fr', 'es', 'ru', 'zh']
 LANGUAGE_NAME = Literal['Arabic', 'English', 'French', 'Spanish', 'Russian', 'Chinese']
 
@@ -9,7 +8,7 @@ LANGUAGE_NAME = Literal['Arabic', 'English', 'French', 'Spanish', 'Russian', 'Ch
 class Config(BaseModel):
     task_idx: int = 0
     task_ids: list[Union[str, None]]  # track doc ids user has seen in this session
-    session_email: EMAIL
+    session_email: str
     session_language: LANGUAGE_ISO
 
     def get_task_id(self) -> Union[str, None]:
@@ -22,7 +21,7 @@ class Config(BaseModel):
 
 
 class Annotation(BaseModel):
-    email: EMAIL
+    email: str
     labels: list[int]
     comment: Optional[str]
 
