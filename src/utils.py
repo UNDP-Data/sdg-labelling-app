@@ -1,6 +1,18 @@
 # standard library
 import os
 import re
+import json
+from importlib import resources
+
+# local packages
+from src import entities
+
+
+def read_sdg_metadata() -> list[entities.SustainableDevelopmentGoal]:
+    with resources.open_text('src', 'sdgs.json') as file:
+        sdgs = json.load(file)
+    sdgs = [entities.SustainableDevelopmentGoal(**sdg) for sdg in sdgs]
+    return sdgs
 
 
 def validate_email(email: str) -> bool:

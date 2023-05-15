@@ -24,3 +24,11 @@ class Annotation(BaseModel):
     email: EMAIL
     labels: list[int]
     comment: Optional[str]
+
+
+class SustainableDevelopmentGoal(BaseModel):
+    id: int
+    name: str
+    colour: str
+    targets: list[str]
+    indicators: list[str]

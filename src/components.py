@@ -8,7 +8,7 @@ from dash import html
 from dash_iconify import DashIconify
 
 # local packages
-from src import database, styles, entities
+from src import styles, entities, utils
 
 
 def get_sdg__item(sdg):
@@ -23,7 +23,7 @@ def get_sdg__item(sdg):
 
 
 def get_sdg_drawer():
-    sdgs = database.read_sdg_metadata()
+    sdgs = utils.read_sdg_metadata()
     items = [get_sdg__item(sdg) for sdg in sdgs]
     accordion = dmc.Accordion(children=items,)
     text = dmc.Text('Click on an SDG below to see more details about it.')
@@ -101,7 +101,7 @@ def get_header():
 
 def get_sdg_buttons(selected_sdg_ids: list[int] = None, language: entities.LANGUAGE = 'en'):
     sdg_button_list = []
-    sdgs = database.read_sdg_metadata()
+    sdgs = utils.read_sdg_metadata()
     for sdg in sdgs:
         is_selected = selected_sdg_ids is not None and sdg.id in selected_sdg_ids
         button = html.Button(
