@@ -240,7 +240,7 @@ def get_start_layout():
     )
 
     text = dmc.Text(
-        'Select the number of paragraphs you want to label',
+        'Select the number of texts you want to label',
         style={'text-align': 'center'},
         color=styles.PRIMARY_COLOUR,
     )
@@ -280,7 +280,7 @@ def get_start_layout():
     input_email = dmc.TextInput(
         id='email-input',
         label='Enter Your Email',
-        description='This must be your official UNDP email. It is only used for verification.',
+        description='This must be your official UNDP email. It is only used for verification and will not be stored.',
         # value='john.doe@undp.org',  # uncomment while testing
         placeholder='john.doe@undp.org',
         style={'width': '40%'},
@@ -290,7 +290,8 @@ def get_start_layout():
     input_code = dmc.PasswordInput(
         id='code-input',
         label='Enter Your Invitation Code',
-        description='This has been shared with you in the invitation email.',
+        description='This has been shared with you in the invitation message.'
+        ' If you did not get one, get in touch with us.',
         # value=os.environ['INVITATION_CODES'].split(',')[0],  # uncomment while testing
         placeholder='Invitation Code',
         style={'width': '40%'},
@@ -472,7 +473,7 @@ def get_main_layout():
             'The text is in a language other than the one I selected.',
         ],
         label='Add a comment (optional)',
-        description='Select a value or start typing to add a custom comment.',
+        description='Select a value or start typing to add a custom comment (in English).',
         value=None,
         clearable=True,
         searchable=True,
