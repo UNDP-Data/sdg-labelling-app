@@ -1,6 +1,19 @@
 # standard library
 import os
 import re
+import json
+import hashlib
+from importlib import resources
+
+# local packages
+from src import entities
+
+
+def read_sdg_metadata() -> list[entities.SustainableDevelopmentGoal]:
+    with resources.open_text('src', 'sdgs.json') as file:
+        sdgs = json.load(file)
+    sdgs = [entities.SustainableDevelopmentGoal(**sdg) for sdg in sdgs]
+    return sdgs
 
 
 def validate_email(email: str) -> bool:
@@ -57,6 +70,12 @@ def validate_code(code: str) -> bool:
     valid_codes = set(os.environ['INVITATION_CODES'].split(','))
     is_valid = code in valid_codes
     return is_valid
+
+
+def hash_email(email: str) -> str:
+    email = email.lower().strip()
+    email_hashed = hashlib.md5(email.encode(encoding='utf-8')).hexdigest()
+    return email_hashed
 
 
 def get_user_label_and_comment(doc: dict, email: str):

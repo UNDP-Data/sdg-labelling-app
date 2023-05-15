@@ -1,6 +1,6 @@
 # standard library
 import os
-from typing import Literal
+from typing import Literal, get_args
 
 # dash
 import dash_mantine_components as dmc
@@ -8,7 +8,7 @@ from dash import html
 from dash_iconify import DashIconify
 
 # local packages
-from src import database, styles
+from src import styles, entities, utils
 
 
 def get_sdg__item(sdg):
@@ -23,7 +23,7 @@ def get_sdg__item(sdg):
 
 
 def get_sdg_drawer():
-    sdgs = database.read_sdg_metadata()
+    sdgs = utils.read_sdg_metadata()
     items = [get_sdg__item(sdg) for sdg in sdgs]
     accordion = dmc.Accordion(children=items,)
     text = dmc.Text('Click on an SDG below to see more details about it.')
@@ -57,7 +57,42 @@ def get_sdg_drawer():
     return drawer
 
 
+def get_progress_rings():
+    rings = list()
+    for iso, name in zip(get_args(entities.LANGUAGE_ISO), get_args(entities.LANGUAGE_NAME)):
+        ring = dmc.RingProgress(
+            id={'type': 'ring', 'index': iso},
+            label=dmc.Center(dmc.Text(iso.upper(), color=styles.PRIMARY_COLOUR)),
+            size=80,
+            thickness=10,
+            roundCaps=False,
+            sections=[{'value': 0, 'color': styles.PRIMARY_COLOUR}],
+        )
+
+        target = int(os.environ['PER_LANGUAGE_GOAL'])
+        ring_with_tooltip = dmc.Tooltip(
+            label=f'Progress in collecting {target:,} labelled examples for {name}. Updates every few seconds.',
+            style={'cursor': 'pointer'},
+            children=ring,
+            withArrow=True,
+            openDelay=1_000,
+        )
+        rings.append(ring_with_tooltip)
+    return rings
+
+
+def insert_user_stats(n_labels: int):
+    text = dmc.Text('Your contribution', weight=100)
+    badge = dmc.Badge(f'{n_labels} labels', color='red', variant='light')
+    return [text, badge]
+
+
 def get_header():
+    group_user = dmc.Group(
+        id='user-stats',
+        children=None,
+    )
+
     icon = DashIconify(
         icon='mdi:github',
         width=40,
@@ -68,6 +103,10 @@ def get_header():
         children=icon,
         href='https://github.com/UNDP-Data/sdg-labelling-app/issues',
         target='_blank',
+    )
+
+    title_group_right = dmc.Group(
+        children=[group_user] + get_progress_rings() + [anchor],
         mr=0,
         ml='auto',
     )
@@ -86,10 +125,15 @@ def get_header():
         variant='solid',
     )
 
+    title_group_left = dmc.Group(
+        children=[title, badge],
+    )
+
     title_row = dmc.Group(
-        children=[title, badge, anchor],
+        children=[title_group_left, title_group_right],
         w='100%',
     )
+
     header = dmc.Header(
         className='app-header',
         height=120,
@@ -99,16 +143,16 @@ def get_header():
     return header
 
 
-def get_sdg_buttons(selected_sdg_ids: list[int] = None):
+def get_sdg_buttons(selected_sdg_ids: list[int] = None, language: entities.LANGUAGE_ISO = 'en'):
     sdg_button_list = []
-    sdgs = database.read_sdg_metadata()
+    sdgs = utils.read_sdg_metadata()
     for sdg in sdgs:
         is_selected = selected_sdg_ids is not None and sdg.id in selected_sdg_ids
         button = html.Button(
             className='sdg-img-button',
             id={'type': 'sdg-button', 'index': sdg.id},
             n_clicks=int(is_selected),  # 1 if selected, 0 otherwise
-            style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=is_selected),
+            style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=is_selected, language=language),
         )
         tooltip = dmc.Tooltip(
             label=sdg.name,
@@ -196,7 +240,7 @@ def get_start_layout():
     )
 
     text = dmc.Text(
-        'Select the number of paragraphs you want to label',
+        'Select the number of texts you want to label',
         style={'text-align': 'center'},
         color=styles.PRIMARY_COLOUR,
     )
@@ -222,16 +266,12 @@ def get_start_layout():
         style={'width': '45%'}
     )
 
+    languages = sorted(zip(get_args(entities.LANGUAGE_ISO), get_args(entities.LANGUAGE_NAME)), key=lambda x: x[1])
     select_language = dmc.Select(
         id='language-input',
         label='Select a Language',
         description='If you are fluent in a language other than English, please select it.',
-        data=[
-            {'label': 'English', 'value': 'en'},
-            {'label': 'French', 'value': 'fr'},
-            {'label': 'Russian', 'value': 'ru'},
-            {'label': 'Spanish', 'value': 'es'},
-        ],
+        data=[{'label': name, 'value': iso} for iso, name in languages],
         required=True,
         style={'width': '40%'},
         value='en',
@@ -240,7 +280,7 @@ def get_start_layout():
     input_email = dmc.TextInput(
         id='email-input',
         label='Enter Your Email',
-        description='This must be your official UNDP email. It is only used for verification.',
+        description='This must be your official UNDP email. It is only used for verification and will not be stored.',
         # value='john.doe@undp.org',  # uncomment while testing
         placeholder='john.doe@undp.org',
         style={'width': '40%'},
@@ -250,7 +290,8 @@ def get_start_layout():
     input_code = dmc.PasswordInput(
         id='code-input',
         label='Enter Your Invitation Code',
-        description='This has been shared with you in the invitation email.',
+        description='This has been shared with you in the invitation message.'
+        ' If you did not get one, get in touch with us.',
         # value=os.environ['INVITATION_CODES'].split(',')[0],  # uncomment while testing
         placeholder='Invitation Code',
         style={'width': '40%'},
@@ -421,7 +462,6 @@ def get_main_layout():
     labels = dmc.Container(
         id='chip-container',
         className='chip-container',
-        children=get_sdg_buttons(),
     )
 
     input_comment = dmc.Select(
@@ -433,7 +473,7 @@ def get_main_layout():
             'The text is in a language other than the one I selected.',
         ],
         label='Add a comment (optional)',
-        description='Select a value or start typing to add a custom comment.',
+        description='Select a value or start typing to add a custom comment (in English).',
         value=None,
         clearable=True,
         searchable=True,

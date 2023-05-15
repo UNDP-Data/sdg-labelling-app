@@ -15,7 +15,6 @@ dash_app = Dash(
     meta_tags=[{
        'name': 'viewport',
        'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5, user-scalable=yes'
-
     }],
     prevent_initial_callbacks='initial_duplicate',
     suppress_callback_exceptions=True,
@@ -28,6 +27,11 @@ app = dash_app.server
 dash_app.layout = dmc.MantineProvider(
     children=[
         dcc.Store(id='session-config', storage_type='memory'),
+        dcc.Interval(
+            id='interval-component',
+            interval=1_000 * 10,  # in milliseconds
+            n_intervals=0
+        ),
         components.get_header(),
         dmc.Container(
             id='content',

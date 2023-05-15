@@ -3,3 +3,4 @@ dash-mantine-components==0.12.*
 pymongo~=4.3
 python-dotenv>=1.0
 dash-iconify==0.1.*
+pydantic~=1.10.7
