@@ -80,16 +80,20 @@ def toggle_modal(n_clicks):
 @callback(
     Output('progress-bar', 'value'),
     Output('progress-bar', 'label'),
+    Output('user-stats', 'children'),
     Output('back-button', 'disabled'),
     Output('next-button', 'children'),
     Input('session-config', 'data'),
+    prevent_initial_call=True,
 )
 def update_controls(config):
     config = entities.Config(**config)
     progress = (sum(task_id is not None for task_id in config.task_ids) - 1) / len(config.task_ids) * 100
+    n_labels = database.get_stats_user(config)
+    user_stats = components.insert_user_stats(n_labels)
     button_back_disabled = config.task_idx <= 0
     button_next_name = 'Next & Finish' if config.task_idx == (len(config.task_ids) - 1) is not None else 'Next'
-    return progress, f'{progress:.0f}%', button_back_disabled, button_next_name
+    return progress, f'{progress:.0f}%', user_stats, button_back_disabled, button_next_name
 
 
 @callback(
@@ -97,7 +101,7 @@ def update_controls(config):
     Input('interval-component', 'n_intervals'),
 )
 def update_stats(_: int):
-    stats = database.get_stats()
+    stats = database.get_stats_by_language()
     output = [[{'value': stats.get(iso, 0), 'color': styles.PRIMARY_COLOUR}] for iso in get_args(entities.LANGUAGE_ISO)]
     return output
 

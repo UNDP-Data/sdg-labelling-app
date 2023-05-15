@@ -69,8 +69,9 @@ def get_progress_rings():
             sections=[{'value': 0, 'color': styles.PRIMARY_COLOUR}],
         )
 
+        target = int(os.environ['PER_LANGUAGE_GOAL'])
         ring_with_tooltip = dmc.Tooltip(
-            label=f'Progress in collecting labelled examples for {name}. Updates every few seconds.',
+            label=f'Progress in collecting {target:,} labelled examples for {name}. Updates every few seconds.',
             style={'cursor': 'pointer'},
             children=ring,
             withArrow=True,
@@ -80,7 +81,18 @@ def get_progress_rings():
     return rings
 
 
+def insert_user_stats(n_labels: int):
+    text = dmc.Text('Your contribution', weight=100)
+    badge = dmc.Badge(f'{n_labels} labels', color='red', variant='light')
+    return [text, badge]
+
+
 def get_header():
+    group_user = dmc.Group(
+        id='user-stats',
+        children=None,
+    )
+
     icon = DashIconify(
         icon='mdi:github',
         width=40,
@@ -94,7 +106,7 @@ def get_header():
     )
 
     title_group_right = dmc.Group(
-        children=get_progress_rings() + [anchor],
+        children=[group_user] + get_progress_rings() + [anchor],
         mr=0,
         ml='auto',
     )

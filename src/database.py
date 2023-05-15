@@ -97,7 +97,7 @@ def get_paragraph_by_id(_id):
     return document
 
 
-def get_stats() -> dict:
+def get_stats_by_language() -> dict:
     collection = get_document_collection()
     pipeline = [
         {
@@ -121,3 +121,9 @@ def get_stats() -> dict:
         for doc in collection.aggregate(pipeline)
     }
     return stats
+
+
+def get_stats_user(config) -> int:
+    collection = get_document_collection()
+    count = collection.count_documents({'annotations': {'$elemMatch': {'email': config.session_email}}})
+    return count
