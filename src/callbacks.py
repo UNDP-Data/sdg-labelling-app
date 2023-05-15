@@ -1,3 +1,6 @@
+# standard library
+from typing import get_args
+
 # dash
 from dash import callback, callback_context, no_update, MATCH, ALL
 from dash.dependencies import Input, Output, State
@@ -87,6 +90,16 @@ def update_controls(config):
     button_back_disabled = config.task_idx <= 0
     button_next_name = 'Next & Finish' if config.task_idx == (len(config.task_ids) - 1) is not None else 'Next'
     return progress, f'{progress:.0f}%', button_back_disabled, button_next_name
+
+
+@callback(
+    [Output({'type': 'ring', 'index': iso}, 'sections') for iso in get_args(entities.LANGUAGE_ISO)],
+    Input('interval-component', 'n_intervals'),
+)
+def update_stats(_: int):
+    stats = database.get_stats()
+    output = [[{'value': stats.get(iso, 0), 'color': styles.PRIMARY_COLOUR}] for iso in get_args(entities.LANGUAGE_ISO)]
+    return output
 
 
 @callback(

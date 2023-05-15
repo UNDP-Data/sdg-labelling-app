@@ -95,3 +95,29 @@ def get_paragraph_by_id(_id):
     if document:
         document['_id'] = str(document['_id'])
     return document
+
+
+def get_stats() -> dict:
+    collection = get_document_collection()
+    pipeline = [
+        {
+            '$group': {
+                '_id': '$language',
+                'count': {
+                '$sum': {'$size': '$annotations'}
+                }
+            }
+        },
+        {
+            '$project': {
+                '_id': 0,
+                'language': '$_id',
+                'count': 1
+            }
+        },
+    ]
+    stats = {
+        doc['language']: doc['count'] / int(os.environ['PER_LANGUAGE_GOAL']) * 100
+        for doc in collection.aggregate(pipeline)
+    }
+    return stats

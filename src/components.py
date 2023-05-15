@@ -1,6 +1,6 @@
 # standard library
 import os
-from typing import Literal
+from typing import Literal, get_args
 
 # dash
 import dash_mantine_components as dmc
@@ -57,6 +57,29 @@ def get_sdg_drawer():
     return drawer
 
 
+def get_progress_rings():
+    rings = list()
+    for iso, name in zip(get_args(entities.LANGUAGE_ISO), get_args(entities.LANGUAGE_NAME)):
+        ring = dmc.RingProgress(
+            id={'type': 'ring', 'index': iso},
+            label=dmc.Center(dmc.Text(iso.upper(), color=styles.PRIMARY_COLOUR)),
+            size=80,
+            thickness=10,
+            roundCaps=False,
+            sections=[{'value': 0, 'color': styles.PRIMARY_COLOUR}],
+        )
+
+        ring_with_tooltip = dmc.Tooltip(
+            label=f'Progress in collecting labelled examples for {name}. Updates every few seconds.',
+            style={'cursor': 'pointer'},
+            children=ring,
+            withArrow=True,
+            openDelay=1_000,
+        )
+        rings.append(ring_with_tooltip)
+    return rings
+
+
 def get_header():
     icon = DashIconify(
         icon='mdi:github',
@@ -68,6 +91,10 @@ def get_header():
         children=icon,
         href='https://github.com/UNDP-Data/sdg-labelling-app/issues',
         target='_blank',
+    )
+
+    title_group_right = dmc.Group(
+        children=get_progress_rings() + [anchor],
         mr=0,
         ml='auto',
     )
@@ -86,10 +113,15 @@ def get_header():
         variant='solid',
     )
 
+    title_group_left = dmc.Group(
+        children=[title, badge],
+    )
+
     title_row = dmc.Group(
-        children=[title, badge, anchor],
+        children=[title_group_left, title_group_right],
         w='100%',
     )
+
     header = dmc.Header(
         className='app-header',
         height=120,
