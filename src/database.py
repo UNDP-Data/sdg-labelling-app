@@ -18,17 +18,17 @@ def get_document_collection():
     return collection
 
 
-def get_paragraph(config: entities.Config):
+def get_paragraph(config: entities.SessionConfig):
     collection = get_document_collection()
     pipeline = [
         # Find matching documents
         {
             '$match': {
                 # match text langauge
-                'language': config.session_language,
+                'language': config.language,
 
                 # exclude texts labelled by the user
-                'annotations': {'$not': {'$elemMatch': {'email': config.session_email}}},
+                'annotations': {'$not': {'$elemMatch': {'created_by': config.user_id}}},
 
                 # exclude texts that have just been labelled to avoid getting more annotations than required
                 'retrieved_at': {'$lte': datetime.utcnow() - timedelta(minutes=10)},
@@ -61,7 +61,7 @@ def get_paragraph(config: entities.Config):
         return None
     doc = choice(docs)
     # "hide" the text from being shown to other labellers for the duration specified in timedelta above
-    collection.update_one({'_id': doc['_id']}, {'$set': {'retrieved_at': datetime.now()}})
+    collection.update_one({'_id': doc['_id']}, {'$set': {'retrieved_at': datetime.utcnow()}})
     doc['_id'] = str(doc['_id'])
     return doc
 
@@ -70,7 +70,7 @@ def update_paragraph(_id, annotation: entities.Annotation):
     collection = get_document_collection()
     to_filter = {
         '_id': ObjectId(_id),
-        'annotations': {'$elemMatch': {'email': annotation.email}},
+        'annotations': {'$elemMatch': {'created_by': annotation.created_by}},
     }
     document = collection.find_one(to_filter, {'_id': 1})
     if document is None:
@@ -81,6 +81,7 @@ def update_paragraph(_id, annotation: entities.Annotation):
     else:
         to_update = {
             '$set': {
+                'annotations.$.created_at': annotation.created_at,
                 'annotations.$.labels': annotation.labels,
                 'annotations.$.comment': annotation.comment,
             },
@@ -104,7 +105,7 @@ def get_stats_by_language() -> dict:
             '$group': {
                 '_id': '$language',
                 'count': {
-                '$sum': {'$size': '$annotations'}
+                    '$sum': {'$size': '$annotations'}
                 }
             }
         },
@@ -125,5 +126,5 @@ def get_stats_by_language() -> dict:
 
 def get_stats_user(config) -> int:
     collection = get_document_collection()
-    count = collection.count_documents({'annotations': {'$elemMatch': {'email': config.session_email}}})
+    count = collection.count_documents({'annotations': {'$elemMatch': {'created_by': config.user_id}}})
     return count

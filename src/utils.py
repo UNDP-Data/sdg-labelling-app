@@ -72,15 +72,15 @@ def validate_code(code: str) -> bool:
     return is_valid
 
 
-def hash_email(email: str) -> str:
+def get_user_id(email: str) -> str:
     email = email.lower().strip()
-    email_hashed = hashlib.md5(email.encode(encoding='utf-8')).hexdigest()
-    return email_hashed
+    user_id = hashlib.md5(email.encode(encoding='utf-8')).hexdigest()
+    return user_id
 
 
-def get_user_label_and_comment(doc: dict, email: str):
+def get_user_label_and_comment(doc: dict, user_id: str):
     for annotation in doc.get('annotations', list()):
-        if annotation['email'] == email:
+        if annotation['created_by'] == user_id:
             return annotation.get('labels'), annotation.get('comment')
     else:
         return None, None

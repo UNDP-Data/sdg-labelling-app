@@ -118,7 +118,7 @@ def get_header():
         variant='gradient',
     )
 
-    badge = dmc.Badge('v0.1.0')
+    badge = dmc.Badge('v0.2.1')
 
     divider = dmc.Divider(
         color=styles.PRIMARY_COLOUR,
