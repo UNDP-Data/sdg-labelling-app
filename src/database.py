@@ -61,7 +61,7 @@ def get_paragraph(config: entities.Config):
         return None
     doc = choice(docs)
     # "hide" the text from being shown to other labellers for the duration specified in timedelta above
-    collection.update_one({'_id': doc['_id']}, {'$set': {'retrieved_at': datetime.now()}})
+    collection.update_one({'_id': doc['_id']}, {'$set': {'retrieved_at': datetime.utcnow()}})
     doc['_id'] = str(doc['_id'])
     return doc
 
