@@ -105,7 +105,7 @@ def get_stats_by_language() -> dict:
             '$group': {
                 '_id': '$language',
                 'count': {
-                '$sum': {'$size': '$annotations'}
+                    '$sum': {'$size': '$annotations'}
                 }
             }
         },
