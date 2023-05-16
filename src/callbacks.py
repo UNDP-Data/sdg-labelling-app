@@ -58,11 +58,11 @@ def change_to_main_layout(n_clicks, input_value, language, email, code):
     elif not utils.validate_code(code=code):
         return no_update, no_update, no_update, 'Invalid invitation code'
     else:
-        config = entities.Config(
+        config = entities.SessionConfig(
             task_idx=0,
             task_ids=[None] * input_value,
-            session_language=language,
-            session_email=utils.hash_email(email),
+            user_id=utils.get_user_id(email),
+            language=language,
         )
         return components.get_main_layout(), config.dict(), no_update, no_update
 
@@ -87,7 +87,7 @@ def toggle_modal(n_clicks):
     prevent_initial_call=True,
 )
 def update_controls(config):
-    config = entities.Config(**config)
+    config = entities.SessionConfig(**config)
     progress = (sum(task_id is not None for task_id in config.task_ids) - 1) / len(config.task_ids) * 100
     n_labels = database.get_stats_user(config)
     user_stats = components.insert_user_stats(n_labels)
@@ -121,14 +121,14 @@ def update_stats(_: int):
 )
 def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comment):
     """Update the components of the main layout and the database with the current state of the labeling."""
-    config = entities.Config(**config)
+    config = entities.SessionConfig(**config)
     ctx = callback_context
     # increase counter on first load automatically
     if ctx.triggered_id == 'next-button':
         doc_id = config.get_task_id()
         config.task_idx += 1
         annotation = entities.Annotation(
-            email=config.session_email,
+            created_by=config.user_id,
             labels=[sdg_id for sdg_id, n_clicks in enumerate(n_clicks_sdgs, start=1) if n_clicks % 2 == 1],
             comment=comment,
         )
@@ -155,9 +155,9 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
             return no_update, no_update, final_layout, config.dict(), no_update
     else:
         doc = database.get_paragraph_by_id(doc_id)
-        selected_sgds, comment = utils.get_user_label_and_comment(doc, config.session_email)
+        selected_sgds, comment = utils.get_user_label_and_comment(doc, config.user_id)
 
-    sdg_buttons = components.get_sdg_buttons(selected_sgds, language=config.session_language)
+    sdg_buttons = components.get_sdg_buttons(selected_sgds, language=config.language)
     config.set_task_id(doc['_id'])
     return sdg_buttons, doc['text'], no_update, config.dict(), comment
 
@@ -172,7 +172,7 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
 def change_sdg_img(n_clicks, button_id, config):
     is_selected = n_clicks % 2 == 1
     sdg_id = button_id['index']
-    style = styles.get_sdg_style(sdg_id=sdg_id, is_selected=is_selected, language=config['session_language'])
+    style = styles.get_sdg_style(sdg_id=sdg_id, is_selected=is_selected, language=config['language'])
     return style
 
 

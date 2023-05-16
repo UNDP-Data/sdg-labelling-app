@@ -6,11 +6,11 @@ LANGUAGE_ISO = Literal['ar', 'en', 'fr', 'es', 'ru', 'zh']
 LANGUAGE_NAME = Literal['Arabic', 'English', 'French', 'Spanish', 'Russian', 'Chinese']
 
 
-class Config(BaseModel):
+class SessionConfig(BaseModel):
     task_idx: int = 0
     task_ids: list[Union[str, None]]  # track doc ids user has seen in this session
-    session_email: str
-    session_language: LANGUAGE_ISO
+    user_id: str
+    language: LANGUAGE_ISO
 
     def get_task_id(self) -> Union[str, None]:
         task_id = self.task_ids[self.task_idx]
@@ -23,7 +23,7 @@ class Config(BaseModel):
 
 class Annotation(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    email: str
+    created_by: str
     labels: list[int]
     comment: Optional[str]
 
