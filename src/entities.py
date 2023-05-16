@@ -1,5 +1,6 @@
 from typing import Literal, Optional, Union
-from pydantic import BaseModel
+from datetime import datetime
+from pydantic import BaseModel, Field
 
 LANGUAGE_ISO = Literal['ar', 'en', 'fr', 'es', 'ru', 'zh']
 LANGUAGE_NAME = Literal['Arabic', 'English', 'French', 'Spanish', 'Russian', 'Chinese']
@@ -21,6 +22,7 @@ class Config(BaseModel):
 
 
 class Annotation(BaseModel):
+    created_at: datetime = Field(default_factory=datetime.utcnow)
     email: str
     labels: list[int]
     comment: Optional[str]

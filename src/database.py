@@ -81,6 +81,7 @@ def update_paragraph(_id, annotation: entities.Annotation):
     else:
         to_update = {
             '$set': {
+                'annotations.$.created_at': annotation.created_at,
                 'annotations.$.labels': annotation.labels,
                 'annotations.$.comment': annotation.comment,
             },
