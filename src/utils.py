@@ -16,6 +16,12 @@ def read_sdg_metadata() -> list[entities.SustainableDevelopmentGoal]:
     return sdgs
 
 
+def read_faq_markdown() -> str:
+    with resources.open_text('src', 'faq.md') as file:
+        content = file.read()
+    return content
+
+
 def validate_email(email: str) -> bool:
     """
     Check if the user email is a valid UNDP business address.

@@ -40,6 +40,16 @@ def quit_app(n_clicks, is_open):
 
 
 @callback(
+    Output('modal-faq', 'opened'),
+    Input('faq-button', 'n_clicks'),
+    prevent_initial_call=True
+)
+def open_faq(n_clicks):
+    is_open = n_clicks is not None
+    return is_open
+
+
+@callback(
     Output('content', 'children', allow_duplicate=True),
     Output('session-config', 'data',  allow_duplicate=True),
     Output('email-input', 'error'),

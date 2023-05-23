@@ -4,7 +4,7 @@ from typing import Literal, get_args
 
 # dash
 import dash_mantine_components as dmc
-from dash import html
+from dash import html, dcc
 from dash_iconify import DashIconify
 
 # local packages
@@ -105,8 +105,21 @@ def get_header():
         target='_blank',
     )
 
+    button_faq = dmc.Button(
+        'FAQ',
+        id='faq-button',
+        # size='lg',
+        radius='md',
+        color='red',
+        variant='light',
+        leftIcon=DashIconify(
+            icon='wpf:faq',
+            width=30,
+        ),
+    )
+
     title_group_right = dmc.Group(
-        children=[group_user] + get_progress_rings() + [anchor],
+        children=[group_user] + get_progress_rings() + [button_faq, get_faq_modal(), anchor],
         mr=0,
         ml='auto',
     )
@@ -298,6 +311,12 @@ def get_start_layout():
         required=True,
     )
 
+    alert = dmc.Alert(
+        'If you have not done so already, check out FAQ section before proceeding!'
+        ' You can find it in the upper right corner.',
+        title='FAQ Section Has Arrived!',
+    )
+
     button_start = dmc.Button(
         'Start',
         id='start-button',
@@ -315,6 +334,7 @@ def get_start_layout():
             select_language,
             input_email,
             input_code,
+            alert,
             button_start,
         ],
         align='center',
@@ -541,3 +561,25 @@ def get_affix():
         }
     )
     return affix
+
+
+def get_faq_modal():
+    title = dmc.Title(
+        'Frequently Asked Questions',
+        order=2,
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+
+    text = dcc.Markdown(utils.read_faq_markdown())
+
+    modal = dmc.Modal(
+        id='modal-faq',
+        title=title,
+        centered=True,
+        size='xl',
+        overlayBlur=10,
+        transition='fade',
+        children=text,
+    )
+    return modal
