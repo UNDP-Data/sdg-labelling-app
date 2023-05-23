@@ -47,7 +47,7 @@ def validate_email(email: str) -> bool:
     >>> validate_email('john.doe@undp.com')
     False
     """
-    pattern = r'^[a-z][\w.]*@undp.org$'
+    pattern = r'^[a-z][\w.-]*@undp.org$'
     match = re.match(pattern=pattern, string=email, flags=re.IGNORECASE)
     is_valid = bool(match)
     return is_valid
