@@ -4,6 +4,8 @@ import re
 import json
 import hashlib
 from importlib import resources
+from string import digits, ascii_letters
+from random import choices
 
 # local packages
 from src import entities
@@ -20,6 +22,12 @@ def read_faq_markdown() -> str:
     with resources.open_text('src', 'faq.md') as file:
         content = file.read()
     return content
+
+
+def read_email_template() -> str:
+    with resources.open_text('src', 'email.json') as file:
+        template = json.load(file)
+    return template
 
 
 def validate_email(email: str) -> bool:
@@ -57,6 +65,11 @@ def validate_email(email: str) -> bool:
     match = re.match(pattern=pattern, string=email, flags=re.IGNORECASE)
     is_valid = bool(match)
     return is_valid
+
+
+def generate_access_code(length: int = 12) -> str:
+    code = ''.join(choices(digits + ascii_letters, k=length))
+    return code
 
 
 def validate_code(code: str) -> bool:

@@ -1,0 +1,14 @@
+{
+    "content": {
+        "subject": "Your Personal Access Code",
+        "html": "<html><p>Hi {},<br><br>Your personal access code for <a href=\"https://sdg-labelling-app.azurewebsites.net\">SDG Labelling App</a> is <b>{}</b>. The access code is unique and private. You can use it to log in to the application at any time.<br><br>For your convenience, we recommend that you save this code in your browser or password manager just like any other password.<br><br><em>Please note that this is an automated message. Do not reply.</em></p></html>"
+    },
+    "recipients": {
+        "to": [
+            {
+                "address": null
+            }
+        ]
+    },
+    "senderAddress": null
+}
