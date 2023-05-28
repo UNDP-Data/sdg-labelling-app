@@ -228,8 +228,8 @@ def send_access_code_with_notification(disabled, email):
 )
 def disable_buttons_while_sending(n_clicks, email):
     if not utils.validate_email(email=email):
-        error_message = 'Invalid email address'
-        return error_message, no_update, no_update
+        error_message = 'Please, provide a valid UNDP email address.'
+        return error_message, no_update, no_update, no_update
     notification = ui.notifications.get_notification_sending(email=email)
     is_disabled = True
     error_message = None
