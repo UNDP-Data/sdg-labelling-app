@@ -12,7 +12,7 @@ from src.ui import styles
 
 def insert_rings_progress():
     rings = list()
-    for iso, name in utils.get_language_mapping().items():
+    for iso, name in sorted(utils.get_language_mapping().items(), key=lambda x: x[0]):
         ring = dmc.RingProgress(
             id={'type': 'ring', 'index': iso},
             label=dmc.Center(dmc.Text(iso.upper(), color=styles.PRIMARY_COLOUR)),
