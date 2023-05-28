@@ -3,7 +3,7 @@ from dash import callback, callback_context, no_update, MATCH, ALL
 from dash.dependencies import Input, Output, State
 
 # local packages
-from src import database, ui, entities, utils, communication
+from src import communication, database, entities, ui, utils
 
 
 @callback(

@@ -13,20 +13,20 @@ from src import entities
 
 
 def read_sdg_metadata() -> list[entities.SustainableDevelopmentGoal]:
-    with resources.open_text('src', 'sdgs.json') as file:
+    with resources.open_text('src.files', 'sdgs.json') as file:
         sdgs = json.load(file)
     sdgs = [entities.SustainableDevelopmentGoal(**sdg) for sdg in sdgs]
     return sdgs
 
 
 def read_faq_markdown() -> str:
-    with resources.open_text('src', 'faq.md') as file:
+    with resources.open_text('src.files', 'faq.md') as file:
         content = file.read()
     return content
 
 
 def read_email_template() -> dict:
-    with resources.open_text('src', 'email.json') as file:
+    with resources.open_text('src.files', 'email.json') as file:
         template = json.load(file)
     return template
 
