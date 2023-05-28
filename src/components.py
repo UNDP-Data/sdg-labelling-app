@@ -11,7 +11,7 @@ from dash_iconify import DashIconify
 from src import styles, entities, utils
 
 
-def get_sdg__item(sdg):
+def get_sdg_item(sdg):
     list_targets = dmc.List([dmc.ListItem(target) for target in sdg.targets], spacing=10)
     item_control = dmc.AccordionControl(f'Goal {sdg.id}: {sdg.name}')
     item_panel = dmc.AccordionPanel(list_targets)
@@ -24,7 +24,7 @@ def get_sdg__item(sdg):
 
 def get_sdg_drawer():
     sdgs = utils.read_sdg_metadata()
-    items = [get_sdg__item(sdg) for sdg in sdgs]
+    items = [get_sdg_item(sdg) for sdg in sdgs]
     accordion = dmc.Accordion(children=items,)
     text = dmc.Text('Click on an SDG below to see more details about it.')
 
@@ -305,7 +305,7 @@ def get_start_layout():
         label='Enter Your Access Code',
         description='This has been sent to your email. If you don\'t have a code or would like to get a new one,'
                     ' click the button on the right.',
-        value=os.environ['INVITATION_CODES'].split(',')[0],  # uncomment while testing
+        # value=os.environ['INVITATION_CODES'].split(',')[0],  # uncomment while testing
         placeholder='Invitation Code',
         style={'width': '40%'},
         required=True,
