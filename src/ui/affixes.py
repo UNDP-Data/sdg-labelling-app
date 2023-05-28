@@ -12,7 +12,7 @@ from src.ui import styles, buttons
 def insert_affix_reference():
     affix = dmc.Affix(
         children=buttons.insert_button_reference(),
-        position={'bottom': 5, 'left': 5},
+        position={'bottom': 25, 'left': 5},
     )
     return affix
 
@@ -41,9 +41,6 @@ def insert_affix_feedback():
 
     affix = dmc.Affix(
         children=anchor,
-        position={
-            'bottom': 5,
-            'right': 5,
-        }
+        position={'bottom': 25, 'right': 5}
     )
     return affix

@@ -43,6 +43,7 @@ def get_start_layout():
         align='center',
         spacing='xl',
         pt='3%',
+        pb=25,
     )
     return stack
 
@@ -104,6 +105,7 @@ def get_main_layout():
         align='center',
         spacing='xl',
         pt='3%',
+        pb=25,
     )
 
     return stack
@@ -124,5 +126,6 @@ def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks'
         align='center',
         spacing='xl',
         pt='3%',
+        pb=25,
     )
     return stack

@@ -25,19 +25,13 @@ def insert_header():
         variant='gradient',
     )
 
-    badge = dmc.Badge('v0.3.0')
-
     divider = dmc.Divider(
         color=styles.PRIMARY_COLOUR,
         variant='solid',
     )
 
-    title_group_left = dmc.Group(
-        children=[title, badge],
-    )
-
     title_row = dmc.Group(
-        children=[title_group_left, title_group_right],
+        children=[title, title_group_right],
         w='100%',
     )
 
