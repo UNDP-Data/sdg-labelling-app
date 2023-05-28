@@ -8,11 +8,11 @@ from azure.communication.email import EmailClient
 from src import utils
 
 
-def send_access_code(email: str) -> bool:
+def send_access_code(email: str) -> str | None:
     """
     Send a unique access code to a user email using Azure Communication Services.
 
-    See documenation at https://learn.microsoft.com/en-gb/azure/communication-services/quickstarts/email/send-email.
+    See documentation at https://learn.microsoft.com/en-gb/azure/communication-services/quickstarts/email/send-email.
 
     Parameters
     ----------
@@ -44,8 +44,11 @@ def send_access_code(email: str) -> bool:
 
             if time_elapsed > max_wait_time:
                 raise RuntimeError('Polling timed out.')
-        is_succeeded = poller.result()['status'] == 'Succeeded'
+
     except Exception as e:
         print(e)
-        is_succeeded = False
-    return is_succeeded
+        return None
+
+    if poller.result()['status'] != 'Succeeded':
+        return None
+    return access_code

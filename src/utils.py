@@ -24,7 +24,7 @@ def read_faq_markdown() -> str:
     return content
 
 
-def read_email_template() -> str:
+def read_email_template() -> dict:
     with resources.open_text('src', 'email.json') as file:
         template = json.load(file)
     return template
