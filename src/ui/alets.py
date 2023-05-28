@@ -2,13 +2,31 @@
 import dash_mantine_components as dmc
 
 
-def insert_alert_faq():
-    alert = dmc.Alert(
-        'If you have not done so already, check out FAQ section before proceeding!'
-        ' You can find it in the upper right corner.',
-        title='FAQ Section Has Arrived!',
-    )
-    return alert
+def insert_release_alerts():
+    messages = {
+        'FAQ Section Has Arrived!': 'We have added a FAQ section to answer common questions you might have about the'
+                                    ' application and rationale behind it. If you have not done so already, check it'
+                                    ' out before proceeding! You can find FAQ button in the upper right corner.',
+        'Enhanced Security!': 'As we are scaling the application to hundreds of users, we have made changes to make'
+                              ' everyone\'s experience more secure and private. Users can now only access the'
+                              ' application with their personal access code. To request your code, enter you UNDP email'
+                              ' and click on "Get Access Code". The code use receive is like a password. You can reuse '
+                              ' use it to access the application multiple times. You do not need to request it every'
+                              ' time. Once you receive the code, we recommend that you save it in your browser or'
+                              ' password manager.'
+    }
+    alerts = []
+    for title, text in messages.items():
+        alert = dmc.Alert(
+            children=text,
+            title=dmc.Group([title, dmc.Badge('New')], spacing='sm'),
+            color='blue',
+            variant='outline',
+            withCloseButton=True,
+            style={'width': '50%'},
+        )
+        alerts.append(alert)
+    return alerts
 
 
 def insert_alert_finish(reason):

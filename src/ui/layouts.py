@@ -31,7 +31,7 @@ def get_start_layout():
 
     stack = dmc.Stack(
         children=[
-            alets.insert_alert_faq(),
+            *alets.insert_release_alerts(),
             title,
             text,
             inputs.insert_slider_texts(),
