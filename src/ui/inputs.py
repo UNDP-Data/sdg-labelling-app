@@ -48,7 +48,7 @@ def insert_input_email():
         id='email-input',
         label='Enter Your Email',
         description='This must be your official UNDP email. It is only used for verification and will not be stored.',
-        # value='john.doe@undp.org',  # uncomment while testing
+        # value='john.doe@undp.org',  # comment out after testing
         placeholder='john.doe@undp.org',
         style={'width': '40%'},
         required=True,
@@ -62,7 +62,7 @@ def insert_input_passcode():
         label='Enter Your Access Code',
         description='This has been sent to your email. If you don\'t have a code or would like to get a new one,'
                     ' click the button on the right.',
-        # value=os.environ['INVITATION_CODES'].split(',')[0],  # uncomment while testing
+        # value='1234',  # comment out after testing
         placeholder='Invitation Code',
         style={'width': '40%'},
         required=True,

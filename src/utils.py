@@ -78,25 +78,6 @@ def generate_access_code(length: int = 12) -> str:
     return code
 
 
-def validate_code(code: str) -> bool:
-    """
-    Check if the invitation code is valid.
-
-    Parameters
-    ----------
-    code : str
-        Invitation code.
-
-    Returns
-    -------
-    is_valid : bool
-        True if the invitation code is valid and False otherwise.
-    """
-    valid_codes = set(os.environ['INVITATION_CODES'].split(','))
-    is_valid = code in valid_codes
-    return is_valid
-
-
 def get_user_id(email: str) -> str:
     email = email.lower().strip()
     user_id = hashlib.md5(email.encode(encoding='utf-8')).hexdigest()
