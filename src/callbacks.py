@@ -6,7 +6,7 @@ from dash import callback, callback_context, no_update, MATCH, ALL
 from dash.dependencies import Input, Output, State
 
 # local packages
-from src import database, components, styles, entities, utils
+from src import database, components, styles, entities, utils, communication
 
 
 @callback(
@@ -61,17 +61,21 @@ def open_faq(n_clicks):
     State('code-input', 'value'),
     prevent_initial_call=True
 )
-def change_to_main_layout(n_clicks, input_value, language, email, code):
+def change_to_main_layout(n_clicks, input_value, language, email, access_code):
     """Change start layout to main layout."""
-    if not utils.validate_email(email=email):
+    user_id = utils.get_user_id(email)
+    is_valid_email = utils.validate_email(email=email)
+    is_valid_code = database.validate_user_code(user_id=user_id, access_code=access_code)
+
+    if not is_valid_email:
         return no_update, no_update, 'Invalid email address', no_update
-    elif not utils.validate_code(code=code):
+    elif not is_valid_code:
         return no_update, no_update, no_update, 'Invalid invitation code'
     else:
         config = entities.SessionConfig(
             task_idx=0,
             task_ids=[None] * input_value,
-            user_id=utils.get_user_id(email),
+            user_id=user_id,
             language=language,
         )
         return components.get_main_layout(), config.dict(), no_update, no_update
@@ -193,3 +197,22 @@ def change_sdg_img(n_clicks, button_id, config):
 )
 def open_sdg_reference(n_clicks):
     return True
+
+
+@callback(
+    Output('email-input', 'error', allow_duplicate=True),
+    Output('email-button', 'children'),
+    Output('email-button', 'disabled'),
+    Input('email-button', 'n_clicks'),
+    State('email-input', 'value'),
+    prevent_initial_call=True,
+)
+def send_access_code(n_clicks, email):
+    if not utils.validate_email(email=email):
+        return 'Invalid email address', no_update, no_update
+    user_id = utils.get_user_id(email)
+    access_code = communication.send_access_code(email=email)
+    if access_code is None:
+        return None, 'Oops! Try again.', False
+    database.upsert_user_code(user_id=user_id, access_code=access_code)
+    return None, 'Email Sent!', True

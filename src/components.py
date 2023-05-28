@@ -302,10 +302,10 @@ def get_start_layout():
 
     input_code = dmc.PasswordInput(
         id='code-input',
-        label='Enter Your Invitation Code',
-        description='This has been shared with you in the invitation message.'
-        ' If you did not get one, get in touch with us.',
-        # value=os.environ['INVITATION_CODES'].split(',')[0],  # uncomment while testing
+        label='Enter Your Access Code',
+        description='This has been sent to your email. If you don\'t have a code or would like to get a new one,'
+                    ' click the button on the right.',
+        value=os.environ['INVITATION_CODES'].split(',')[0],  # uncomment while testing
         placeholder='Invitation Code',
         style={'width': '40%'},
         required=True,
@@ -315,6 +315,16 @@ def get_start_layout():
         'If you have not done so already, check out FAQ section before proceeding!'
         ' You can find it in the upper right corner.',
         title='FAQ Section Has Arrived!',
+    )
+
+    button_access = dmc.Button(
+        'Get Access Code',
+        id='email-button',
+        size='md',
+        radius='md',
+        color='red',
+        variant='light',
+        rightIcon=DashIconify(icon='ic:baseline-email'),
     )
 
     button_start = dmc.Button(
@@ -328,13 +338,13 @@ def get_start_layout():
 
     stack = dmc.Stack(
         children=[
+            alert,
             title,
             text,
             slider,
             select_language,
             input_email,
-            input_code,
-            alert,
+            dmc.Group([input_code, dmc.LoadingOverlay(button_access)], position='center', grow=True, style={'width': '40%'}),
             button_start,
         ],
         align='center',

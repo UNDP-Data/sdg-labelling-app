@@ -18,6 +18,13 @@ def get_document_collection():
     return collection
 
 
+def get_user_collection():
+    client = pymongo.MongoClient(os.environ['MONGO_URI'])
+    db = client[os.environ['DATABASE_NAME']]
+    collection = db['sdgs_users']
+    return collection
+
+
 def get_paragraph(config: entities.SessionConfig):
     collection = get_document_collection()
     pipeline = [
@@ -128,3 +135,24 @@ def get_stats_user(config) -> int:
     collection = get_document_collection()
     count = collection.count_documents({'annotations': {'$elemMatch': {'created_by': config.user_id}}})
     return count
+
+
+def upsert_user_code(user_id: str, access_code: str) -> int:
+    collection = get_user_collection()
+    document = {
+        '_id': user_id,
+        'access_code': access_code,
+        'updated_at': datetime.utcnow(),
+    }
+    result = collection.replace_one(
+        filter={'_id': user_id},
+        replacement=document,
+        upsert=True,
+    )
+    return result.matched_count
+
+
+def validate_user_code(user_id: str, access_code: str) -> bool:
+    collection = get_user_collection()
+    is_valid = collection.find_one(filter={'_id': user_id, 'access_code': access_code}) is not None
+    return is_valid
