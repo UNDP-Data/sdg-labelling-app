@@ -6,7 +6,7 @@ from dash import Dash, dcc, html
 from dotenv import load_dotenv; load_dotenv()
 
 # local packages
-from src import components, callbacks
+from src import callbacks, ui
 
 # app definition
 dash_app = Dash(
@@ -32,13 +32,13 @@ dash_app.layout = dmc.NotificationsProvider(
             interval=1_000 * 10,  # in milliseconds
             n_intervals=0
         ),
-        components.get_header(),
+        ui.header.insert_header(),
         dmc.Container(
             id='content',
-            children=components.get_start_layout(),
+            children=ui.get_start_layout(),
             fluid=True,
         ),
-        components.get_affix(),
+        ui.affixes.insert_affix_feedback(),
         html.Div(id='notifications-container'),
     ],
     autoClose=False,

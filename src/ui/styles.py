@@ -1,4 +1,5 @@
-from . import entities
+# local packages
+from src import entities
 
 PRIMARY_COLOUR = '#1F5A95'
 

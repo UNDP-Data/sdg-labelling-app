@@ -4,6 +4,7 @@ import re
 import json
 import hashlib
 from importlib import resources
+from typing import get_args
 from string import digits, ascii_letters
 from random import choices
 
@@ -28,6 +29,11 @@ def read_email_template() -> dict:
     with resources.open_text('src', 'email.json') as file:
         template = json.load(file)
     return template
+
+
+def get_language_mapping() -> dict:
+    mapping = dict(sorted(zip(get_args(entities.LANGUAGE_ISO), get_args(entities.LANGUAGE_NAME)), key=lambda x: x[1]))
+    return mapping
 
 
 def validate_email(email: str) -> bool:
