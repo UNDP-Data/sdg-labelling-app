@@ -63,7 +63,7 @@ def insert_input_passcode():
         description='This has been sent to your email. If you don\'t have a code or would like to get a new one,'
                     ' click the button on the right.',
         # value='1234',  # comment out after testing
-        placeholder='Invitation Code',
+        placeholder='Type your code here',
         style={'width': '40%'},
         required=True,
     )
