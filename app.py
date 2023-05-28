@@ -1,6 +1,6 @@
 # dash
 import dash_mantine_components as dmc
-from dash import Dash, dcc
+from dash import Dash, dcc, html
 
 # utils
 from dotenv import load_dotenv; load_dotenv()
@@ -24,7 +24,7 @@ dash_app = Dash(
 app = dash_app.server
 
 # define layout
-dash_app.layout = dmc.MantineProvider(
+dash_app.layout = dmc.NotificationsProvider(
     children=[
         dcc.Store(id='session-config', storage_type='memory'),
         dcc.Interval(
@@ -39,8 +39,10 @@ dash_app.layout = dmc.MantineProvider(
             fluid=True,
         ),
         components.get_affix(),
+        html.Div(id='notifications-container'),
     ],
-    # theme={'colorScheme': 'white'}
+    autoClose=False,
+    position='top-center',
 )
 
 # run the app

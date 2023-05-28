@@ -200,19 +200,40 @@ def open_sdg_reference(n_clicks):
 
 
 @callback(
+    Output('email-button', 'disabled', allow_duplicate=True),
+    Output('start-button', 'disabled', allow_duplicate=True),
+    Output('notifications-container', 'children', allow_duplicate=True),
+    Input('email-button', 'disabled'),
+    State('email-input', 'value'),
+    prevent_initial_call=True,
+)
+def send_access_code_with_notification(disabled, email):
+    user_id = utils.get_user_id(email)
+    access_code = communication.send_access_code(email=email)
+    if access_code is None:
+        notification = components.get_notification_failed(email=email)
+        is_disabled = False
+    else:
+        database.upsert_user_code(user_id=user_id, access_code=access_code)
+        notification = components.get_notification_sent(email=email)
+        is_disabled = True
+    return is_disabled, False, notification
+
+
+@callback(
     Output('email-input', 'error', allow_duplicate=True),
-    Output('email-button', 'children'),
-    Output('email-button', 'disabled'),
+    Output('email-button', 'disabled', allow_duplicate=True),
+    Output('start-button', 'disabled', allow_duplicate=True),
+    Output('notifications-container', 'children', allow_duplicate=True),
     Input('email-button', 'n_clicks'),
     State('email-input', 'value'),
     prevent_initial_call=True,
 )
-def send_access_code(n_clicks, email):
+def disable_buttons_while_sending(n_clicks, email):
     if not utils.validate_email(email=email):
-        return 'Invalid email address', no_update, no_update
-    user_id = utils.get_user_id(email)
-    access_code = communication.send_access_code(email=email)
-    if access_code is None:
-        return None, 'Oops! Try again.', False
-    database.upsert_user_code(user_id=user_id, access_code=access_code)
-    return None, 'Email Sent!', True
+        error_message = 'Invalid email address'
+        return error_message, no_update, no_update
+    notification = components.get_notification_sending(email=email)
+    is_disabled = True
+    error_message = None
+    return error_message, is_disabled, is_disabled, notification
