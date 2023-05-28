@@ -21,8 +21,8 @@ def send_access_code(email: str) -> str | None:
 
     Returns
     -------
-    is_succeeded : bool
-        True if the email has been successfully sent or False if an error occurred.
+    access_code : str | None
+        Access code sent to the user if the email has been successfully sent or None if an error occurred.
     """
     user_name = email.split('@')[0].split('.')[0].capitalize()  # "john.doe@undp.org" -> "John"
     access_code = utils.generate_access_code()
