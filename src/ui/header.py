@@ -25,13 +25,25 @@ def insert_header():
         variant='gradient',
     )
 
+    subtitle = dmc.Text(
+        'Make Your Contribution Towards a Safer And More Inclusive Use of Artificial Intelligence for'
+        ' International Development',
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+
+    title_stack = dmc.Stack(
+        children=[title, subtitle],
+        spacing='sm',
+    )
+
     divider = dmc.Divider(
         color=styles.PRIMARY_COLOUR,
         variant='solid',
     )
 
     title_row = dmc.Group(
-        children=[title, title_group_right],
+        children=[title_stack, title_group_right],
         w='100%',
     )
 
