@@ -10,9 +10,9 @@ def insert_release_alerts():
         'Enhanced Security!': 'As we are scaling the application to hundreds of users, we have made changes to make'
                               ' everyone\'s experience more secure and private. Users can now only access the'
                               ' application with their personal access code. To request your code, enter you UNDP email'
-                              ' and click on "Get Access Code". The code use receive is like a password. You can reuse '
-                              ' use it to access the application multiple times. You do not need to request it every'
-                              ' time. Once you receive the code, we recommend that you save it in your browser or'
+                              ' and click on "Get Access Code". The code you receive is like a password. You do not'
+                              ' need to request it repeatedly, you can reuse it to access the application multiple'
+                              ' times. Once you receive the code, we recommend that you save it in your browser or'
                               ' password manager.'
     }
     alerts = []
