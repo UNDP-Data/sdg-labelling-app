@@ -8,7 +8,7 @@ from src.ui import styles, buttons, modals, extras
 def insert_header():
     title_group_right = dmc.Group(
         children=[
-            dmc.Group(id='user-stats'),
+            extras.insert_user_stack(),
             *extras.insert_rings_progress(),
             buttons.insert_button_faq(),
             modals.insert_modal_faq(),

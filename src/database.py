@@ -137,6 +137,39 @@ def get_stats_user(config) -> int:
     return count
 
 
+def get_top_annotators(limit: int = 30) -> list[dict]:
+    collection = get_document_collection()
+    pipeline = [
+        {
+            '$unwind': {
+                'path': '$annotations',
+                'preserveNullAndEmptyArrays': False,
+            }
+        },
+        {
+            '$group': {
+                '_id': '$annotations.created_by',
+                'count': {
+                    '$sum': 1
+                }
+            }
+        },
+        {
+            '$sort': {'count': -1}
+        },
+        {
+            '$limit': limit,
+        },
+    ]
+    stats = list(collection.aggregate(pipeline))
+    return stats
+
+
+def get_user_count() -> int:
+    stats = get_top_annotators(limit=100_000)
+    return len(stats)
+
+
 def upsert_user_code(user_id: str, access_code: str) -> int:
     collection = get_user_collection()
     document = {

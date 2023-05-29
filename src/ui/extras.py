@@ -35,9 +35,25 @@ def insert_rings_progress():
 
 
 def insert_user_stats(n_labels: int):
-    text = dmc.Text('Your contribution', weight=100)
-    badge = dmc.Badge(f'{n_labels} labels', color='red', variant='light')
+    text = dmc.Text('Your contribution is', weight=100, size='sm')
+    badge = dmc.Badge(f'{n_labels:,} labels', color='red', variant='light')
     return [text, badge]
+
+
+def insert_user_count(count: int):
+    badge = dmc.Badge(f'{count:,} people', color='blue', variant='light')
+    text = dmc.Text('have already contributed!', weight=100, size='sm')
+    return [badge, text]
+
+
+def insert_user_stack():
+    stack = dmc.Stack(
+        children=[
+            dmc.Group(id='user-count', spacing='xs'),
+            dmc.Group(id='user-stats', spacing='xs'),
+        ]
+    )
+    return stack
 
 
 def insert_anchor_github():

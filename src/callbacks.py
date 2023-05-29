@@ -108,12 +108,18 @@ def update_controls(config):
 
 
 @callback(
-    [Output({'type': 'ring', 'index': iso}, 'sections') for iso in utils.get_language_mapping()],
+    {
+        'rings': [Output({'type': 'ring', 'index': iso}, 'sections') for iso in utils.get_language_mapping()],
+        'user-count': Output('user-count', 'children'),
+    },
     Input('interval-component', 'n_intervals'),
 )
 def update_stats(_: int):
     stats = database.get_stats_by_language()
-    output = [[{'value': stats.get(iso, 0), 'color': ui.styles.PRIMARY_COLOUR}] for iso in utils.get_language_mapping()]
+    output = dict()
+    output['rings'] = [[{'value': stats.get(iso, 0), 'color': ui.styles.PRIMARY_COLOUR}] for iso in utils.get_language_mapping()]
+    count = database.get_user_count()
+    output['user-count'] = ui.extras.insert_user_count(count)
     return output
 
 
