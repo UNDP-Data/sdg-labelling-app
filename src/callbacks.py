@@ -1,12 +1,9 @@
-# standard library
-from typing import get_args
-
 # dash
 from dash import callback, callback_context, no_update, MATCH, ALL
 from dash.dependencies import Input, Output, State
 
 # local packages
-from src import database, components, styles, entities, utils
+from src import communication, database, entities, ui, utils
 
 
 @callback(
@@ -17,7 +14,7 @@ from src import database, components, styles, entities, utils
 def start_over_button(n_clicks):
     """This callback resets the app to its initial state when the start over button is clicked."""
     if n_clicks is not None:
-        return components.get_start_layout()
+        return ui.get_start_layout()
     else:
         return no_update
 
@@ -34,9 +31,19 @@ def quit_app(n_clicks, is_open):
     """Quit the app and change the layout to the start layout."""
     ctx = callback_context
     if ctx.triggered_id == 'quit-modal-button' and n_clicks is not None:
-        return components.get_finish_layout(reason='session_quit'), False
+        return ui.get_finish_layout(reason='session_quit'), False
     else:
         return no_update, is_open
+
+
+@callback(
+    Output('modal-faq', 'opened'),
+    Input('faq-button', 'n_clicks'),
+    prevent_initial_call=True
+)
+def open_faq(n_clicks):
+    is_open = n_clicks is not None
+    return is_open
 
 
 @callback(
@@ -51,20 +58,24 @@ def quit_app(n_clicks, is_open):
     State('code-input', 'value'),
     prevent_initial_call=True
 )
-def change_to_main_layout(n_clicks, input_value, language, email, code):
+def change_to_main_layout(n_clicks, input_value, language, email, access_code):
     """Change start layout to main layout."""
-    if not utils.validate_email(email=email):
+    user_id = utils.get_user_id(email)
+    is_valid_email = utils.validate_email(email=email)
+    is_valid_code = database.validate_user_code(user_id=user_id, access_code=access_code)
+
+    if not is_valid_email:
         return no_update, no_update, 'Invalid email address', no_update
-    elif not utils.validate_code(code=code):
-        return no_update, no_update, no_update, 'Invalid invitation code'
+    elif not is_valid_code:
+        return no_update, no_update, None, 'Invalid invitation code'
     else:
         config = entities.SessionConfig(
             task_idx=0,
             task_ids=[None] * input_value,
-            user_id=utils.get_user_id(email),
+            user_id=user_id,
             language=language,
         )
-        return components.get_main_layout(), config.dict(), no_update, no_update
+        return ui.get_main_layout(), config.dict(), no_update, no_update
 
 
 @callback(
@@ -90,19 +101,25 @@ def update_controls(config):
     config = entities.SessionConfig(**config)
     progress = (sum(task_id is not None for task_id in config.task_ids) - 1) / len(config.task_ids) * 100
     n_labels = database.get_stats_user(config)
-    user_stats = components.insert_user_stats(n_labels)
+    user_stats = ui.extras.insert_user_stats(n_labels)
     button_back_disabled = config.task_idx <= 0
     button_next_name = 'Next & Finish' if config.task_idx == (len(config.task_ids) - 1) is not None else 'Next'
     return progress, f'{progress:.0f}%', user_stats, button_back_disabled, button_next_name
 
 
 @callback(
-    [Output({'type': 'ring', 'index': iso}, 'sections') for iso in get_args(entities.LANGUAGE_ISO)],
+    {
+        'rings': [Output({'type': 'ring', 'index': iso}, 'sections') for iso in utils.get_language_mapping()],
+        'user-count': Output('user-count', 'children'),
+    },
     Input('interval-component', 'n_intervals'),
 )
 def update_stats(_: int):
     stats = database.get_stats_by_language()
-    output = [[{'value': stats.get(iso, 0), 'color': styles.PRIMARY_COLOUR}] for iso in get_args(entities.LANGUAGE_ISO)]
+    output = dict()
+    output['rings'] = [[{'value': stats.get(iso, 0), 'color': ui.styles.PRIMARY_COLOUR}] for iso in utils.get_language_mapping()]
+    count = database.get_user_count()
+    output['user-count'] = ui.extras.insert_user_count(count)
     return output
 
 
@@ -141,7 +158,7 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
 
     # finish the session once the specified number of examples has been labelled
     if config.task_idx == len(config.task_ids):
-        final_layout = components.get_finish_layout(reason='session_done')
+        final_layout = ui.get_finish_layout(reason='session_done')
         return no_update, no_update, final_layout, config.dict(), no_update
 
     doc_id = config.get_task_id()
@@ -151,13 +168,13 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
 
         # finish the session if there are no more unlabelled examples for a given user and language
         if doc is None:
-            final_layout = components.get_finish_layout(reason='no_tasks')
+            final_layout = ui.get_finish_layout(reason='no_tasks')
             return no_update, no_update, final_layout, config.dict(), no_update
     else:
         doc = database.get_paragraph_by_id(doc_id)
         selected_sgds, comment = utils.get_user_label_and_comment(doc, config.user_id)
 
-    sdg_buttons = components.get_sdg_buttons(selected_sgds, language=config.language)
+    sdg_buttons = ui.buttons.insert_buttons_sdg(selected_sgds, language=config.language)
     config.set_task_id(doc['_id'])
     return sdg_buttons, doc['text'], no_update, config.dict(), comment
 
@@ -172,7 +189,7 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
 def change_sdg_img(n_clicks, button_id, config):
     is_selected = n_clicks % 2 == 1
     sdg_id = button_id['index']
-    style = styles.get_sdg_style(sdg_id=sdg_id, is_selected=is_selected, language=config['language'])
+    style = ui.styles.get_sdg_style(sdg_id=sdg_id, is_selected=is_selected, language=config['language'])
     return style
 
 
@@ -183,3 +200,43 @@ def change_sdg_img(n_clicks, button_id, config):
 )
 def open_sdg_reference(n_clicks):
     return True
+
+
+@callback(
+    Output('email-button', 'disabled', allow_duplicate=True),
+    Output('start-button', 'disabled', allow_duplicate=True),
+    Output('notifications-container', 'children', allow_duplicate=True),
+    Input('email-button', 'disabled'),
+    State('email-input', 'value'),
+    prevent_initial_call=True,
+)
+def send_access_code_with_notification(disabled, email):
+    user_id = utils.get_user_id(email)
+    access_code = communication.send_access_code(email=email)
+    if access_code is None:
+        notification = ui.notifications.get_notification_failed(email=email)
+        is_disabled = False
+    else:
+        database.upsert_user_code(user_id=user_id, access_code=access_code)
+        notification = ui.notifications.get_notification_sent(email=email)
+        is_disabled = True
+    return is_disabled, False, notification
+
+
+@callback(
+    Output('email-input', 'error', allow_duplicate=True),
+    Output('email-button', 'disabled', allow_duplicate=True),
+    Output('start-button', 'disabled', allow_duplicate=True),
+    Output('notifications-container', 'children', allow_duplicate=True),
+    Input('email-button', 'n_clicks'),
+    State('email-input', 'value'),
+    prevent_initial_call=True,
+)
+def disable_buttons_while_sending(n_clicks, email):
+    if not utils.validate_email(email=email):
+        error_message = 'Please, provide a valid UNDP email address.'
+        return error_message, no_update, no_update, no_update
+    notification = ui.notifications.get_notification_sending(email=email)
+    is_disabled = True
+    error_message = None
+    return error_message, is_disabled, is_disabled, notification
