@@ -39,7 +39,7 @@ def insert_drawer_reference():
         children=[
             text,
             nav_link,
-            dmc.ScrollArea(accordion, h=500),  # this needs some adjustments
+            dmc.ScrollArea(accordion, h=1000),  # this needs some adjustments
         ]
     )
     drawer = dmc.Drawer(
