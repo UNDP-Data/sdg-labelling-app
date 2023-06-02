@@ -35,15 +35,13 @@ def insert_rings_progress():
 
 
 def insert_user_stats(n_labels: int):
-    text = dmc.Text('Your contribution is', weight=100, size='sm')
-    badge = dmc.Badge(f'{n_labels:,} labels', color='red', variant='light')
-    return [text, badge]
+    badge = dmc.Badge(f'you labelled {n_labels:,} texts', color='red', variant='light')
+    return badge
 
 
 def insert_user_count(count: int):
-    badge = dmc.Badge(f'{count:,} people', color='blue', variant='light')
-    text = dmc.Text('have already contributed!', weight=100, size='sm')
-    return [badge, text]
+    badge = dmc.Badge(f'{count:,} people contributed', color='blue', variant='light')
+    return badge
 
 
 def insert_user_stack():
