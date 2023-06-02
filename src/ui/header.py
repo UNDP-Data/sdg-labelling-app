@@ -30,6 +30,8 @@ def insert_header():
         ' International Development',
         color=styles.PRIMARY_COLOUR,
         variant='gradient',
+        size='sm',
+        style={'overflow-wrap': 'break-word'},
     )
 
     title_stack = dmc.Stack(
