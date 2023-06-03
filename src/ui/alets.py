@@ -23,7 +23,6 @@ def insert_release_alerts():
             color='blue',
             variant='outline',
             withCloseButton=True,
-            style={'width': '50%'},
         )
         alerts.append(alert)
     return alerts

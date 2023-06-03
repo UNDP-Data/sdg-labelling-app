@@ -32,14 +32,13 @@ dash_app.layout = dmc.NotificationsProvider(
             interval=1_000 * 10,  # in milliseconds
             n_intervals=0
         ),
-        ui.header.insert_header(),
-        dmc.Container(
+        dmc.Grid(
             id='content',
             children=ui.get_start_layout(),
-            fluid=True,
+            justify='center',
+            gutter='lg',
         ),
         ui.affixes.insert_affix_feedback(),
-        ui.footer.insert_footer(),
         html.Div(id='notifications-container'),
     ],
     autoClose=False,

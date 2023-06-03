@@ -6,18 +6,6 @@ from src.ui import styles, buttons, modals, extras
 
 
 def insert_header():
-    title_group_right = dmc.Group(
-        children=[
-            extras.insert_user_stack(),
-            *extras.insert_rings_progress(),
-            buttons.insert_button_faq(),
-            modals.insert_modal_faq(),
-            extras.insert_anchor_github(),
-        ],
-        mr=0,
-        ml='auto',
-    )
-
     title = dmc.Title(
         'SDG Labelling Application',
         order=1,
@@ -44,15 +32,28 @@ def insert_header():
         variant='solid',
     )
 
-    title_row = dmc.Group(
-        children=[title_stack, title_group_right],
-        w='100%',
-    )
+    spans_1 = {
+        'xl': 4,
+        'lg': 4,
+        'md': 12,
+        'sm': 12,
+        'xs': 12,
+    }
 
-    header = dmc.Header(
-        className='app-header',
-        height=120,
-        withBorder=True,
-        children=[title_row, divider],
-    )
-    return header
+    spans_2 = {
+        'xl': 2,
+        'lg': 2,
+        'md': 6,
+        'sm': 6,
+        'xs': 6,
+    }
+
+    columns = [
+        dmc.Col(title_stack, **spans_1),
+        dmc.Col(dmc.Group(extras.insert_rings_progress(), spacing='xs'), **spans_1),
+        dmc.Col(extras.insert_user_stack(), **spans_2),
+        dmc.Col(dmc.Group([buttons.insert_button_faq(), modals.insert_modal_faq(), extras.insert_anchor_github()],
+                          spacing='xs'), **spans_2),
+        dmc.Col(divider, span=12),
+    ]
+    return columns

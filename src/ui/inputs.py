@@ -24,7 +24,7 @@ def insert_slider_texts():
             {'value': 100, 'label': '100'}
         ],
         value=25,
-        style={'width': '45%'}
+        style={'width': '95%'},  # avoid overflow for slider ends
     )
     return slider_texts
 
@@ -45,8 +45,8 @@ def insert_select_language():
         description='If you are fluent in a language other than English, please select it.',
         data=data,
         required=True,
-        style={'width': '40%'},
         value='en',
+        style={'width': '95%'},
     )
     return select_language
 
@@ -58,8 +58,8 @@ def insert_input_email():
         description='This must be your official UNDP email. It is only used for verification and will not be stored.',
         # value='john.doe@undp.org',  # comment out after testing
         placeholder='john.doe@undp.org',
-        style={'width': '40%'},
         required=True,
+        style={'width': '95%'},
     )
     return input_email
 
@@ -72,8 +72,8 @@ def insert_input_passcode():
                     ' click the button on the right.',
         # value='1234',  # comment out after testing
         placeholder='Type your code here',
-        style={'width': '40%'},
         required=True,
+        style={'width': '95%'},
     )
     return input_passcode
 
