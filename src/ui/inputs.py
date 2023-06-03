@@ -12,16 +12,16 @@ def insert_slider_texts():
         min=5,
         max=100,
         step=5,
-        size='lg',
+        size='md',
         radius='md',
         showLabelOnHover=True,
         color='blue.8',
         marks=[
-            {'value': 5, 'label': 'Just exploring'},
+            {'value': 5, 'label': '5'},
             {'value': 25, 'label': '25'},
             {'value': 50, 'label': '50'},
             {'value': 75, 'label': '75'},
-            {'value': 100, 'label': 'I really want to contribute'}
+            {'value': 100, 'label': '100'}
         ],
         value=25,
         style={'width': '45%'}
