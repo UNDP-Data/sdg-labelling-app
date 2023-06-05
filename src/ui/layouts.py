@@ -5,7 +5,7 @@ from typing import Literal
 import dash_mantine_components as dmc
 
 # local packages
-from src.ui import styles, alets, buttons, inputs, modals, drawer, header, footer, affixes
+from src.ui import styles, alerts, buttons, inputs, modals, drawer, header, footer, affixes, accordions
 
 
 def get_start_layout():
@@ -43,7 +43,7 @@ def get_start_layout():
 
     columns = [
         *header.insert_header(),
-        dmc.Col(alets.insert_release_alerts(), **spans),
+        dmc.Col(accordions.insert_accordion_announcements(), **spans),
         dmc.Col(title_stack, **spans),
         dmc.Col(inputs.insert_slider_texts(), **spans),
         dmc.Col(inputs.insert_select_language(), **spans),
@@ -140,7 +140,7 @@ def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks'
 
     stack = dmc.Stack(
         children=[
-            alets.insert_alert_finish(reason=reason),
+            alerts.insert_alert_finish(reason=reason),
             anchor_restart,
         ],
         align='center',

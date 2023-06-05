@@ -1,0 +1,18 @@
+- title: "Arabic is Temporarily Unavailable"
+  colour: "red"
+  text: |
+    We have been made aware of issues with texts in Arabic. While we are working on resolving them, labelling in the 
+    Arabic language is disabled.
+- title: "FAQ Section Has Arrived"
+  colour: "blue"
+  text: |
+    We have added a FAQ section to answer common questions you might have about the application and rationale behind it.
+    If you have not done so already, check it out before proceeding! You can find FAQ button in the upper right corner.
+- title: "Enhanced Security"
+  colour: "blue"
+  text: |
+    As we are scaling the application to hundreds of users, we have made changes to make everyone's experience more 
+    secure and private. Users can now only access the application with their personal access code. To request your code,
+    enter you UNDP email and click on "Get Access Code". The code you receive is like a password. You do not need to
+    request it repeatedly, you can reuse it to access the application multiple times. Once you receive the code, we 
+    recommend that you save it in your browser or password manager.
