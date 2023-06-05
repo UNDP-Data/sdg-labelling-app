@@ -1,8 +1,37 @@
+# standard library
+import os
+
 # dash
 import dash_mantine_components as dmc
+from dash_iconify import DashIconify
 
 # local packages
 from src.ui import styles, buttons, modals, extras
+
+
+def insert_menu():
+    menu = dmc.Menu(
+        [
+            dmc.MenuTarget(dmc.Burger()),
+            dmc.MenuDropdown(
+                children=[
+                    dmc.MenuLabel('Feedback'),
+                    dmc.MenuItem(
+                        children='GitHub',
+                        href='https://github.com/UNDP-Data/sdg-labelling-app/issues',
+                        target='_blank',
+                        icon=DashIconify(icon='radix-icons:external-link'),
+                    ),
+                    dmc.MenuItem(
+                        children='Get in Touch',
+                        href=os.environ['MAILTO'],
+                        icon=DashIconify(icon='tabler-mail'),
+                    )
+                ]
+            ),
+        ],
+    )
+    return menu
 
 
 def insert_header():
@@ -52,7 +81,7 @@ def insert_header():
         dmc.Col(title_stack, **spans_1),
         dmc.Col(dmc.Group(extras.insert_rings_progress(), spacing='xs'), **spans_1),
         dmc.Col(extras.insert_user_stack(), **spans_2),
-        dmc.Col(dmc.Group([buttons.insert_button_faq(), modals.insert_modal_faq(), extras.insert_anchor_github()],
+        dmc.Col(dmc.Group([buttons.insert_button_faq(), modals.insert_modal_faq(), insert_menu()],
                           spacing='xs'), **spans_2),
         dmc.Col(divider, span=12),
     ]

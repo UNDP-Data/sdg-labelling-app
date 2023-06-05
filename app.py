@@ -38,7 +38,6 @@ dash_app.layout = dmc.NotificationsProvider(
             justify='center',
             gutter='lg',
         ),
-        ui.affixes.insert_affix_feedback(),
         html.Div(id='notifications-container'),
     ],
     autoClose=False,

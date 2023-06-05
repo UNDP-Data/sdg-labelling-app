@@ -52,17 +52,3 @@ def insert_user_stack():
         ]
     )
     return stack
-
-
-def insert_anchor_github():
-    icon = DashIconify(
-        icon='mdi:github',
-        width=40,
-        color='black',
-    )
-    anchor = dmc.Anchor(
-        children=icon,
-        href='https://github.com/UNDP-Data/sdg-labelling-app/issues',
-        target='_blank',
-    )
-    return anchor
