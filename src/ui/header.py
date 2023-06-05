@@ -61,28 +61,22 @@ def insert_header():
         variant='solid',
     )
 
-    spans_1 = {
-        'xl': 4,
-        'lg': 4,
-        'md': 12,
-        'sm': 12,
-        'xs': 12,
-    }
+    progress_group = dmc.Group(
+        children=extras.insert_rings_progress(),
+        spacing='xs',
+        style={'display': 'right'},
+    )
 
-    spans_2 = {
-        'xl': 2,
-        'lg': 2,
-        'md': 6,
-        'sm': 6,
-        'xs': 6,
-    }
+    extra_group = dmc.Group(
+        children=[extras.insert_user_stack(), buttons.insert_button_faq(), modals.insert_modal_faq(), insert_menu()],
+        spacing='xs',
+        style={'float': 'right'},
+    )
 
     columns = [
-        dmc.Col(title_stack, **spans_1),
-        dmc.Col(dmc.Group(extras.insert_rings_progress(), spacing='xs'), **spans_1),
-        dmc.Col(extras.insert_user_stack(), **spans_2),
-        dmc.Col(dmc.Group([buttons.insert_button_faq(), modals.insert_modal_faq(), insert_menu()],
-                          spacing='xs'), **spans_2),
+        dmc.Col(title_stack, xl=5, lg=5, md=12, sm=12, xs=12),
+        dmc.Col(progress_group, xl=4, lg=5, md=7, sm=7, xs=12),
+        dmc.Col(extra_group, xl=3, lg=2, md=5, sm=5, xs=12),
         dmc.Col(divider, span=12),
     ]
     return columns

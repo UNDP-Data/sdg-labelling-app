@@ -11,13 +11,14 @@ def insert_button_faq():
     button = dmc.Button(
         'FAQ',
         id='faq-button',
-        # size='lg',
+        size='sm',
         radius='md',
         color='red',
+        compact=True,
         variant='light',
         leftIcon=DashIconify(
             icon='wpf:faq',
-            width=30,
+            width=20,
         ),
     )
     tooltip = dmc.Tooltip(

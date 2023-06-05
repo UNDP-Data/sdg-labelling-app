@@ -16,8 +16,8 @@ def insert_rings_progress():
         ring = dmc.RingProgress(
             id={'type': 'ring', 'index': iso},
             label=dmc.Center(dmc.Text(iso.upper(), color=styles.PRIMARY_COLOUR)),
-            size=80,
-            thickness=10,
+            size=65,
+            thickness=5,
             roundCaps=False,
             sections=[{'value': 0, 'color': styles.PRIMARY_COLOUR}],
         )
