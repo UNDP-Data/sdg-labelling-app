@@ -58,7 +58,7 @@ def get_start_layout():
 
 def get_main_layout():
     title = dmc.Title(
-        'SELECT ONE OR MORE SDGs RELEVANT FOR THIS PARAGRAPH',
+        'SELECT SDGs RELEVANT FOR THIS PARAGRAPH IF APPLICABLE',
         order=2,
         color=styles.PRIMARY_COLOUR,
         variant='gradient',
