@@ -1,8 +1,8 @@
-- title: "Arabic is Temporarily Unavailable"
+- title: "Arabic and Chinese are Temporarily Unavailable"
   colour: "red"
   text: |
-    We have been made aware of issues with texts in Arabic. While we are working on resolving them, labelling in the 
-    Arabic language is disabled.
+    We have been made aware of issues with texts in Arabic and Chinese. While we are working on resolving them, 
+    labelling in these language is disabled.
 - title: "FAQ Section Has Arrived"
   colour: "blue"
   text: |

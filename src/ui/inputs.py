@@ -32,9 +32,9 @@ def insert_slider_texts():
 def insert_select_language():
     data = list()
     for iso, name in utils.get_language_mapping().items():
-        coming_soon = {'ar', 'ru', 'zh'}
+        coming_soon = {'ar', 'zh'}
         option = {
-            'label': name if iso not in coming_soon else f'{name} (Coming soon)',
+            'label': name if iso not in coming_soon else f'{name} (Temporarily Unavailable)',
             'value': iso,
             'disabled': iso in coming_soon,
         }
