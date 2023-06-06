@@ -39,14 +39,14 @@ def insert_drawer_reference():
         children=[
             text,
             nav_link,
-            dmc.ScrollArea(accordion, h=1000),  # this needs some adjustments
+            dmc.ScrollArea(accordion, h='50vw'),  # this needs some adjustments
         ]
     )
     drawer = dmc.Drawer(
         title=dmc.Text('SDG Reference', weight=700),  # bold
         children=stack,
         id='drawer-reference',
-        size='30%',
+        size='lg',
         padding='md',
         zIndex=10000,
     )

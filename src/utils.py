@@ -1,5 +1,4 @@
 # standard library
-import os
 import re
 import json
 import hashlib
@@ -7,6 +6,9 @@ from importlib import resources
 from typing import get_args
 from string import digits, ascii_letters
 from random import choices
+
+# utils
+import yaml
 
 # local packages
 from src import entities
@@ -29,6 +31,12 @@ def read_email_template() -> dict:
     with resources.open_text('src.files', 'email.json') as file:
         template = json.load(file)
     return template
+
+
+def read_announcements_yaml():
+    with resources.open_text('src.files', 'announcements.yml') as file:
+        content = yaml.safe_load(file)
+    return content
 
 
 def get_language_mapping() -> dict:

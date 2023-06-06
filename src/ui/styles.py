@@ -15,19 +15,15 @@ def get_sdg_style(sdg_id: int, is_selected: bool, language: entities.LANGUAGE_IS
     if is_selected:
         style_extra = {
             'background-image': f'url("../assets/icons/{language}/colour/sdg_{sdg_id}.png")',
-            'height': '10vh',
-            'width': '10vh',
-            'max-height': '10vh',
-            'max-width': '10vh',
+            'height': '11vh',
+            'width': '11vh',
             'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
         }
     else:
         style_extra = {
             'background-image': f'url("../assets/icons/{language}/black/sdg_{sdg_id}.png")',
-            'height': '9vh',
-            'width': '9vh',
-            'max-height': '9vh',
-            'max-width': '9vh',
+            'height': '10vh',
+            'width': '10vh',
         }
     style = style_base | style_extra
     return style

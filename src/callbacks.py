@@ -67,7 +67,7 @@ def change_to_main_layout(n_clicks, input_value, language, email, access_code):
     if not is_valid_email:
         return no_update, no_update, 'Invalid email address', no_update
     elif not is_valid_code:
-        return no_update, no_update, None, 'Invalid invitation code'
+        return no_update, no_update, None, 'Invalid access code'
     else:
         config = entities.SessionConfig(
             task_idx=0,

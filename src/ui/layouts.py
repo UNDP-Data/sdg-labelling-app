@@ -5,7 +5,7 @@ from typing import Literal
 import dash_mantine_components as dmc
 
 # local packages
-from src.ui import styles, alets, buttons, inputs, modals, affixes, drawer
+from src.ui import styles, alerts, buttons, inputs, modals, drawer, header, footer, affixes, accordions
 
 
 def get_start_layout():
@@ -22,35 +22,43 @@ def get_start_layout():
         color=styles.PRIMARY_COLOUR,
     )
 
-    group_passcode = dmc.Group(
-        children=[inputs.insert_input_passcode(), buttons.insert_button_send()],
-        position='center',
-        grow=True,
-        style={'width': '40%'},
+    title_stack = dmc.Stack(
+        children=[title, text],
+        align='center',
     )
 
-    stack = dmc.Stack(
-        children=[
-            *alets.insert_release_alerts(),
-            title,
-            text,
-            inputs.insert_slider_texts(),
-            inputs.insert_select_language(),
-            inputs.insert_input_email(),
-            group_passcode,
-            buttons.insert_button_start(),
-        ],
-        align='center',
-        spacing='xl',
-        pt='3%',
-        pb=25,
-    )
-    return stack
+    spans = {
+        'xl': 9,
+        'lg': 9,
+        'md': 10,
+        'sm': 11,
+        'xs': 11,
+    }
+
+    spans_2 = {
+        'md': 10,
+        'sm': 11,
+        'xs': 11,
+    }
+
+    columns = [
+        *header.insert_header(),
+        dmc.Col(accordions.insert_accordion_announcements(), **spans),
+        dmc.Col(title_stack, **spans),
+        dmc.Col(inputs.insert_slider_texts(), **spans),
+        dmc.Col(inputs.insert_select_language(), **spans),
+        dmc.Col(inputs.insert_input_email(), **spans),
+        dmc.Col(inputs.insert_input_passcode(), **spans_2, xl=6, lg=6),
+        dmc.Col(dmc.Center(buttons.insert_button_send()), **spans_2, xl=3, lg=3),
+        dmc.Col(dmc.Center(buttons.insert_button_start()), **spans),
+        dmc.Col(footer.insert_footer(), span=12),
+    ]
+    return columns
 
 
 def get_main_layout():
     title = dmc.Title(
-        'SELECT ONE OR MORE SDGs RELEVANT FOR THIS PARAGRAPH',
+        'SELECT SDGs RELEVANT FOR THIS PARAGRAPH IF APPLICABLE',
         order=2,
         color=styles.PRIMARY_COLOUR,
         variant='gradient',
@@ -72,12 +80,12 @@ def get_main_layout():
 
     loading_paper = dmc.LoadingOverlay(
         children=paper,
-        style={'width': '90%'},
     )
 
-    labels = dmc.Container(
+    labels = dmc.Group(
         id='chip-container',
         className='chip-container',
+        style={'width': '100%'},
     )
 
     progress_bar = dmc.Progress(
@@ -87,17 +95,10 @@ def get_main_layout():
         color=styles.PRIMARY_COLOUR,
         radius='sm',
         size='xl',
-        style={'width': '90%', 'margin': 'auto'}
     )
 
     stack = dmc.Stack(
         children=[
-            title,
-            progress_bar,
-            loading_paper,
-            labels,
-            inputs.insert_select_comment(),
-            buttons.insert_buttons_navigation(),
             modals.insert_modal_quit(),
             drawer.insert_drawer_reference(),
             affixes.insert_affix_reference(),
@@ -105,10 +106,29 @@ def get_main_layout():
         align='center',
         spacing='xl',
         pt='3%',
-        pb=25,
+        pb=35,
     )
 
-    return stack
+    spans = {
+        'xl': 8,
+        'lg': 10,
+        'md': 12,
+        'sm': 12,
+        'xs': 12,
+    }
+    columns = [
+        *header.insert_header(),
+        dmc.Col(dmc.Center(title), **spans),
+        dmc.Col(progress_bar,  **spans),
+        dmc.Col(loading_paper, **spans),
+        dmc.Col(labels, **spans),
+        dmc.Col(dmc.Center(inputs.insert_select_comment()), **spans),
+        dmc.Col(dmc.Center(buttons.insert_buttons_navigation()), **spans),
+        dmc.Col(stack, **spans),
+        dmc.Col(footer.insert_footer(), span=12),
+    ]
+
+    return columns
 
 
 def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks']):
@@ -120,7 +140,7 @@ def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks'
 
     stack = dmc.Stack(
         children=[
-            alets.insert_alert_finish(reason=reason),
+            alerts.insert_alert_finish(reason=reason),
             anchor_restart,
         ],
         align='center',
@@ -128,4 +148,19 @@ def get_finish_layout(reason: Literal['session_done', 'session_quit', 'no_tasks'
         pt='3%',
         pb=25,
     )
-    return stack
+
+    spans = {
+        'xl': 8,
+        'lg': 10,
+        'md': 12,
+        'sm': 12,
+        'xs': 12,
+    }
+
+    columns = [
+        *header.insert_header(),
+        dmc.Col(stack, **spans),
+        dmc.Col(footer.insert_footer(), span=12),
+    ]
+
+    return columns

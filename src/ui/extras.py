@@ -16,8 +16,8 @@ def insert_rings_progress():
         ring = dmc.RingProgress(
             id={'type': 'ring', 'index': iso},
             label=dmc.Center(dmc.Text(iso.upper(), color=styles.PRIMARY_COLOUR)),
-            size=80,
-            thickness=10,
+            size=65,
+            thickness=5,
             roundCaps=False,
             sections=[{'value': 0, 'color': styles.PRIMARY_COLOUR}],
         )
@@ -35,15 +35,13 @@ def insert_rings_progress():
 
 
 def insert_user_stats(n_labels: int):
-    text = dmc.Text('Your contribution is', weight=100, size='sm')
-    badge = dmc.Badge(f'{n_labels:,} labels', color='red', variant='light')
-    return [text, badge]
+    badge = dmc.Badge(f'you labelled {n_labels:,} texts', color='red', variant='light')
+    return badge
 
 
 def insert_user_count(count: int):
-    badge = dmc.Badge(f'{count:,} people', color='blue', variant='light')
-    text = dmc.Text('have already contributed!', weight=100, size='sm')
-    return [badge, text]
+    badge = dmc.Badge(f'{count:,} people contributed', color='blue', variant='light')
+    return badge
 
 
 def insert_user_stack():
@@ -54,17 +52,3 @@ def insert_user_stack():
         ]
     )
     return stack
-
-
-def insert_anchor_github():
-    icon = DashIconify(
-        icon='mdi:github',
-        width=40,
-        color='black',
-    )
-    anchor = dmc.Anchor(
-        children=icon,
-        href='https://github.com/UNDP-Data/sdg-labelling-app/issues',
-        target='_blank',
-    )
-    return anchor
