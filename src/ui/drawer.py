@@ -46,7 +46,7 @@ def insert_drawer_reference():
         title=dmc.Text('SDG Reference', weight=700),  # bold
         children=stack,
         id='drawer-reference',
-        size='30%',
+        size='lg',
         padding='md',
         zIndex=10000,
     )
