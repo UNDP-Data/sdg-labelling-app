@@ -16,7 +16,7 @@ Contributions in English are always welcome!
 
 ### When is the deadline?
 
-The initial duration of the exercise is 1 month (**until June 16**).
+The application will initially be open for contributions **until June 30, 2023**.
 Make sure to contribute regularly!
 
 ### How much time is required to contribute?
