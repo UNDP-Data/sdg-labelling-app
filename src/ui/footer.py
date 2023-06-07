@@ -5,7 +5,7 @@ import dash_mantine_components as dmc
 def insert_footer():
     text = dmc.Text(
         children=[
-            'App v0.4.0. Developed and maintained by the ',
+            'App v0.4.1. Developed and maintained by the ',
             dmc.Anchor('SDG Integration team', href='https://sdgintegration.undp.org', target='_blank'),
             ' at UNDP. Visit ',
             dmc.Anchor('Data Futures Platform', href='https://data.undp.org', target='_blank'),
