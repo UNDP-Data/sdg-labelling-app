@@ -68,37 +68,49 @@ def display_settings(checked: bool):
 
 
 @callback(
-    Output('content', 'children', allow_duplicate=True),
-    Output('session-config', 'data',  allow_duplicate=True),
+    Output('session-settings', 'style'),
+    Output('login-settings', 'style'),
+    Output('user-config', 'data'),
     Output('email-input', 'error'),
     Output('code-input', 'error'),
     Output({'type': 'menu-user', 'index': ALL}, 'style'),
-    Input('start-button', 'n_clicks'),
-    State('slider', 'value'),
-    State('language-input', 'value'),
+    Input('button-log-in', 'n_clicks'),
     State('email-input', 'value'),
     State('code-input', 'value'),
     prevent_initial_call=True
 )
-def change_to_main_layout(n_clicks, input_value, language, email, access_code):
-    """Change start layout to main layout."""
+def log_in(n_clicks, email, access_code):
     user_id = utils.get_user_id(email)
     is_valid_email = utils.validate_email(email=email)
     is_valid_code = database.validate_user_code(user_id=user_id, access_code=access_code)
 
     if not is_valid_email:
-        return no_update, no_update, 'Invalid email address', no_update, [no_update] * 3
+        return no_update, no_update, no_update, 'Invalid email address', no_update, [no_update] * 3
     elif not is_valid_code:
-        return no_update, no_update, None, 'Invalid access code', [no_update] * 3
+        return no_update, no_update, no_update, None, 'Invalid access code', [no_update] * 3
     else:
-        config = entities.SessionConfig(
-            task_idx=0,
-            task_ids=[None] * input_value,
-            user_id=user_id,
-            language=language,
-        )
-        styles = [{'display': 'show'}] * 3  # show 3 user items in the menu
-        return ui.get_main_layout(), config.dict(), no_update, no_update, styles
+        styles = [None] * 3  # show 3 user items in the menu
+        return None, {'display': 'none'}, {'authenticated': True, 'user_id': user_id}, None, None, styles
+
+
+@callback(
+    Output('content', 'children', allow_duplicate=True),
+    Output('session-config', 'data',  allow_duplicate=True),
+    Input('start-button', 'n_clicks'),
+    State('slider', 'value'),
+    State('language-input', 'value'),
+    State('user-config', 'data'),
+    prevent_initial_call=True
+)
+def change_to_main_layout(n_clicks, n_tasks, language, user_config):
+    """Change start layout to main layout."""
+    config = entities.SessionConfig(
+        task_idx=0,
+        task_ids=[None] * n_tasks,
+        user_id=user_config['user_id'],
+        language=language,
+    )
+    return ui.get_main_layout(), config.dict()
 
 
 @callback(

@@ -51,6 +51,25 @@ def insert_button_send():
     return tooltip
 
 
+def insert_button_login():
+    button = dmc.Button(
+        'Log in',
+        id='button-log-in',
+        size='lg',
+        radius='md',
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+    tooltip = dmc.Tooltip(
+        children=button,
+        label='Click to log in',
+        position='top',
+        offset=3,
+        openDelay=500,
+    )
+    return tooltip
+
+
 def insert_button_start():
     button = dmc.Button(
         'Start',
