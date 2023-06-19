@@ -87,9 +87,9 @@ def change_to_main_layout(n_clicks, input_value, language, email, access_code):
     is_valid_code = database.validate_user_code(user_id=user_id, access_code=access_code)
 
     if not is_valid_email:
-        return no_update, no_update, 'Invalid email address', no_update, no_update
+        return no_update, no_update, 'Invalid email address', no_update, [no_update] * 3
     elif not is_valid_code:
-        return no_update, no_update, None, 'Invalid access code', no_update
+        return no_update, no_update, None, 'Invalid access code', [no_update] * 3
     else:
         config = entities.SessionConfig(
             task_idx=0,
