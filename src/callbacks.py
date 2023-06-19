@@ -51,6 +51,7 @@ def open_faq(n_clicks):
     Output('session-config', 'data',  allow_duplicate=True),
     Output('email-input', 'error'),
     Output('code-input', 'error'),
+    Output({'type': 'menu-user', 'index': ALL}, 'style'),
     Input('start-button', 'n_clicks'),
     State('slider', 'value'),
     State('language-input', 'value'),
@@ -65,9 +66,9 @@ def change_to_main_layout(n_clicks, input_value, language, email, access_code):
     is_valid_code = database.validate_user_code(user_id=user_id, access_code=access_code)
 
     if not is_valid_email:
-        return no_update, no_update, 'Invalid email address', no_update
+        return no_update, no_update, 'Invalid email address', no_update, no_update
     elif not is_valid_code:
-        return no_update, no_update, None, 'Invalid access code'
+        return no_update, no_update, None, 'Invalid access code', no_update
     else:
         config = entities.SessionConfig(
             task_idx=0,
@@ -75,7 +76,8 @@ def change_to_main_layout(n_clicks, input_value, language, email, access_code):
             user_id=user_id,
             language=language,
         )
-        return ui.get_main_layout(), config.dict(), no_update, no_update
+        styles = [{'display': 'show'}] * 3  # show 3 user items in the menu
+        return ui.get_main_layout(), config.dict(), no_update, no_update, styles
 
 
 @callback(
