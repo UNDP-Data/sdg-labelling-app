@@ -44,6 +44,7 @@ def get_start_layout():
     columns = [
         *header.insert_header(),
         dmc.Col(accordions.insert_accordion_announcements(), **spans),
+        dmc.Col(accordions.insert_accordion_leaderboard(), **spans),
         dmc.Col(title_stack, **spans),
         dmc.Col(inputs.insert_slider_texts(), **spans),
         dmc.Col(inputs.insert_select_language(), **spans),

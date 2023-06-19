@@ -144,6 +144,7 @@ def update_controls(config):
     {
         'rings': [Output({'type': 'ring', 'index': iso}, 'sections') for iso in utils.get_language_mapping()],
         'user-count': Output('user-count', 'children'),
+        'leaderboard': Output('leaderboard', 'children'),
     },
     Input('interval-component', 'n_intervals'),
 )
@@ -153,6 +154,9 @@ def update_stats(_: int):
     output['rings'] = [[{'value': stats.get(iso, 0), 'color': ui.styles.PRIMARY_COLOUR}] for iso in utils.get_language_mapping()]
     count = database.get_user_count()
     output['user-count'] = ui.extras.insert_user_count(count)
+
+    users = utils.create_leaderboard_entries(database.get_top_annotators(limit=100))
+    output['leaderboard'] = ui.tables.create_table(users)
     return output
 
 

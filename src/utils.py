@@ -98,3 +98,20 @@ def get_user_label_and_comment(doc: dict, user_id: str):
             return annotation.get('labels'), annotation.get('comment')
     else:
         return None, None
+
+
+def create_leaderboard_entries(docs: list[dict]):
+    entries = list()
+    for rank, doc in enumerate(docs, start=1):
+        entry = {'Rank': rank}
+        if doc.get('public_profile'):
+            entry['User Name'] = doc.get('name', '')
+            entry['Team'] = doc.get('team', '')
+        else:
+            entry['User Name'] = '<hidden>'
+            entry['Team'] = '<hidden>'
+
+        entry['Organisation'] = doc.get('organisation', '')
+        entry['Labels'] = doc['count']
+        entries.append(entry)
+    return entries
