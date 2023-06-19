@@ -105,7 +105,7 @@ def insert_profile_settings():
         size='md',
         radius='xl',
         color=styles.PRIMARY_COLOUR,
-        label='Make my profile public',
+        label='Display on Leaderboard',
         checked=False
     )
 
