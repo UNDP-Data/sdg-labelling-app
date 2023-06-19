@@ -9,7 +9,7 @@ from src.ui import styles, buttons
 
 def insert_modal_faq():
     title = dmc.Title(
-        'Frequently Asked Questions',
+        children='Frequently Asked Questions',
         order=2,
         color=styles.PRIMARY_COLOUR,
         variant='gradient',
