@@ -49,7 +49,7 @@ def insert_modal_quit():
     )
 
     modal = dmc.Modal(
-        id='modal',
+        id='modal-quit',
         centered=True,
         overlayBlur=10,
         transition='fade',
@@ -66,7 +66,7 @@ def insert_modal_profile():
         variant='gradient',
     )
     modal = dmc.Modal(
-        id='modal-profile',
+        id={'type': 'modal', 'index': 'profile'},
         title=title,
         centered=True,
         size='xl',
@@ -85,7 +85,7 @@ def insert_modal_statistics():
         variant='gradient',
     )
     modal = dmc.Modal(
-        id='modal-statistics',
+        id={'type': 'modal', 'index': 'statistics'},
         title=title,
         centered=True,
         size='xl',

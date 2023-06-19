@@ -21,9 +21,9 @@ def start_over_button(n_clicks):
 
 @callback(
     Output('content', 'children'),
-    Output('modal', 'opened', allow_duplicate=True),
+    Output('modal-quit', 'opened', allow_duplicate=True),
     Input('quit-modal-button', 'n_clicks'),
-    State('modal', 'opened'),
+    State('modal-quit', 'opened'),
     prevent_initial_call=True
 
 )
@@ -47,21 +47,11 @@ def open_faq(n_clicks):
 
 
 @callback(
-    Output('modal-profile', 'opened'),
-    Input({'type': 'menu-user', 'index': 'profile'}, 'n_clicks'),
+    Output({'type': 'modal', 'index': MATCH}, 'opened'),
+    Input({'type': 'menu-user', 'index': MATCH}, 'n_clicks'),
     prevent_initial_call=True
 )
-def open_profile(n_clicks):
-    is_open = n_clicks is not None
-    return is_open
-
-
-@callback(
-    Output('modal-statistics', 'opened'),
-    Input({'type': 'menu-user', 'index': 'statistics'}, 'n_clicks'),
-    prevent_initial_call=True
-)
-def open_statistics(n_clicks):
+def open_modal(n_clicks):
     is_open = n_clicks is not None
     return is_open
 
@@ -112,7 +102,7 @@ def change_to_main_layout(n_clicks, input_value, language, email, access_code):
 
 
 @callback(
-    Output('modal', 'opened', allow_duplicate=True),
+    Output('modal-quit', 'opened', allow_duplicate=True),
     Input('quit-button', 'n_clicks'),
     prevent_initial_call=True
 )
