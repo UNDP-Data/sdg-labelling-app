@@ -3,6 +3,7 @@ import dash_mantine_components as dmc
 
 # local packages
 from src import utils
+from src.ui import styles, buttons
 
 
 def insert_slider_texts():
@@ -96,3 +97,47 @@ def insert_select_comment():
         style={'max-width': '80%', 'min-width': '50%'},
     )
     return input_comment
+
+
+def insert_profile_settings():
+    profile_public = dmc.Switch(
+        id='user-profile-public',
+        size='md',
+        radius='xl',
+        color=styles.PRIMARY_COLOUR,
+        label='Make my profile public',
+        checked=False
+    )
+
+    user_name = dmc.TextInput(
+        id='user-profile-display-name',
+        label='Enter Your Display Name',
+        description='This name will appear on the leaderboard visible by everyone. If you don\'t want your username'
+                    ' to be public, just turn off the switch above.',
+        placeholder='Jane Doe',
+        disabled=True,
+    )
+
+    team_name = dmc.Select(
+        id='user-profile-team-name',
+        label='Enter Your Team Name',
+        description='If you are part of team, select a team name below or create one!',
+        placeholder='Jane Doe',
+        data=[
+            {'value': 'default', 'label': 'No Team'},
+        ],
+        searchable=True,
+        creatable=True,
+        disabled=True,
+    )
+
+    stack = dmc.Stack(
+        children=[
+            profile_public,
+            user_name,
+            team_name,
+            buttons.insert_button_save_settings()
+        ],
+        spacing='xl',
+    )
+    return stack

@@ -226,3 +226,22 @@ def insert_button_reference():
         openDelay=500,
     )
     return tooltip
+
+
+def insert_button_save_settings():
+    button = dmc.Button(
+        'Save',
+        id='button-save-profile',
+        size='lg',
+        radius='md',
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+    tooltip = dmc.Tooltip(
+        children=button,
+        label='Click to save the settings',
+        position='top',
+        offset=3,
+        openDelay=500,
+    )
+    return tooltip

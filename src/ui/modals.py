@@ -4,7 +4,7 @@ from dash import dcc
 
 # local packages
 from src import utils
-from src.ui import styles, buttons
+from src.ui import styles, buttons, inputs
 
 
 def insert_modal_faq():
@@ -72,7 +72,7 @@ def insert_modal_profile():
         size='xl',
         overlayBlur=10,
         transition='fade',
-        children='Coming soon.',
+        children=inputs.insert_profile_settings(),
     )
     return modal
 

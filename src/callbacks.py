@@ -67,6 +67,17 @@ def open_statistics(n_clicks):
 
 
 @callback(
+    Output('user-profile-display-name', 'disabled'),
+    Output('user-profile-team-name', 'disabled'),
+    Input('user-profile-public', 'checked'),
+    prevent_initial_call=True
+)
+def display_settings(checked: bool):
+    disabled = not checked
+    return disabled, disabled
+
+
+@callback(
     Output('content', 'children', allow_duplicate=True),
     Output('session-config', 'data',  allow_duplicate=True),
     Output('email-input', 'error'),
