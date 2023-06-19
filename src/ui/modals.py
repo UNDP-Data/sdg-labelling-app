@@ -56,3 +56,41 @@ def insert_modal_quit():
         children=stack,
     )
     return modal
+
+
+def insert_modal_profile():
+    title = dmc.Title(
+        children='My Profile',
+        order=2,
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+    modal = dmc.Modal(
+        id='modal-profile',
+        title=title,
+        centered=True,
+        size='xl',
+        overlayBlur=10,
+        transition='fade',
+        children='Coming soon.',
+    )
+    return modal
+
+
+def insert_modal_statistics():
+    title = dmc.Title(
+        children='My Statistics',
+        order=2,
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+    modal = dmc.Modal(
+        id='modal-statistics',
+        title=title,
+        centered=True,
+        size='xl',
+        overlayBlur=10,
+        transition='fade',
+        children='Coming soon.',
+    )
+    return modal

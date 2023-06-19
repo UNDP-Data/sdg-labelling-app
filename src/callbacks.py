@@ -47,6 +47,26 @@ def open_faq(n_clicks):
 
 
 @callback(
+    Output('modal-profile', 'opened'),
+    Input({'type': 'menu-user', 'index': 'profile'}, 'n_clicks'),
+    prevent_initial_call=True
+)
+def open_profile(n_clicks):
+    is_open = n_clicks is not None
+    return is_open
+
+
+@callback(
+    Output('modal-statistics', 'opened'),
+    Input({'type': 'menu-user', 'index': 'statistics'}, 'n_clicks'),
+    prevent_initial_call=True
+)
+def open_statistics(n_clicks):
+    is_open = n_clicks is not None
+    return is_open
+
+
+@callback(
     Output('content', 'children', allow_duplicate=True),
     Output('session-config', 'data',  allow_duplicate=True),
     Output('email-input', 'error'),
