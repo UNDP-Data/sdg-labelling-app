@@ -133,12 +133,12 @@ def log_in(n_clicks, email, access_code):
     State('user-config', 'data'),
     prevent_initial_call=True
 )
-def change_to_main_layout(n_clicks, n_tasks, language, user_config):
+def change_to_main_layout(n_clicks, n_tasks, language, user):
     """Change start layout to main layout."""
     config = entities.SessionConfig(
         task_idx=0,
         task_ids=[None] * n_tasks,
-        user_id=user_config['user_id'],
+        user_id=user['_id'],
         language=language,
     )
     return ui.get_main_layout(), config.dict()
