@@ -112,7 +112,7 @@ def create_leaderboard_entries(docs: list[dict]):
             entry['Team'] = '<hidden>'
 
         entry['Organisation'] = doc.get('organisation', '')
-        entry['Labels'] = doc['count']
+        entry['Labels'] = doc.get('count', 0)
         entries.append(entry)
     return entries
 

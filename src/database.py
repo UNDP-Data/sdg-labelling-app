@@ -160,14 +160,33 @@ def get_top_annotators(limit: int = 30) -> list[dict]:
         {
             '$limit': limit,
         },
+        {
+            '$lookup': {
+                'from': 'sdgs_users',
+                'localField': '_id',
+                'foreignField': '_id',
+                'as': 'fromUsers',
+            }
+        },
+        # $$ROOT is not supported by Azure Cosmos DB for MongoDB vCore (5.0)
+        # {
+        #     '$replaceRoot': {'newRoot': {'$mergeObjects': [{'$arrayElemAt': ['$fromUsers', 0]}, '$$ROOT']}}
+        # },
+        # {'$project': {'fromUsers': 0}}
     ]
-    stats = list(collection.aggregate(pipeline))
-    return stats
+    docs = list()
+    for doc in collection.aggregate(pipeline):
+        doc = {'_id': doc['_id'], 'count': doc['count']} | doc['fromUsers'][0] if doc['fromUsers'] else dict()
+        doc.pop('access_code', None)
+        doc.pop('updated_at', None)
+        docs.append(doc)
+    return docs
 
 
 def get_user_count() -> int:
-    stats = get_top_annotators(limit=100_000)
-    return len(stats)
+    collection = get_document_collection()
+    count = collection.count_documents(filter={})
+    return count
 
 
 def upsert_user_code(email: str, access_code: str) -> int:
