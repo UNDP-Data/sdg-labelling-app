@@ -255,9 +255,10 @@ def insert_button_save_settings():
         radius='md',
         color=styles.PRIMARY_COLOUR,
         variant='gradient',
+        n_clicks=0,
     )
     tooltip = dmc.Tooltip(
-        children=button,
+        children=dmc.LoadingOverlay(button),
         label='Click to save the settings',
         position='top',
         offset=3,

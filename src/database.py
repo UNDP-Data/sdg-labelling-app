@@ -209,3 +209,16 @@ def get_user(email: str, access_code: str) -> dict | None:
     collection = get_user_collection()
     user = collection.find_one(filter={'_id': user_id, 'access_code': access_code})
     return user
+
+
+def update_user_profile(user: dict) -> int:
+    collection = get_user_collection()
+    to_update = {
+        '$set': {
+            'leaderboard': user['leaderboard'],
+            'name': user['name'],
+            'team': user['team'],
+        }
+    }
+    result = collection.update_one(filter={'_id': user['_id']}, update=to_update)
+    return result.matched_count

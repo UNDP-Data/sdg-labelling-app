@@ -80,6 +80,26 @@ def display_settings(checked: bool):
 
 
 @callback(
+    Output('user-config', 'data', allow_duplicate=True),
+    Output('button-save-profile', 'error'),
+    Input('button-save-profile', 'n_clicks'),
+    State('user-profile-leaderboard', 'checked'),
+    State('user-profile-name', 'value'),
+    State('user-profile-team', 'value'),
+    State('user-config', 'data'),
+    prevent_initial_call=True
+)
+def save_profile(n_clicks, user_leaderboard, user_name, user_team, user):
+    user['leaderboard'] = user_leaderboard
+    user['name'] = user_name
+    user['team'] = user_team
+    matched_count = database.update_user_profile(user)
+    if not matched_count:
+        return no_update, 'Unexpected error. Could not save the settings. Please, contact the developers.'
+    return user, None
+
+
+@callback(
     Output('session-settings', 'style'),
     Output('login-settings', 'style'),
     Output('user-config', 'data'),
