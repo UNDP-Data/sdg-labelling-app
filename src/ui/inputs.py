@@ -33,11 +33,11 @@ def insert_slider_texts():
 def insert_select_language():
     data = list()
     for iso, name in utils.get_language_mapping().items():
-        coming_soon = {'ar', 'zh'}
+        temporarily_unavailable = {'ar'}
         option = {
-            'label': name if iso not in coming_soon else f'{name} (Temporarily Unavailable)',
+            'label': name if iso not in temporarily_unavailable else f'{name} (Temporarily Unavailable)',
             'value': iso,
-            'disabled': iso in coming_soon,
+            'disabled': iso in temporarily_unavailable,
         }
         data.append(option)
     select_language = dmc.Select(
