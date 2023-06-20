@@ -1,6 +1,7 @@
 # dash
 from dash import callback, callback_context, no_update, MATCH, ALL
 from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
 
 # local packages
 from src import communication, database, entities, ui, utils
@@ -90,6 +91,9 @@ def display_settings(checked: bool):
     prevent_initial_call=True
 )
 def save_profile(n_clicks, user_leaderboard, user_name, user_team, user):
+    if n_clicks is None:
+        raise PreventUpdate
+
     user['leaderboard'] = user_leaderboard
     user['name'] = user_name
     user['team'] = user_team
