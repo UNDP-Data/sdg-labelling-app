@@ -109,7 +109,7 @@ def save_profile(n_clicks, user_leaderboard, user_name, user_team, user):
     Output('user-config', 'data'),
     Output('email-input', 'error'),
     Output('code-input', 'error'),
-    Output({'type': 'menu-user', 'index': ALL}, 'style'),
+    Output({'type': 'menu-user', 'index': ALL}, 'style', allow_duplicate=True),
     Input('button-log-in', 'n_clicks'),
     State('email-input', 'value'),
     State('code-input', 'value'),
@@ -131,6 +131,7 @@ def log_in(n_clicks, email, access_code):
 @callback(
     Output('content', 'children', allow_duplicate=True),
     Output('session-config', 'data',  allow_duplicate=True),
+    Output({'type': 'menu-user', 'index': ALL}, 'style', allow_duplicate=True),
     Input('start-button', 'n_clicks'),
     State('slider', 'value'),
     State('language-input', 'value'),
@@ -145,7 +146,7 @@ def change_to_main_layout(n_clicks, n_tasks, language, user):
         user_id=user['_id'],
         language=language,
     )
-    return ui.get_main_layout(), config.dict()
+    return ui.get_main_layout(), config.dict(), [None] * 3
 
 
 @callback(
