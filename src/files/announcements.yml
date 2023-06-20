@@ -1,14 +1,21 @@
-- title: "Arabic and Chinese are Temporarily Unavailable"
+- title: "Leaderboard is Available (20/06/23)"
+  colour: "blue"
+  text: |
+    You can now see how you and your colleagues are doing by exploring a public leaderboard. By default, all
+    entries in the leaderboard are anonymous. If you would like your (and your team's name) to be featured on the
+    leaderboard, you can log in to the application and turn on the Leaderboard switch in your profile settings
+    in the upper right corner.
+- title: "Arabic is Temporarily Unavailable (20/06/23)"
   colour: "red"
   text: |
-    We have been made aware of issues with texts in Arabic and Chinese. While we are working on resolving them, 
-    labelling in these language is disabled.
-- title: "FAQ Section Has Arrived"
+    We have been made aware of issues with texts in Arabic. While we are still working on resolving them, 
+    labelling in this language is disabled.
+- title: "FAQ Section Has Arrived (06/06/23)"
   colour: "blue"
   text: |
     We have added a FAQ section to answer common questions you might have about the application and rationale behind it.
     If you have not done so already, check it out before proceeding! You can find FAQ button in the upper right corner.
-- title: "Enhanced Security"
+- title: "Enhanced Security (06/06/23)"
   colour: "blue"
   text: |
     As we are scaling the application to hundreds of users, we have made changes to make everyone's experience more 
