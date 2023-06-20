@@ -56,7 +56,8 @@ def insert_input_email():
     input_email = dmc.TextInput(
         id='email-input',
         label='Enter Your Email',
-        description='This must be your official UNDP email. It is only used for verification and will not be stored.',
+        description='This must be your official email, e.g., john.doe@undp.org, jane.doe@ec.europa.eu, '
+                    ' jack.doe@who.int. It is only used for verification and will not be stored.',
         # value='john.doe@undp.org',  # comment out after testing
         placeholder='john.doe@undp.org',
         required=True,

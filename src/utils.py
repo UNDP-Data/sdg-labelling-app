@@ -1,4 +1,5 @@
 # standard library
+import os
 import re
 import json
 import hashlib
@@ -75,8 +76,9 @@ def validate_email(email: str) -> bool:
     >>> validate_email('john.doe@undp.com')
     False
     """
-    pattern = r'^[a-z][\w.-]*@undp.org$'
-    match = re.match(pattern=pattern, string=email, flags=re.IGNORECASE)
+    patterns = ['@{}$'.format(domain.strip().replace('.', r'\.')) for domain in os.environ['VALID_DOMAINS'].split(',')]
+    pattern = '|'.join(patterns)
+    match = re.search(pattern=rf'{pattern}', string=email, flags=re.IGNORECASE)
     is_valid = bool(match)
     return is_valid
 
