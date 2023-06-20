@@ -66,7 +66,7 @@ def open_modal(n_clicks):
     prevent_initial_call=True
 )
 def populate_profile(_, user):
-    return user.get('leaderboard', False), user.get('name'), user.get(['team'])
+    return user.get('leaderboard', False), user.get('name'), user.get('team')
 
 
 @callback(
