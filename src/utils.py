@@ -115,3 +115,31 @@ def create_leaderboard_entries(docs: list[dict]):
         entry['Labels'] = doc['count']
         entries.append(entry)
     return entries
+
+
+def extract_organisation(email: str) -> str:
+    """
+    Extract an organisation name from a user email.
+
+    Parameters
+    ----------
+    email : str
+        User email.
+
+    Returns
+    -------
+    organisation : str
+        Capitalised name of the organisation.
+
+    Examples
+    ________
+    >>> extract_organisation('john.doe@undp.org')
+    'UNDP'
+    >>> extract_organisation('jane.doe@unicef.org')
+    'UNICEF'
+    >>> extract_organisation('jack.doe@ec.europa.eu')
+    'EC EUROPA'
+    """
+    _, domain = email.split('@')
+    organisation = domain.rsplit(sep='.', maxsplit=1)[1].replace('.', ' ').upper()
+    return organisation

@@ -82,7 +82,7 @@ def display_settings(checked: bool):
 def log_in(n_clicks, email, access_code):
     user_id = utils.get_user_id(email)
     is_valid_email = utils.validate_email(email=email)
-    is_valid_code = database.validate_user_code(user_id=user_id, access_code=access_code)
+    is_valid_code = database.validate_user_code(email=email, access_code=access_code)
 
     if not is_valid_email:
         return no_update, no_update, no_update, 'Invalid email address', no_update, [no_update] * 3
@@ -250,13 +250,12 @@ def open_sdg_reference(n_clicks):
     prevent_initial_call=True,
 )
 def send_access_code_with_notification(disabled, email):
-    user_id = utils.get_user_id(email)
     access_code = communication.send_access_code(email=email)
     if access_code is None:
         notification = ui.notifications.get_notification_failed(email=email)
         is_disabled = False
     else:
-        database.upsert_user_code(user_id=user_id, access_code=access_code)
+        database.upsert_user_code(email=email, access_code=access_code)
         notification = ui.notifications.get_notification_sent(email=email)
         is_disabled = True
     return is_disabled, False, notification

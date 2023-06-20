@@ -8,7 +8,7 @@ import pymongo
 from bson import ObjectId
 
 # local packages
-from src import entities
+from src import entities, utils
 
 
 def get_document_collection():
@@ -170,22 +170,42 @@ def get_user_count() -> int:
     return len(stats)
 
 
-def upsert_user_code(user_id: str, access_code: str) -> int:
+def upsert_user_code(email: str, access_code: str) -> int:
     collection = get_user_collection()
-    document = {
-        '_id': user_id,
-        'access_code': access_code,
-        'updated_at': datetime.utcnow(),
-    }
+
+    # for a returning user, get their settings
+    user_id = utils.get_user_id(email)
+    user_dict = collection.find_one(filter={'_id': user_id})
+
+    if user_dict is None:
+        user = entities.User(
+            _id=user_id,
+            access_code=access_code,
+            leaderboard=False,
+            name='',
+            organisation=utils.extract_organisation(email=email),
+            team='',
+        )
+    else:
+        user = entities.User(
+            _id=user_id,
+            access_code=access_code,
+            leaderboard=user_dict.get('leaderboard', False),
+            name=user_dict.get('name', ''),
+            organisation=user_dict.get('organisation', ''),
+            team=user_dict.get('team', ''),
+        )
+
     result = collection.replace_one(
-        filter={'_id': user_id},
-        replacement=document,
+        filter={'_id': user.id},
+        replacement=user.dict(by_alias=True),
         upsert=True,
     )
     return result.matched_count
 
 
-def validate_user_code(user_id: str, access_code: str) -> bool:
+def validate_user_code(email: str, access_code: str) -> bool:
+    user_id = utils.get_user_id(email)
     collection = get_user_collection()
     is_valid = collection.find_one(filter={'_id': user_id, 'access_code': access_code}) is not None
     return is_valid

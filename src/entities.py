@@ -34,3 +34,13 @@ class SustainableDevelopmentGoal(BaseModel):
     colour: str
     targets: list[str]
     indicators: list[str]
+
+
+class User(BaseModel):
+    id: str = Field(alias='_id')
+    access_code: str
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    leaderboard: bool = Field(default=False, description='If False, name and team will be hidden on the leaderboard.')
+    name: str = ''
+    organisation: str
+    team: str = ''
