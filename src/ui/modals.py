@@ -65,9 +65,16 @@ def insert_modal_profile():
         color=styles.PRIMARY_COLOUR,
         variant='gradient',
     )
+    title_group = dmc.Group(
+        children=[
+            title,
+            dmc.Badge(id='user-profile-id'),
+        ],
+        spacing='md',
+    )
     modal = dmc.Modal(
         id={'type': 'modal', 'index': 'profile'},
-        title=title,
+        title=title_group,
         centered=True,
         size='xl',
         overlayBlur=10,

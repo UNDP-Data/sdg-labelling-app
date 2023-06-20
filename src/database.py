@@ -180,11 +180,12 @@ def get_top_annotators(limit: int = 30) -> list[dict]:
         doc.pop('access_code', None)
         doc.pop('updated_at', None)
         docs.append(doc)
+    docs = sorted(docs, key=lambda doc: doc.get('count', 0), reverse=True)
     return docs
 
 
 def get_user_count() -> int:
-    collection = get_document_collection()
+    collection = get_user_collection()
     count = collection.count_documents(filter={})
     return count
 
