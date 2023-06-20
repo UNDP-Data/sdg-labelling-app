@@ -204,8 +204,8 @@ def upsert_user_code(email: str, access_code: str) -> int:
     return result.matched_count
 
 
-def validate_user_code(email: str, access_code: str) -> bool:
+def get_user(email: str, access_code: str) -> dict | None:
     user_id = utils.get_user_id(email)
     collection = get_user_collection()
-    is_valid = collection.find_one(filter={'_id': user_id, 'access_code': access_code}) is not None
-    return is_valid
+    user = collection.find_one(filter={'_id': user_id, 'access_code': access_code})
+    return user

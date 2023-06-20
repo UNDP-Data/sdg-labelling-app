@@ -101,7 +101,7 @@ def insert_select_comment():
 
 def insert_profile_settings():
     profile_public = dmc.Switch(
-        id='user-profile-public',
+        id='user-profile-leaderboard',
         size='md',
         radius='xl',
         color=styles.PRIMARY_COLOUR,
@@ -110,7 +110,7 @@ def insert_profile_settings():
     )
 
     user_name = dmc.TextInput(
-        id='user-profile-display-name',
+        id='user-profile-name',
         label='Enter Your Display Name',
         description='This name will appear on the leaderboard visible by everyone. If you don\'t want your username'
                     ' to be public, just turn off the switch above.',
@@ -118,16 +118,11 @@ def insert_profile_settings():
         disabled=True,
     )
 
-    team_name = dmc.Select(
-        id='user-profile-team-name',
+    team_name = dmc.TextInput(
+        id='user-profile-team',
         label='Enter Your Team Name',
-        description='If you are part of team, select a team name below or create one!',
-        placeholder='Jane Doe',
-        data=[
-            {'value': 'default', 'label': 'No Team'},
-        ],
-        searchable=True,
-        creatable=True,
+        description='Add a team name to associate yourself with other users.',
+        placeholder='The Best Team',
         disabled=True,
     )
 

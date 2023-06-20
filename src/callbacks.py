@@ -57,9 +57,21 @@ def open_modal(n_clicks):
 
 
 @callback(
-    Output('user-profile-display-name', 'disabled'),
-    Output('user-profile-team-name', 'disabled'),
-    Input('user-profile-public', 'checked'),
+    Output('user-profile-leaderboard', 'checked'),
+    Output('user-profile-name', 'value'),
+    Output('user-profile-team', 'value'),
+    Input({'type': 'modal', 'index': 'profile'}, 'opened'),
+    State('user-config', 'data'),
+    prevent_initial_call=True
+)
+def populate_profile(_, user):
+    return user['leaderboard'], user['name'], user['team']
+
+
+@callback(
+    Output('user-profile-name', 'disabled'),
+    Output('user-profile-team', 'disabled'),
+    Input('user-profile-leaderboard', 'checked'),
     prevent_initial_call=True
 )
 def display_settings(checked: bool):
@@ -80,17 +92,16 @@ def display_settings(checked: bool):
     prevent_initial_call=True
 )
 def log_in(n_clicks, email, access_code):
-    user_id = utils.get_user_id(email)
     is_valid_email = utils.validate_email(email=email)
-    is_valid_code = database.validate_user_code(email=email, access_code=access_code)
+    user = database.get_user(email=email, access_code=access_code)
 
     if not is_valid_email:
         return no_update, no_update, no_update, 'Invalid email address', no_update, [no_update] * 3
-    elif not is_valid_code:
+    elif user is None:
         return no_update, no_update, no_update, None, 'Invalid access code', [no_update] * 3
     else:
         styles = [None] * 3  # show 3 user items in the menu
-        return None, {'display': 'none'}, {'authenticated': True, 'user_id': user_id}, None, None, styles
+        return None, {'display': 'none'}, user, None, None, styles
 
 
 @callback(
