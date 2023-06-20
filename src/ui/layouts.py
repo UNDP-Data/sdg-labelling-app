@@ -134,9 +134,6 @@ def get_main_layout():
 
     stack = dmc.Stack(
         children=[
-            modals.insert_modal_profile(),
-            modals.insert_modal_statistics(),
-            modals.insert_modal_quit(),
             drawer.insert_drawer_reference(),
             affixes.insert_affix_reference(),
         ],

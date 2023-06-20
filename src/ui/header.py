@@ -88,7 +88,15 @@ def insert_header():
     )
 
     extra_group = dmc.Group(
-        children=[extras.insert_user_stack(), buttons.insert_button_faq(), modals.insert_modal_faq(), insert_menu()],
+        children=[
+            extras.insert_user_stack(),
+            buttons.insert_button_faq(),
+            modals.insert_modal_faq(),
+            modals.insert_modal_profile(),
+            modals.insert_modal_statistics(),
+            modals.insert_modal_quit(),
+            insert_menu(),
+        ],
         spacing='xs',
         style={'float': 'right'},
     )
