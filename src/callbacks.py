@@ -58,6 +58,7 @@ def open_modal(n_clicks):
 
 
 @callback(
+    Output('user-profile-id', 'children'),
     Output('user-profile-leaderboard', 'checked'),
     Output('user-profile-name', 'value'),
     Output('user-profile-team', 'value'),
@@ -66,7 +67,7 @@ def open_modal(n_clicks):
     prevent_initial_call=True
 )
 def populate_profile(_, user):
-    return user.get('leaderboard', False), user.get('name'), user.get('team')
+    return user['_id'], user.get('leaderboard', False), user.get('name'), user.get('team')
 
 
 @callback(
