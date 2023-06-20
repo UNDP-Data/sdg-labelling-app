@@ -3,6 +3,7 @@ import dash_mantine_components as dmc
 
 # local packages
 from src import utils
+from src.ui import styles, buttons
 
 
 def insert_slider_texts():
@@ -32,11 +33,11 @@ def insert_slider_texts():
 def insert_select_language():
     data = list()
     for iso, name in utils.get_language_mapping().items():
-        coming_soon = {'ar', 'zh'}
+        temporarily_unavailable = {'ar'}
         option = {
-            'label': name if iso not in coming_soon else f'{name} (Temporarily Unavailable)',
+            'label': name if iso not in temporarily_unavailable else f'{name} (Temporarily Unavailable)',
             'value': iso,
-            'disabled': iso in coming_soon,
+            'disabled': iso in temporarily_unavailable,
         }
         data.append(option)
     select_language = dmc.Select(
@@ -55,7 +56,8 @@ def insert_input_email():
     input_email = dmc.TextInput(
         id='email-input',
         label='Enter Your Email',
-        description='This must be your official UNDP email. It is only used for verification and will not be stored.',
+        description='This must be your official email, e.g., john.doe@undp.org, jane.doe@ec.europa.eu, '
+                    ' jack.doe@who.int. It is only used for verification and will not be stored.',
         # value='john.doe@undp.org',  # comment out after testing
         placeholder='john.doe@undp.org',
         required=True,
@@ -96,3 +98,42 @@ def insert_select_comment():
         style={'max-width': '80%', 'min-width': '50%'},
     )
     return input_comment
+
+
+def insert_profile_settings():
+    profile_public = dmc.Switch(
+        id='user-profile-leaderboard',
+        size='md',
+        radius='xl',
+        color=styles.PRIMARY_COLOUR,
+        label='Display on Leaderboard',
+        checked=False
+    )
+
+    user_name = dmc.TextInput(
+        id='user-profile-name',
+        label='Enter Your Display Name',
+        description='This name will appear on the leaderboard visible by everyone. If you don\'t want your username'
+                    ' to be public, just turn off the switch above.',
+        placeholder='Jane Doe',
+        disabled=True,
+    )
+
+    team_name = dmc.TextInput(
+        id='user-profile-team',
+        label='Enter Your Team Name',
+        description='Add a team name to associate yourself with other users.',
+        placeholder='The Best Team',
+        disabled=True,
+    )
+
+    stack = dmc.Stack(
+        children=[
+            profile_public,
+            user_name,
+            team_name,
+            buttons.insert_button_save_settings()
+        ],
+        spacing='xl',
+    )
+    return stack

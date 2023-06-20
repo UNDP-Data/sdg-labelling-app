@@ -8,7 +8,39 @@ import dash_mantine_components as dmc
 from src.ui import styles, alerts, buttons, inputs, modals, drawer, header, footer, affixes, accordions
 
 
-def get_start_layout():
+def insert_login_elements():
+    title = dmc.Title(
+        'LOG IN',
+        order=2,
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient'
+    )
+
+    text = dmc.Text(
+        'Enter Your Credentials to Proceed',
+        style={'text-align': 'center'},
+        color=styles.PRIMARY_COLOUR,
+    )
+
+    title_stack = dmc.Stack(
+        children=[title, text],
+        align='center',
+    )
+
+    login_stack = dmc.Stack(
+        children=[
+            title_stack,
+            inputs.insert_input_email(),
+            inputs.insert_input_passcode(),
+            buttons.insert_button_send(),
+            buttons.insert_button_login(),
+        ],
+        spacing='lg',
+    )
+    return login_stack
+
+
+def insert_session_elements():
     title = dmc.Title(
         'LET\'S GET STARTED',
         order=2,
@@ -27,6 +59,19 @@ def get_start_layout():
         align='center',
     )
 
+    session_stack = dmc.Stack(
+        children=[
+            title_stack,
+            inputs.insert_slider_texts(),
+            inputs.insert_select_language(),
+            buttons.insert_button_start(),
+        ],
+        spacing='lg',
+    )
+    return session_stack
+
+
+def get_start_layout():
     spans = {
         'xl': 9,
         'lg': 9,
@@ -35,22 +80,12 @@ def get_start_layout():
         'xs': 11,
     }
 
-    spans_2 = {
-        'md': 10,
-        'sm': 11,
-        'xs': 11,
-    }
-
     columns = [
         *header.insert_header(),
         dmc.Col(accordions.insert_accordion_announcements(), **spans),
-        dmc.Col(title_stack, **spans),
-        dmc.Col(inputs.insert_slider_texts(), **spans),
-        dmc.Col(inputs.insert_select_language(), **spans),
-        dmc.Col(inputs.insert_input_email(), **spans),
-        dmc.Col(inputs.insert_input_passcode(), **spans_2, xl=6, lg=6),
-        dmc.Col(dmc.Center(buttons.insert_button_send()), **spans_2, xl=3, lg=3),
-        dmc.Col(dmc.Center(buttons.insert_button_start()), **spans),
+        dmc.Col(accordions.insert_accordion_leaderboard(), **spans),
+        dmc.Col(insert_login_elements(), **spans, id='login-settings'),
+        dmc.Col(insert_session_elements(), **spans, id='session-settings', style={'display': 'none'}),
         dmc.Col(footer.insert_footer(), span=12),
     ]
     return columns
@@ -99,7 +134,6 @@ def get_main_layout():
 
     stack = dmc.Stack(
         children=[
-            modals.insert_modal_quit(),
             drawer.insert_drawer_reference(),
             affixes.insert_affix_reference(),
         ],

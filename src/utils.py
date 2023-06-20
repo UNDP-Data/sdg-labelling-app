@@ -1,4 +1,5 @@
 # standard library
+import os
 import re
 import json
 import hashlib
@@ -75,8 +76,9 @@ def validate_email(email: str) -> bool:
     >>> validate_email('john.doe@undp.com')
     False
     """
-    pattern = r'^[a-z][\w.-]*@undp.org$'
-    match = re.match(pattern=pattern, string=email, flags=re.IGNORECASE)
+    patterns = ['@{}$'.format(domain.strip().replace('.', r'\.')) for domain in os.environ['VALID_DOMAINS'].split(',')]
+    pattern = '|'.join(patterns)
+    match = re.search(pattern=rf'{pattern}', string=email, flags=re.IGNORECASE)
     is_valid = bool(match)
     return is_valid
 
@@ -98,3 +100,48 @@ def get_user_label_and_comment(doc: dict, user_id: str):
             return annotation.get('labels'), annotation.get('comment')
     else:
         return None, None
+
+
+def create_leaderboard_entries(docs: list[dict]):
+    entries = list()
+    for rank, doc in enumerate(docs, start=1):
+        entry = {'Rank': rank}
+        if doc.get('leaderboard'):
+            entry['User Name'] = doc.get('name', '')
+            entry['Team'] = doc.get('team', '')
+        else:
+            entry['User Name'] = '<hidden>'
+            entry['Team'] = '<hidden>'
+
+        entry['Organisation'] = doc.get('organisation', '')
+        entry['Labels'] = doc.get('count', 0)
+        entries.append(entry)
+    return entries
+
+
+def extract_organisation(email: str) -> str:
+    """
+    Extract an organisation name from a user email.
+
+    Parameters
+    ----------
+    email : str
+        User email.
+
+    Returns
+    -------
+    organisation : str
+        Capitalised name of the organisation.
+
+    Examples
+    ________
+    >>> extract_organisation('john.doe@undp.org')
+    'UNDP'
+    >>> extract_organisation('jane.doe@unicef.org')
+    'UNICEF'
+    >>> extract_organisation('jack.doe@ec.europa.eu')
+    'EC EUROPA'
+    """
+    _, domain = email.split('@')
+    organisation = domain.rsplit(sep='.', maxsplit=1)[1].replace('.', ' ').upper()
+    return organisation

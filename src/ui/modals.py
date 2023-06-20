@@ -4,12 +4,12 @@ from dash import dcc
 
 # local packages
 from src import utils
-from src.ui import styles, buttons
+from src.ui import styles, buttons, inputs
 
 
 def insert_modal_faq():
     title = dmc.Title(
-        'Frequently Asked Questions',
+        children='Frequently Asked Questions',
         order=2,
         color=styles.PRIMARY_COLOUR,
         variant='gradient',
@@ -49,10 +49,48 @@ def insert_modal_quit():
     )
 
     modal = dmc.Modal(
-        id='modal',
+        id='modal-quit',
         centered=True,
         overlayBlur=10,
         transition='fade',
         children=stack,
+    )
+    return modal
+
+
+def insert_modal_profile():
+    title = dmc.Title(
+        children='My Profile',
+        order=2,
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+    modal = dmc.Modal(
+        id={'type': 'modal', 'index': 'profile'},
+        title=title,
+        centered=True,
+        size='xl',
+        overlayBlur=10,
+        transition='fade',
+        children=inputs.insert_profile_settings(),
+    )
+    return modal
+
+
+def insert_modal_statistics():
+    title = dmc.Title(
+        children='My Statistics',
+        order=2,
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+    modal = dmc.Modal(
+        id={'type': 'modal', 'index': 'statistics'},
+        title=title,
+        centered=True,
+        size='xl',
+        overlayBlur=10,
+        transition='fade',
+        children='Coming soon.',
     )
     return modal

@@ -8,7 +8,7 @@ import pymongo
 from bson import ObjectId
 
 # local packages
-from src import entities
+from src import entities, utils
 
 
 def get_document_collection():
@@ -160,32 +160,84 @@ def get_top_annotators(limit: int = 30) -> list[dict]:
         {
             '$limit': limit,
         },
+        {
+            '$lookup': {
+                'from': 'sdgs_users',
+                'localField': '_id',
+                'foreignField': '_id',
+                'as': 'fromUsers',
+            }
+        },
+        # $$ROOT is not supported by Azure Cosmos DB for MongoDB vCore (5.0)
+        # {
+        #     '$replaceRoot': {'newRoot': {'$mergeObjects': [{'$arrayElemAt': ['$fromUsers', 0]}, '$$ROOT']}}
+        # },
+        # {'$project': {'fromUsers': 0}}
     ]
-    stats = list(collection.aggregate(pipeline))
-    return stats
+    docs = list()
+    for doc in collection.aggregate(pipeline):
+        doc = {'_id': doc['_id'], 'count': doc['count']} | doc['fromUsers'][0] if doc['fromUsers'] else dict()
+        doc.pop('access_code', None)
+        doc.pop('updated_at', None)
+        docs.append(doc)
+    return docs
 
 
 def get_user_count() -> int:
-    stats = get_top_annotators(limit=100_000)
-    return len(stats)
+    collection = get_document_collection()
+    count = collection.count_documents(filter={})
+    return count
 
 
-def upsert_user_code(user_id: str, access_code: str) -> int:
+def upsert_user_code(email: str, access_code: str) -> int:
     collection = get_user_collection()
-    document = {
-        '_id': user_id,
-        'access_code': access_code,
-        'updated_at': datetime.utcnow(),
-    }
+
+    # for a returning user, get their settings
+    user_id = utils.get_user_id(email)
+    user_dict = collection.find_one(filter={'_id': user_id})
+
+    if user_dict is None:
+        user = entities.User(
+            _id=user_id,
+            access_code=access_code,
+            leaderboard=False,
+            name='',
+            organisation=utils.extract_organisation(email=email),
+            team='',
+        )
+    else:
+        user = entities.User(
+            _id=user_id,
+            access_code=access_code,
+            leaderboard=user_dict.get('leaderboard', False),
+            name=user_dict.get('name', ''),
+            organisation=user_dict.get('organisation', ''),
+            team=user_dict.get('team', ''),
+        )
+
     result = collection.replace_one(
-        filter={'_id': user_id},
-        replacement=document,
+        filter={'_id': user.id},
+        replacement=user.dict(by_alias=True),
         upsert=True,
     )
     return result.matched_count
 
 
-def validate_user_code(user_id: str, access_code: str) -> bool:
+def get_user(email: str, access_code: str) -> dict | None:
+    user_id = utils.get_user_id(email)
     collection = get_user_collection()
-    is_valid = collection.find_one(filter={'_id': user_id, 'access_code': access_code}) is not None
-    return is_valid
+    user = collection.find_one(filter={'_id': user_id, 'access_code': access_code})
+    return user
+
+
+def update_user_profile(user: dict) -> int:
+    collection = get_user_collection()
+    to_update = {
+        '$set': {
+            'leaderboard': user['leaderboard'],
+            'name': user['name'],
+            'team': user['team'],
+        }
+    }
+    result = collection.update_one(filter={'_id': user['_id']}, update=to_update)
+    return result.matched_count

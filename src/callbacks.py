@@ -1,6 +1,7 @@
 # dash
 from dash import callback, callback_context, no_update, MATCH, ALL
 from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
 
 # local packages
 from src import communication, database, entities, ui, utils
@@ -21,9 +22,9 @@ def start_over_button(n_clicks):
 
 @callback(
     Output('content', 'children'),
-    Output('modal', 'opened', allow_duplicate=True),
+    Output('modal-quit', 'opened', allow_duplicate=True),
     Input('quit-modal-button', 'n_clicks'),
-    State('modal', 'opened'),
+    State('modal-quit', 'opened'),
     prevent_initial_call=True
 
 )
@@ -47,39 +48,109 @@ def open_faq(n_clicks):
 
 
 @callback(
-    Output('content', 'children', allow_duplicate=True),
-    Output('session-config', 'data',  allow_duplicate=True),
+    Output({'type': 'modal', 'index': MATCH}, 'opened'),
+    Input({'type': 'menu-user', 'index': MATCH}, 'n_clicks'),
+    prevent_initial_call=True
+)
+def open_modal(n_clicks):
+    is_open = n_clicks is not None
+    return is_open
+
+
+@callback(
+    Output('user-profile-leaderboard', 'checked'),
+    Output('user-profile-name', 'value'),
+    Output('user-profile-team', 'value'),
+    Input({'type': 'modal', 'index': 'profile'}, 'opened'),
+    State('user-config', 'data'),
+    prevent_initial_call=True
+)
+def populate_profile(_, user):
+    return user.get('leaderboard', False), user.get('name'), user.get(['team'])
+
+
+@callback(
+    Output('user-profile-name', 'disabled'),
+    Output('user-profile-team', 'disabled'),
+    Input('user-profile-leaderboard', 'checked'),
+    prevent_initial_call=True
+)
+def display_settings(checked: bool):
+    disabled = not checked
+    return disabled, disabled
+
+
+@callback(
+    Output('user-config', 'data', allow_duplicate=True),
+    Output('button-save-profile', 'error'),
+    Input('button-save-profile', 'n_clicks'),
+    State('user-profile-leaderboard', 'checked'),
+    State('user-profile-name', 'value'),
+    State('user-profile-team', 'value'),
+    State('user-config', 'data'),
+    prevent_initial_call=True
+)
+def save_profile(n_clicks, user_leaderboard, user_name, user_team, user):
+    if n_clicks is None:
+        raise PreventUpdate
+
+    user['leaderboard'] = user_leaderboard
+    user['name'] = user_name
+    user['team'] = user_team
+    matched_count = database.update_user_profile(user)
+    if not matched_count:
+        return no_update, 'Unexpected error. Could not save the settings. Please, contact the developers.'
+    return user, None
+
+
+@callback(
+    Output('session-settings', 'style'),
+    Output('login-settings', 'style'),
+    Output('user-config', 'data'),
     Output('email-input', 'error'),
     Output('code-input', 'error'),
-    Input('start-button', 'n_clicks'),
-    State('slider', 'value'),
-    State('language-input', 'value'),
+    Output({'type': 'menu-user', 'index': ALL}, 'style', allow_duplicate=True),
+    Input('button-log-in', 'n_clicks'),
     State('email-input', 'value'),
     State('code-input', 'value'),
     prevent_initial_call=True
 )
-def change_to_main_layout(n_clicks, input_value, language, email, access_code):
-    """Change start layout to main layout."""
-    user_id = utils.get_user_id(email)
+def log_in(n_clicks, email, access_code):
     is_valid_email = utils.validate_email(email=email)
-    is_valid_code = database.validate_user_code(user_id=user_id, access_code=access_code)
+    user = database.get_user(email=email, access_code=access_code)
 
     if not is_valid_email:
-        return no_update, no_update, 'Invalid email address', no_update
-    elif not is_valid_code:
-        return no_update, no_update, None, 'Invalid access code'
+        return no_update, no_update, no_update, 'Invalid email address', no_update, [no_update] * 3
+    elif user is None:
+        return no_update, no_update, no_update, None, 'Invalid access code', [no_update] * 3
     else:
-        config = entities.SessionConfig(
-            task_idx=0,
-            task_ids=[None] * input_value,
-            user_id=user_id,
-            language=language,
-        )
-        return ui.get_main_layout(), config.dict(), no_update, no_update
+        styles = [None] * 3  # show 3 user items in the menu
+        return None, {'display': 'none'}, user, None, None, styles
 
 
 @callback(
-    Output('modal', 'opened', allow_duplicate=True),
+    Output('content', 'children', allow_duplicate=True),
+    Output('session-config', 'data',  allow_duplicate=True),
+    Output({'type': 'menu-user', 'index': ALL}, 'style', allow_duplicate=True),
+    Input('start-button', 'n_clicks'),
+    State('slider', 'value'),
+    State('language-input', 'value'),
+    State('user-config', 'data'),
+    prevent_initial_call=True
+)
+def change_to_main_layout(n_clicks, n_tasks, language, user):
+    """Change start layout to main layout."""
+    config = entities.SessionConfig(
+        task_idx=0,
+        task_ids=[None] * n_tasks,
+        user_id=user['_id'],
+        language=language,
+    )
+    return ui.get_main_layout(), config.dict(), [None] * 3
+
+
+@callback(
+    Output('modal-quit', 'opened', allow_duplicate=True),
     Input('quit-button', 'n_clicks'),
     prevent_initial_call=True
 )
@@ -111,6 +182,7 @@ def update_controls(config):
     {
         'rings': [Output({'type': 'ring', 'index': iso}, 'sections') for iso in utils.get_language_mapping()],
         'user-count': Output('user-count', 'children'),
+        'leaderboard': Output('leaderboard', 'children'),
     },
     Input('interval-component', 'n_intervals'),
 )
@@ -120,6 +192,9 @@ def update_stats(_: int):
     output['rings'] = [[{'value': stats.get(iso, 0), 'color': ui.styles.PRIMARY_COLOUR}] for iso in utils.get_language_mapping()]
     count = database.get_user_count()
     output['user-count'] = ui.extras.insert_user_count(count)
+
+    users = utils.create_leaderboard_entries(database.get_top_annotators(limit=100))
+    output['leaderboard'] = ui.tables.create_table(users)
     return output
 
 
@@ -211,13 +286,12 @@ def open_sdg_reference(n_clicks):
     prevent_initial_call=True,
 )
 def send_access_code_with_notification(disabled, email):
-    user_id = utils.get_user_id(email)
     access_code = communication.send_access_code(email=email)
     if access_code is None:
         notification = ui.notifications.get_notification_failed(email=email)
         is_disabled = False
     else:
-        database.upsert_user_code(user_id=user_id, access_code=access_code)
+        database.upsert_user_code(email=email, access_code=access_code)
         notification = ui.notifications.get_notification_sent(email=email)
         is_disabled = True
     return is_disabled, False, notification
@@ -234,7 +308,7 @@ def send_access_code_with_notification(disabled, email):
 )
 def disable_buttons_while_sending(n_clicks, email):
     if not utils.validate_email(email=email):
-        error_message = 'Please, provide a valid UNDP email address.'
+        error_message = 'Please, provide a valid email address for your organisation.'
         return error_message, no_update, no_update, no_update
     notification = ui.notifications.get_notification_sending(email=email)
     is_disabled = True

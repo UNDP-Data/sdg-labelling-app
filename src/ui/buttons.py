@@ -51,6 +51,25 @@ def insert_button_send():
     return tooltip
 
 
+def insert_button_login():
+    button = dmc.Button(
+        'Log in',
+        id='button-log-in',
+        size='lg',
+        radius='md',
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+    tooltip = dmc.Tooltip(
+        children=button,
+        label='Click to log in',
+        position='top',
+        offset=3,
+        openDelay=500,
+    )
+    return tooltip
+
+
 def insert_button_start():
     button = dmc.Button(
         'Start',
@@ -221,6 +240,25 @@ def insert_button_reference():
     tooltip = dmc.Tooltip(
         children=button,
         label='Click to open a quick SDG reference',
+        position='top',
+        offset=3,
+        openDelay=500,
+    )
+    return tooltip
+
+
+def insert_button_save_settings():
+    button = dmc.Button(
+        'Save',
+        id='button-save-profile',
+        size='lg',
+        radius='md',
+        color=styles.PRIMARY_COLOUR,
+        variant='gradient',
+    )
+    tooltip = dmc.Tooltip(
+        children=dmc.LoadingOverlay(button),
+        label='Click to save the settings',
         position='top',
         offset=3,
         openDelay=500,

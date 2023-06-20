@@ -26,6 +26,7 @@ app = dash_app.server
 # define layout
 dash_app.layout = dmc.NotificationsProvider(
     children=[
+        dcc.Store(id='user-config', storage_type='memory'),
         dcc.Store(id='session-config', storage_type='memory'),
         dcc.Interval(
             id='interval-component',
