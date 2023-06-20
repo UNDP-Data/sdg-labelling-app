@@ -184,7 +184,7 @@ def get_top_annotators(limit: int = 30) -> list[dict]:
 
 
 def get_user_count() -> int:
-    collection = get_document_collection()
+    collection = get_user_collection()
     count = collection.count_documents(filter={})
     return count
 
