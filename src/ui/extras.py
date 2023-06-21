@@ -24,7 +24,7 @@ def insert_rings_progress():
 
         target = int(os.environ['PER_LANGUAGE_GOAL'])
         ring_with_tooltip = dmc.Tooltip(
-            label=f'Progress in collecting {target:,} labelled examples for {name}. Updates every few seconds.',
+            label=f'Progress in collecting {target:,} labels for {name}. Updates every few seconds.',
             style={'cursor': 'pointer'},
             children=ring,
             withArrow=True,
