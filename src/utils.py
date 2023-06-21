@@ -107,10 +107,10 @@ def create_leaderboard_entries(docs: list[dict]):
     for rank, doc in enumerate(docs, start=1):
         entry = {'Rank': rank}
         if doc.get('leaderboard'):
-            entry['User Name'] = doc.get('name', '')
+            entry['Name'] = doc.get('name', '')
             entry['Team'] = doc.get('team', '')
         else:
-            entry['User Name'] = '<hidden>'
+            entry['Name'] = '<hidden>'
             entry['Team'] = '<hidden>'
 
         entry['Organisation'] = doc.get('organisation', '')
