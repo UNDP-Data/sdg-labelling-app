@@ -176,6 +176,8 @@ def get_top_annotators(limit: int = 30) -> list[dict]:
     ]
     docs = list()
     for doc in collection.aggregate(pipeline):
+        if doc['count'] == 0:
+            continue
         doc = {'_id': doc['_id'], 'count': doc['count']} | doc['fromUsers'][0] if doc['fromUsers'] else dict()
         doc.pop('access_code', None)
         doc.pop('updated_at', None)

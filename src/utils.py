@@ -107,10 +107,10 @@ def create_leaderboard_entries(docs: list[dict]):
     for rank, doc in enumerate(docs, start=1):
         entry = {'Rank': rank}
         if doc.get('leaderboard'):
-            entry['User Name'] = doc.get('name', '')
+            entry['Name'] = doc.get('name', '')
             entry['Team'] = doc.get('team', '')
         else:
-            entry['User Name'] = '<hidden>'
+            entry['Name'] = '<hidden>'
             entry['Team'] = '<hidden>'
 
         entry['Organisation'] = doc.get('organisation', '')
@@ -142,6 +142,7 @@ def extract_organisation(email: str) -> str:
     >>> extract_organisation('jack.doe@ec.europa.eu')
     'EC EUROPA'
     """
-    _, domain = email.split('@')
-    organisation = domain.rsplit(sep='.', maxsplit=1)[1].replace('.', ' ').upper()
+    _, domain_with_extension = email.split('@')
+    domain_without_extension = domain_with_extension.rsplit(sep='.', maxsplit=1)[0]
+    organisation = domain_without_extension.replace('.', ' ').upper()
     return organisation
