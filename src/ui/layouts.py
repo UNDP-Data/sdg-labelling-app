@@ -12,8 +12,6 @@ def insert_login_elements():
     title = dmc.Title(
         'LOG IN',
         order=2,
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient'
     )
 
     text = dmc.Text(
@@ -44,8 +42,6 @@ def insert_session_elements():
     title = dmc.Title(
         'LET\'S GET STARTED',
         order=2,
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient'
     )
 
     text = dmc.Text(

@@ -1,3 +1,10 @@
+:root {
+
+  --primary-Color: #D12800;
+  --primary-hover-Color: #EE402D;
+
+}
+
 .app-header {
   display: flex;
   flex-direction: row;
@@ -7,10 +14,93 @@
 }
 
 .chip-container {
-    width: 62%;
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.7rem;
+  width: 62%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem;
+}
+
+.button {
+  border-radius: 0px;
+  background-color: var(--primary-Color);
+  transition: 0.3s;
+  font-family: "SohneBreit", "ProximaNova", sans-serif;
+}
+
+.button:hover {
+  background-color: var(--primary-hover-Color);
+}
+
+.button-icon:hover {
+  margin-left: 5px;
+}
+
+input:invalid {
+  outline: none !important;
+}
+
+.mantine-TextInput-input {
+  font-family: "SohneBreit", "ProximaNova", sans-serif;
+  border-radius: 0;
+  border: 1px solid black;
+  background-color: white;
+}
+
+.mantine-PasswordInput-input{
+  border-radius: 0;
+  border: 1px solid black;
+  background-color: white;
+}
+
+.mantine-Title-root {
+  font-family: "SohneBreit", "ProximaNova", sans-serif;
+
+}
+
+.mantine-Text-root {
+  font-family: "ProximaNova", sans-serif;
+  font-style: "SohneBreit";
+  color: black;
+}
+
+.mantine-Accordion-item {
+  border: 1px solid black;
+  border-radius: 0px;
+}
+
+.mantine-Accordion-panel {
+  border-radius: 0px;
+}
+
+.mantine-oomffu{
+  border-radius: 0px;
+}
+
+.mantine-Alert-root {
+  border-radius: 0px;
+}
+
+.mantine-Select-input{
+  border-radius: 0px;
+  border: 1px solid black;
+  background-color: white;
+}
+
+.mantine-Select-item {
+  /*background-color: black;*/
+  border-radius: 0px;
+}
+
+.mantine-Slider-bar {
+  background-color: black;
+}
+
+.mantine-Slider-thumb {
+  border: 4px solid black;
+}
+
+.mantine-Slider-mark {
+  border: 2px solid black;
 }

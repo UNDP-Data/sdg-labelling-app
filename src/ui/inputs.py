@@ -16,7 +16,7 @@ def insert_slider_texts():
         size='md',
         radius='md',
         showLabelOnHover=True,
-        color='blue.8',
+        color='black', # this is not working, changed it in the css file
         marks=[
             {'value': 5, 'label': '5'},
             {'value': 25, 'label': '25'},
@@ -47,7 +47,9 @@ def insert_select_language():
         data=data,
         required=True,
         value='en',
-        style={'width': '95%'},
+        style={
+            'width': '95%',
+        },
     )
     return select_language
 
@@ -61,7 +63,9 @@ def insert_input_email():
         # value='john.doe@undp.org',  # comment out after testing
         placeholder='john.doe@undp.org',
         required=True,
-        style={'width': '95%'},
+        style={
+            'width': '95%',
+        },
     )
     return input_email
 

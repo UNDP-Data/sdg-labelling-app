@@ -39,6 +39,9 @@ def insert_accordion_announcements():
             dmc.AccordionPanel(stack),
         ],
         value='announcements',
+        style={
+            'border-radius': '0px'
+        }
     )
 
     accordion = dmc.Accordion(
@@ -88,6 +91,9 @@ def insert_accordion_leaderboard():
             dmc.AccordionPanel(stack),
         ],
         value='announcements',
+        style={
+            'border-radius': '0px'
+        }
     )
 
     accordion = dmc.Accordion(

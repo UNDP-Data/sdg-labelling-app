@@ -36,10 +36,13 @@ def insert_button_send():
         'Get Access Code',
         id='email-button',
         size='md',
-        radius='md',
         color='red',
         variant='light',
         rightIcon=DashIconify(icon='ic:baseline-email'),
+        style={
+            'border-radius': '0px',
+            'transition': 'all 0.3s ease-in-out',
+        }
     )
     tooltip = dmc.Tooltip(
         children=button,
@@ -53,12 +56,16 @@ def insert_button_send():
 
 def insert_button_login():
     button = dmc.Button(
-        'Log in',
+        'LOG IN',
         id='button-log-in',
         size='lg',
+        className='button',
+        rightIcon=DashIconify(
+            icon='ep:arrow-up',
+            rotate=1,
+            className='button-icon',
+        ),
         radius='md',
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient',
     )
     tooltip = dmc.Tooltip(
         children=button,
@@ -72,12 +79,16 @@ def insert_button_login():
 
 def insert_button_start():
     button = dmc.Button(
-        'Start',
+        'START',
         id='start-button',
+        className='button',
         size='lg',
         radius='md',
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient',
+        rightIcon=DashIconify(
+            icon='ep:arrow-up',
+            rotate=1,
+            className='button-icon',
+        ),
     )
     tooltip = dmc.Tooltip(
         children=button,
@@ -93,7 +104,8 @@ def insert_button_sdg(sdg: entities.SustainableDevelopmentGoal, is_selected: boo
     button = dmc.Button(
         id={'type': 'sdg-button', 'index': sdg.id},
         n_clicks=int(is_selected),  # 1 if selected, 0 otherwise
-        style=styles.get_sdg_style(sdg_id=sdg.id, is_selected=is_selected, language=language),
+        style=styles.get_sdg_style(
+            sdg_id=sdg.id, is_selected=is_selected, language=language),
     )
     tooltip = dmc.Tooltip(
         label=sdg.name,
@@ -178,7 +190,8 @@ def insert_button_next():
 
 def insert_buttons_navigation():
     group_buttons = dmc.Group(
-        children=[insert_button_quit(), insert_button_back(), insert_button_next()],
+        children=[insert_button_quit(), insert_button_back(),
+                  insert_button_next()],
         spacing='xl',
     )
     return group_buttons
