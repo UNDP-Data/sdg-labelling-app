@@ -33,10 +33,6 @@
   background-color: var(--primary-hover-Color);
 }
 
-.button-icon:hover {
-  margin-left: 5px;
-}
-
 input:invalid {
   outline: none !important;
 }
