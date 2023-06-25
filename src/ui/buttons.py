@@ -59,11 +59,10 @@ def insert_button_login():
         'LOG IN',
         id='button-log-in',
         size='lg',
-        className='button',
+        className='primary-button',
         rightIcon=DashIconify(
             icon='ep:arrow-up',
             rotate=1,
-            className='button-icon',
         ),
         radius='md',
     )
@@ -81,7 +80,7 @@ def insert_button_start():
     button = dmc.Button(
         'START',
         id='start-button',
-        className='button',
+        className='primary-button',
         size='lg',
         radius='md',
         rightIcon=DashIconify(
@@ -130,10 +129,8 @@ def insert_button_quit():
     button = dmc.Button(
         'Quit',
         id='quit-button',
+        className='secondary-button',
         size='lg',
-        radius='md',
-        color='red',
-        variant='light',
         mr=0,
         ml='auto',
     )
@@ -151,11 +148,12 @@ def insert_button_back():
     button = dmc.Button(
         'Back',
         id='back-button',
+        className='primary-button',
         n_clicks=0,
-        size='md',
-        radius='md',
-        color=styles.PRIMARY_COLOUR,
-        variant='light',
+        size='lg',
+        leftIcon=DashIconify(
+            icon='ep:arrow-left',
+        ),
         disabled=True,
     )
     tooltip = dmc.Tooltip(
@@ -172,11 +170,13 @@ def insert_button_next():
     button = dmc.Button(
         'Next',
         id='next-button',
+        className='primary-button',
         n_clicks=0,
-        size='md',
-        radius='md',
-        color=styles.PRIMARY_COLOUR,
-        variant='light'
+        size='lg',
+        rightIcon=DashIconify(
+            icon='ep:arrow-up',
+            rotate=1,
+        )
     )
     tooltip = dmc.Tooltip(
         children=button,
@@ -190,7 +190,7 @@ def insert_button_next():
 
 def insert_buttons_navigation():
     group_buttons = dmc.Group(
-        children=[insert_button_quit(), insert_button_back(),
+        children=[insert_button_back(),insert_button_quit(),
                   insert_button_next()],
         spacing='xl',
     )
@@ -200,14 +200,9 @@ def insert_buttons_navigation():
 def insert_button_restart():
     button = dmc.Button(
         'Label more',
-        radius='md',
+        className='primary-button',
         size='lg',
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient',
-        rightIcon=DashIconify(
-            icon='ic:baseline-restart-alt',
-            width=30,
-        )
+        
     )
     tooltip = dmc.Tooltip(
         children=button,
@@ -225,8 +220,6 @@ def insert_button_quit_modal():
         id='quit-modal-button',
         radius='md',
         size='lg',
-        color='red',
-        variant='outline',
     )
     tooltip = dmc.Tooltip(
         children=button,
@@ -242,13 +235,13 @@ def insert_button_reference():
     button = dmc.Button(
         'Open SDG Reference',
         id='drawer-button',
+        className='primary-button',
+        size='lg',  
         rightIcon=DashIconify(
             icon='mdi:chevron-double-right',
             width=30,
             color='white',
         ),
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient',
     )
     tooltip = dmc.Tooltip(
         children=button,

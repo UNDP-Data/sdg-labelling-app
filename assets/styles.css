@@ -1,7 +1,10 @@
 :root {
 
-  --primary-Color: #D12800;
-  --primary-hover-Color: #EE402D;
+  --primary-Color: #1F5A95;
+  --primary-hover-Color: #006EB5;
+
+  --secondary-Color: #D12800;
+  --secondary-hover-Color: #EE402D;
 
 }
 
@@ -22,15 +25,28 @@
   gap: 0.7rem;
 }
 
-.button {
+.primary-button {
   border-radius: 0px;
   background-color: var(--primary-Color);
   transition: 0.3s;
   font-family: "SohneBreit", "ProximaNova", sans-serif;
 }
 
-.button:hover {
+.primary-button:hover {
   background-color: var(--primary-hover-Color);
+  padding: 15px;
+}
+
+.secondary-button {
+  border-radius: 0px;
+  background-color: var(--secondary-Color);
+  transition: 0.3s;
+  font-family: "SohneBreit", "ProximaNova", sans-serif;
+}
+
+.secondary-button:hover {
+  background-color: var(--secondary-hover-Color);
+  padding: 15px;
 }
 
 input:invalid {
@@ -52,7 +68,7 @@ input:invalid {
 
 .mantine-Title-root {
   font-family: "SohneBreit", "ProximaNova", sans-serif;
-
+  font-weight: 700;
 }
 
 .mantine-Text-root {
@@ -62,7 +78,10 @@ input:invalid {
 }
 
 .mantine-Accordion-item {
-  border: 1px solid black;
+  border-bottom: 1px solid rgb(112, 112, 112);
+  border-top: transparent;
+  border-left: transparent;
+  border-right: transparent;
   border-radius: 0px;
 }
 
