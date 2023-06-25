@@ -66,16 +66,23 @@ input:invalid {
   background-color: white;
 }
 
-.mantine-Title-root {
-  font-family: "SohneBreit", "ProximaNova", sans-serif;
-  font-weight: 700;
-}
-
 .mantine-Text-root {
   font-family: "ProximaNova", sans-serif;
   font-style: "SohneBreit";
-  color: black;
+  color: inherit;
 }
+
+.mantine-Title-root {
+  font-family: "SohneBreit","ProximaNova",sans-serif;
+  font-weight: 700;
+  font-size: 2.938rem;
+  letter-spacing: .06rem;
+  line-height: 1.08;
+  text-transform: uppercase;
+  color: var(--primary-Color);
+}
+
+
 
 .mantine-Accordion-item {
   border-bottom: 1px solid rgb(112, 112, 112);
@@ -118,4 +125,8 @@ input:invalid {
 
 .mantine-Slider-mark {
   border: 2px solid black;
+}
+
+.mantine-Progress-label{
+  color: white;
 }

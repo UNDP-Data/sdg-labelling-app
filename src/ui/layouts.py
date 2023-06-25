@@ -11,7 +11,8 @@ from src.ui import styles, alerts, buttons, inputs, modals, drawer, header, foot
 def insert_login_elements():
     title = dmc.Title(
         'LOG IN',
-        order=2,
+        order=1,
+        mt='5vh'
     )
 
     text = dmc.Text(
@@ -42,6 +43,7 @@ def insert_session_elements():
     title = dmc.Title(
         'LET\'S GET STARTED',
         order=2,
+        mt='5vh',
     )
 
     text = dmc.Text(
@@ -103,7 +105,7 @@ def get_main_layout():
     paper = dmc.Paper(
         children=scroll,
         p='xl',
-        shadow='lg',
+        mb='3vh',
         radius='md',
         withBorder=True,
         style={'font-size': 'large', 'min-height': '20vh'}
@@ -123,8 +125,8 @@ def get_main_layout():
         id='progress-bar',
         value=0,
         label='0%',
-        color=styles.PRIMARY_COLOUR,
-        radius='sm',
+        color='black',
+        mt='3vh',
         size='xl',
     )
 

@@ -30,6 +30,7 @@ def insert_modal_quit():
     title = dmc.Title(
         'Are you sure you want to quit?',
         order=2,
+        ta='center'
     )
 
     text = dmc.Text(

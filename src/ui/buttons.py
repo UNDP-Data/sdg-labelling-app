@@ -64,7 +64,7 @@ def insert_button_login():
             icon='ep:arrow-up',
             rotate=1,
         ),
-        radius='md',
+        mb='5vh',
     )
     tooltip = dmc.Tooltip(
         children=button,
@@ -202,7 +202,10 @@ def insert_button_restart():
         'Label more',
         className='primary-button',
         size='lg',
-        
+        rightIcon=DashIconify(
+            icon='ic:baseline-restart-alt',
+            width=30,
+        )
     )
     tooltip = dmc.Tooltip(
         children=button,
@@ -218,7 +221,7 @@ def insert_button_quit_modal():
     button = dmc.Button(
         'Quit',
         id='quit-modal-button',
-        radius='md',
+        className='secondary-button',
         size='lg',
     )
     tooltip = dmc.Tooltip(
@@ -258,9 +261,7 @@ def insert_button_save_settings():
         'Save',
         id='button-save-profile',
         size='lg',
-        radius='md',
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient',
+        className='primary-button',
     )
     tooltip = dmc.Tooltip(
         children=dmc.LoadingOverlay(button),
