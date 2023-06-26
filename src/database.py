@@ -176,12 +176,11 @@ def get_top_annotators(limit: int = 30) -> list[dict]:
     ]
     docs = list()
     for doc in collection.aggregate(pipeline):
-        if doc['count'] == 0:
-            continue
-        doc = {'_id': doc['_id'], 'count': doc['count']} | doc['fromUsers'][0] if doc['fromUsers'] else dict()
-        doc.pop('access_code', None)
-        doc.pop('updated_at', None)
-        docs.append(doc)
+        if doc['fromUsers']:
+            doc = {'_id': doc['_id'], 'count': doc['count']} | doc['fromUsers'][0] 
+            doc.pop('access_code', None)
+            doc.pop('updated_at', None)
+            docs.append(doc)
     docs = sorted(docs, key=lambda doc: doc.get('count', 0), reverse=True)
     return docs
 
