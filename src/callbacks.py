@@ -194,7 +194,7 @@ def update_stats(_: int):
     count = database.get_user_count()
     output['user-count'] = ui.extras.insert_user_count(count)
 
-    users = utils.create_leaderboard_entries(database.get_top_annotators(limit=100))
+    users = utils.create_leaderboard_entries(database.get_top_annotators(limit=50))
     output['leaderboard'] = ui.tables.create_table(users)
     return output
 

@@ -58,7 +58,7 @@ def insert_accordion_leaderboard():
     )
 
     title = dmc.Group(
-        children=['Leaderboard', badge],
+        children=['Top 50 Leaderboard', badge],
         spacing='xs',
     )
 
