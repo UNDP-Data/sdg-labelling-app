@@ -201,7 +201,9 @@ def update_stats(_: int):
 
 @callback(
     Output('chip-container', 'children'),
+    Output('chip-container', 'style'),
     Output('paragraph', 'children'),
+    Output('paragraph', 'style'),
     Output('content', 'children', allow_duplicate=True),
     Output('session-config', 'data', allow_duplicate=True),
     Output('comment', 'value'),
@@ -235,7 +237,7 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
     # finish the session once the specified number of examples has been labelled
     if config.task_idx == len(config.task_ids):
         final_layout = ui.get_finish_layout(reason='session_done')
-        return no_update, no_update, final_layout, config.dict(), no_update
+        return no_update, no_update, no_update, no_update, final_layout, config.dict(), no_update
 
     doc_id = config.get_task_id()
     if doc_id is None:
@@ -245,14 +247,18 @@ def update_components(n_clicks_next, n_clicks_back, config, n_clicks_sdgs, comme
         # finish the session if there are no more unlabelled examples for a given user and language
         if doc is None:
             final_layout = ui.get_finish_layout(reason='no_tasks')
-            return no_update, no_update, final_layout, config.dict(), no_update
+            return no_update, no_update, no_update, no_update, final_layout, config.dict(), no_update
     else:
         doc = database.get_paragraph_by_id(doc_id)
         selected_sgds, comment = utils.get_user_label_and_comment(doc, config.user_id)
 
     sdg_buttons = ui.buttons.insert_buttons_sdg(selected_sgds, language=config.language)
     config.set_task_id(doc['_id'])
-    return sdg_buttons, doc['text'], no_update, config.dict(), comment
+    # reverse text and icon order for Arabic
+    style_icons = {'width': '100%'} | ({} if config.language != 'ar' else {'flex-direction': 'row-reverse'})
+    style_text = {'direction': 'ltr' if config.language != 'ar' else 'rtl'}
+
+    return sdg_buttons, style_icons, doc['text'], style_text, no_update, config.dict(), comment
 
 
 @callback(
