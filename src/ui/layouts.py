@@ -11,9 +11,8 @@ from src.ui import styles, alerts, buttons, inputs, modals, drawer, header, foot
 def insert_login_elements():
     title = dmc.Title(
         'LOG IN',
-        order=2,
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient'
+        order=1,
+        mt='5vh'
     )
 
     text = dmc.Text(
@@ -44,8 +43,7 @@ def insert_session_elements():
     title = dmc.Title(
         'LET\'S GET STARTED',
         order=2,
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient'
+        mt='5vh',
     )
 
     text = dmc.Text(
