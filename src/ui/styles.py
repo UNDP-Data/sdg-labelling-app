@@ -9,7 +9,7 @@ def get_sdg_style(sdg_id: int, is_selected: bool, language: entities.LANGUAGE_IS
         'background-size': 'cover',
         'transition': '0.3s',
         'border': '2px solid transparent',
-        'border-radius': '5px',
+        'border-radius': '0px',
         'cursor': 'pointer',
     }
     if is_selected:
