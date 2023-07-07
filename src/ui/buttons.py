@@ -56,8 +56,8 @@ def insert_button_send():
 
 def insert_button_login():
     button = dmc.Button(
-        'LOG IN',
-        id='button-log-in',
+        'Log in',
+        id='button-login',
         size='lg',
         className='primary-button',
         rightIcon=DashIconify(
@@ -200,6 +200,7 @@ def insert_buttons_navigation():
 def insert_button_restart():
     button = dmc.Button(
         'Label more',
+        id='button-restart',
         className='primary-button',
         size='lg',
         rightIcon=DashIconify(

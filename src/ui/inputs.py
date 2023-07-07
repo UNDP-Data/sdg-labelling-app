@@ -33,7 +33,7 @@ def insert_slider_texts():
 def insert_select_language():
     data = list()
     for iso, name in utils.get_language_mapping().items():
-        temporarily_unavailable = {'ar'}
+        temporarily_unavailable = set()
         option = {
             'label': name if iso not in temporarily_unavailable else f'{name} (Temporarily Unavailable)',
             'value': iso,

@@ -10,7 +10,6 @@ from src.ui import styles, buttons, modals, extras
 
 
 def insert_menu():
-    style_hide = {'display': 'none'}
     menu = dmc.Menu(
         [
             dmc.MenuTarget(dmc.Burger()),
@@ -19,21 +18,18 @@ def insert_menu():
                     dmc.MenuLabel(
                         id={'type': 'menu-user', 'index': 'label'},
                         children='User',
-                        style=style_hide,
                     ),
                     dmc.MenuItem(
                         id={'type': 'menu-user', 'index': 'profile'},
                         children=dmc.Group(['My Profile', dmc.Badge('New')], spacing='xs'),
                         icon=DashIconify(icon='tabler-user-circle'),
                         n_clicks=0,
-                        style=style_hide,
                     ),
                     dmc.MenuItem(
                         id={'type': 'menu-user', 'index': 'statistics'},
                         children=dmc.Group(['My Statistics', dmc.Badge('New')], spacing='xs'),
                         icon=DashIconify(icon='tabler-report-analytics'),
                         n_clicks=0,
-                        style=style_hide,
                     ),
                     dmc.MenuLabel('Feedback'),
                     dmc.MenuItem(

@@ -157,9 +157,10 @@ def get_top_annotators(limit: int = 30) -> list[dict]:
         {
             '$sort': {'count': -1}
         },
-        {
-            '$limit': limit,
-        },
+        # do not apply filtering here until the issue with non-existent user ids is resolved
+        # {
+        #     '$limit': limit,
+        # },
         {
             '$lookup': {
                 'from': 'sdgs_users',
@@ -176,13 +177,12 @@ def get_top_annotators(limit: int = 30) -> list[dict]:
     ]
     docs = list()
     for doc in collection.aggregate(pipeline):
-        if doc['count'] == 0:
-            continue
-        doc = {'_id': doc['_id'], 'count': doc['count']} | doc['fromUsers'][0] if doc['fromUsers'] else dict()
-        doc.pop('access_code', None)
-        doc.pop('updated_at', None)
-        docs.append(doc)
-    docs = sorted(docs, key=lambda doc: doc.get('count', 0), reverse=True)
+        if doc['fromUsers']:
+            doc = {'_id': doc['_id'], 'count': doc['count']} | doc['fromUsers'][0] 
+            doc.pop('access_code', None)
+            doc.pop('updated_at', None)
+            docs.append(doc)
+    docs = sorted(docs, key=lambda doc: doc.get('count', 0), reverse=True)[:limit]
     return docs
 
 
