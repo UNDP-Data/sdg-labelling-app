@@ -54,7 +54,7 @@ def insert_button_send():
 def insert_button_login():
     button = dmc.Button(
         'Log in',
-        id='button-log-in',
+        id='button-login',
         size='lg',
         radius='md',
         color=styles.PRIMARY_COLOUR,
@@ -187,6 +187,7 @@ def insert_buttons_navigation():
 def insert_button_restart():
     button = dmc.Button(
         'Label more',
+        id='button-restart',
         radius='md',
         size='lg',
         color=styles.PRIMARY_COLOUR,
