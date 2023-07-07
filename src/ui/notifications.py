@@ -45,3 +45,16 @@ def get_notification_failed(email: str):
         color='red',
     )
     return notification
+
+
+def get_notification_profile():
+    notification = dmc.Notification(
+        title='Profile Updated!',
+        id='notification-message',
+        autoClose=2000,  # in milliseconds
+        action='show',
+        message='Your profile has been successfully updated',
+        icon=DashIconify(icon='akar-icons:circle-check'),
+        color='green',
+    )
+    return notification

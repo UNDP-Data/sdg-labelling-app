@@ -83,6 +83,7 @@ def display_settings(checked: bool):
 
 @callback(
     Output('user-config', 'data', allow_duplicate=True),
+    Output('notifications-container', 'children', allow_duplicate=True),
     Output('button-save-profile', 'error'),
     Input('button-save-profile', 'n_clicks'),
     State('user-profile-leaderboard', 'checked'),
@@ -100,8 +101,8 @@ def save_profile(n_clicks, user_leaderboard, user_name, user_team, user):
     user['team'] = user_team
     matched_count = database.update_user_profile(user)
     if not matched_count:
-        return no_update, 'Unexpected error. Could not save the settings. Please, contact the developers.'
-    return user, None
+        return no_update, no_update, 'Unexpected error. Could not save the settings. Please, contact the developers.'
+    return user, ui.notifications.get_notification_profile(), None
 
 
 @callback(
