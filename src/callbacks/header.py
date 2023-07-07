@@ -1,5 +1,5 @@
 # web app
-from dash import callback, MATCH
+from dash import callback, MATCH, ALL
 from dash.dependencies import Input, Output
 
 # local packages
@@ -14,6 +14,19 @@ import src
 def open_modal_faq(n_clicks):
     is_open = n_clicks is not None
     return is_open
+
+
+@callback(
+    Output({'type': 'menu-user', 'index': ALL}, 'style'),
+    Input('location', 'pathname'),
+    Input('user-config', 'data'),
+)
+def change_menu_visibility(pathname, user):
+    if pathname != '/login' and user is not None:
+        style = None
+        return style, style, style
+    style = {'display': 'none'}
+    return style, style, style
 
 
 @callback(
