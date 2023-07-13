@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    env_file: .env.dev
+    ports:
+      - "8050:8050"
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:6.0.7-jammy
+    volumes:
+      - ./texts.json:/docker-entrypoint-initdb.d/texts.json:ro
+      - ./user.json:/docker-entrypoint-initdb.d/user.json:ro
+      - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+    ports:
+      - "27017:27017"

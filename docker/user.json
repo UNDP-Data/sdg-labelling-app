@@ -1,0 +1,11 @@
+{
+  "_id": "377a29e74c90d838ac825e7fe352fb12",
+  "access_code": "password",
+  "updated_at": {
+    "$date": "2023-01-01T00:00:00.000Z"
+  },
+  "leaderboard": true,
+  "name": "Name Surname",
+  "organisation": "Unknown",
+  "team": "Unknown"
+}
