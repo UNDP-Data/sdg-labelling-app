@@ -46,4 +46,4 @@ dash_app.layout = dmc.NotificationsProvider(
 
 # run the app
 if __name__ == '__main__':
-    dash_app.run_server(debug=True)
+    dash_app.run_server(host='0.0.0.0', port=8050, debug=True)
