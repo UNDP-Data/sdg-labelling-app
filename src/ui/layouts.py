@@ -41,15 +41,12 @@ def insert_login_elements():
 
 def insert_session_elements():
     title = dmc.Title(
-        'LET\'S GET STARTED',
+        'Let\'s get started',
         order=2,
-        mt='5vh',
     )
 
     text = dmc.Text(
         'Select the number of texts you want to label',
-        style={'text-align': 'center'},
-        color=styles.PRIMARY_COLOUR,
     )
 
     title_stack = dmc.Stack(
