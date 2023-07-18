@@ -10,10 +10,8 @@ dash.register_page(__name__, path='/labelling')
 
 def layout():
     title = dmc.Title(
-        'SELECT SDGs RELEVANT FOR THIS PARAGRAPH IF APPLICABLE',
+        'Select SDGs Relevant for this paragraph if applicable',
         order=2,
-        color=src.ui.styles.PRIMARY_COLOUR,
-        variant='gradient',
     )
 
     scroll = dmc.ScrollArea(

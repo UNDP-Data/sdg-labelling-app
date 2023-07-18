@@ -80,14 +80,9 @@ def insert_button_start():
     button = dmc.Button(
         'START',
         id='start-button',
-        className='primary-button',
+        className='primary-button next',
         size='lg',
         radius='md',
-        rightIcon=DashIconify(
-            icon='ep:arrow-up',
-            rotate=1,
-            className='button-icon',
-        ),
     )
     tooltip = dmc.Tooltip(
         children=button,
@@ -148,12 +143,9 @@ def insert_button_back():
     button = dmc.Button(
         'Back',
         id='back-button',
-        className='primary-button',
+        className='secondary-button back',
         n_clicks=0,
         size='lg',
-        leftIcon=DashIconify(
-            icon='ep:arrow-left',
-        ),
         disabled=True,
     )
     tooltip = dmc.Tooltip(
@@ -170,13 +162,9 @@ def insert_button_next():
     button = dmc.Button(
         'Next',
         id='next-button',
-        className='primary-button',
+        className='secondary-button next',
         n_clicks=0,
         size='lg',
-        rightIcon=DashIconify(
-            icon='ep:arrow-up',
-            rotate=1,
-        )
     )
     tooltip = dmc.Tooltip(
         children=button,
@@ -239,13 +227,8 @@ def insert_button_reference():
     button = dmc.Button(
         'Open SDG Reference',
         id='drawer-button',
-        className='primary-button',
-        size='lg',  
-        rightIcon=DashIconify(
-            icon='mdi:chevron-double-right',
-            width=30,
-            color='white',
-        ),
+        className='primary-button next',
+        size='lg',
     )
     tooltip = dmc.Tooltip(
         children=button,

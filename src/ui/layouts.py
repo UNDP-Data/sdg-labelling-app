@@ -46,12 +46,11 @@ def insert_session_elements():
     )
 
     text = dmc.Text(
-        'Select the number of texts you want to label',
+        'Select the number of texts you want to label', className='label'
     )
 
     title_stack = dmc.Stack(
         children=[title, text],
-        align='center',
     )
 
     session_stack = dmc.Stack(

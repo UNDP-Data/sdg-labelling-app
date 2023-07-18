@@ -16,6 +16,7 @@ def insert_slider_texts():
         size='md',
         radius='md',
         showLabelOnHover=True,
+        labelAlwaysOn=True,
         color='black', # this is not working, changed it in the css file
         marks=[
             {'value': 5, 'label': '5'},

@@ -54,16 +54,12 @@ def insert_header():
     title = dmc.Title(
         'SDG Labelling Application',
         order=1,
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient',
     )
 
     subtitle = dmc.Text(
         'Make Your Contribution Towards a Safer And More Inclusive Use of Artificial Intelligence for'
         ' International Development',
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient',
-        size='sm',
+        size='lg',
         style={'overflow-wrap': 'break-word'},
     )
 

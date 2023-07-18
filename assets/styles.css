@@ -36,8 +36,8 @@
   --dark-azure: #00C1FF;
 
 }
-html{
-  font-family: "ProximaNova", sans-serif;
+body{
+  padding: 15px;
 }
 .app-header {
   display: flex;
@@ -45,6 +45,7 @@ html{
   flex-wrap: wrap;
   align-content: center;
   justify-content: space-between;
+  padding: 20px;
 }
 
 .chip-container {
@@ -56,28 +57,59 @@ html{
   gap: 0.7rem;
 }
 
+/* buttons */ 
+.mantine-UnstyledButton-root {
+  align-items: center;
+  background: transparent;
+  border: none;
+  display: flex;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #fff;
+  cursor: pointer;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+}
 .primary-button {
   border-radius: 0px;
-  background-color: var(--primary-Color);
+  background-color: var(--dark-red);
   transition: 0.3s;
-  font-family: "SohneBreit", "ProximaNova", sans-serif;
+}
+.mantine-UnstyledButton-root.next:after {
+  transition: .2s ease;
+  background: url(https://design.undp.org/static/media/chevron-right-black.f618eac3.svg) no-repeat left center;
+  color: var(--dark-red);
+  height: 20px;
+  margin-left: 0.75rem;
+  content: "";
+  width: 13px;
+}
+.mantine-UnstyledButton-root.back:before {
+  transition: .2s ease;
+  background: url(https://design.undp.org/static/media/chevron-right-black.f618eac3.svg) no-repeat left center;
+  color: var(--dark-red);
+  height: 20px;
+  margin-right: 0.75rem;
+  content: "";
+  width: 13px;
+  transform: rotate(180deg);
 }
 
 .primary-button:hover {
-  background-color: var(--primary-hover-Color);
-  padding: 15px;
+  background-color: var(--red);
 }
 
 .secondary-button {
   border-radius: 0px;
-  background-color: var(--secondary-Color);
+  background-color: var(--blue-600);
   transition: 0.3s;
-  font-family: "SohneBreit", "ProximaNova", sans-serif;
 }
 
 .secondary-button:hover {
-  background-color: var(--secondary-hover-Color);
-  padding: 15px;
+  background-color: var(--blue-500);
 }
 
 input:invalid {
@@ -97,23 +129,6 @@ input:invalid {
   background-color: white;
 }
 
-/* .mantine-Text-root {
-  font-family: "ProximaNova", sans-serif;
-  font-style: "SohneBreit";
-  color: inherit;
-}
-
-.mantine-Title-root {
-  font-family: "SohneBreit","ProximaNova",sans-serif;
-  font-weight: 700;
-  font-size: 2.938rem;
-  letter-spacing: .06rem;
-  line-height: 1.08;
-  text-transform: uppercase;
-  color: var(--primary-Color);
-} */
-
-
 .mantine-Accordion-item {
   border-bottom: 1px solid rgb(112, 112, 112);
   border-top: transparent;
@@ -129,26 +144,20 @@ input:invalid {
 .mantine-oomffu{
   border-radius: 0px;
 }
-
+/* --- alert --- */
 .mantine-Alert-root {
   border-radius: 0px;
 }
-
-.mantine-Select-input{
-  border-radius: 0px;
-  border: 1px solid black;
-  background-color: white;
+.mantine-Alert-title{
+  font-size: 1.2rem;
 }
-
-.mantine-Select-item {
-  /*background-color: black;*/
-  border-radius: 0px;
+.mantine-Alert-label{
+  font-size: 1rem;
 }
-
+/* ---- slider ---- */
 .mantine-Slider-bar {
   background-color: var(--dark-red);
 }
-
 .mantine-Slider-thumb {
   border: 2px solid var(--dark-red);
 }
@@ -156,10 +165,44 @@ input:invalid {
 .mantine-Slider-mark {
   border: 2px solid var(--dark-red);
 }
-
+.mantine-Slider-root{
+  margin-bottom: 30px;
+}
+/* ----- */
 .mantine-Progress-label{
   color: white;
 }
+/* --- select --- */
+
+.mantine-Input-wrapper{
+  position: relative;
+}
+.mantine-Select-input{
+  width: 100%;
+  border: 2px solid var(--black);
+  height: 3.25rem;
+  font-size: 1rem !important;
+  border-radius: 0;
+}
+.mantine-Select-input:hover {
+  border: 2px solid var(--blue-700);
+}
+.mantine-Select-rightSection{
+  background: url(https://design.undp.org/static/media/chevron-down.16c97a3f.svg) no-repeat center center !important;
+  padding: 0 10px;
+}
+.mantine-Select-rightSection svg{
+  display: none;
+}
+.mantine-Select-dropdown{
+  font-size: 1rem !important;
+}
+/* ---- */
+.mantine-Grid-col{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+/* headings undp styles */
 h1 {
   font-size: 2.938rem;
   font-weight: 700;
@@ -171,23 +214,37 @@ h1 {
 h2 {
   font-size: 2.5rem;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.1 !important;
 }
 
 h3 {
   font-size: 1.875rem;
   font-weight: 600;
-  line-height: 1.15;
+  line-height: 1.15 !important;
 }
 
 h4 {
   font-size: 1.563rem;
   font-weight: 400;
-  line-height: 1.15;
+  line-height: 1.15 !important;
 }
 
 h5 {
   font-size: 1.25rem;
   font-weight: 400;
-  line-height: 1.15;
+  line-height: 1.15 !important;
+}
+.small-font {
+  font-size: 1rem !important;
+}
+
+.label, .mantine-InputWrapper-label {
+  margin-bottom: var(--spacing-03);
+  margin-top: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.mantine-InputWrapper-description{
+  font-size: 1rem;
+  padding-bottom: 10px;
 }
