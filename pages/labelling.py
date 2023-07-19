@@ -25,7 +25,7 @@ def layout():
         shadow='lg',
         radius='md',
         withBorder=True,
-        style={'font-size': 'large', 'min-height': '20vh'}
+        style={'font-size': 'large', 'min-height': '20vh', 'margin': '20px 0'},
     )
 
     loading_paper = dmc.LoadingOverlay(
@@ -42,9 +42,10 @@ def layout():
         id='progress-bar',
         value=0,
         label='0%',
-        color=src.ui.styles.PRIMARY_COLOUR,
-        radius='sm',
+        color='#D12800',
+        radius='md',
         size='xl',
+        style={'margin-top': '20px'},
     )
 
     stack = dmc.Stack(

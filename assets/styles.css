@@ -111,7 +111,11 @@ body{
 .undp-button.button-secondary:hover {
   background-color: var(--blue-500);
 }
-
+.undp-button:disabled, .undp-button[data-disabled] {
+  background-color: var(--gray-400);
+  color: var(--gray-300);
+  pointer-events: none;
+}
 /* input */
 input:invalid {
   outline: none !important;
@@ -197,7 +201,7 @@ input:invalid {
   background: url(https://design.undp.org/static/media/chevron-down.16c97a3f.svg) no-repeat center center !important;
   padding: 0 10px;
 }
-.select_language .mantine-Select-rightSection svg, .mantine-Accordion-chevron svg{
+.select_language .mantine-Select-rightSection svg, .mantine-Accordion-chevron svg, .add-comment svg{
   opacity: 0;
 }
 .mantine-Select-dropdown{

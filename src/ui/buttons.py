@@ -124,7 +124,7 @@ def insert_button_quit():
     button = dmc.Button(
         'Quit',
         id='quit-button',
-        className='undp-button button-secondary',
+        className='undp-button button-primary',
         size='lg',
         mr=0,
         ml='auto',
