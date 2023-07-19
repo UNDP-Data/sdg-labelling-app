@@ -71,6 +71,7 @@ def insert_header():
     divider = dmc.Divider(
         color=styles.PRIMARY_COLOUR,
         variant='solid',
+        className='header-divider'
     )
 
     progress_group = dmc.Group(

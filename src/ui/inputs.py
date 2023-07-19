@@ -48,6 +48,7 @@ def insert_select_language():
         data=data,
         required=True,
         value='en',
+        className='select_language',
         style={
             'width': '95%',
         },
@@ -64,6 +65,7 @@ def insert_input_email():
         # value='john.doe@undp.org',  # comment out after testing
         placeholder='john.doe@undp.org',
         required=True,
+        className='undp-input',
         style={
             'width': '95%',
         },
@@ -80,6 +82,7 @@ def insert_input_passcode():
         # value='1234',  # comment out after testing
         placeholder='Type your code here',
         required=True,
+        className='undp-input',
         style={'width': '95%'},
     )
     return input_passcode
@@ -100,6 +103,7 @@ def insert_select_comment():
         clearable=True,
         searchable=True,
         creatable=True,
+        className='undp-input',
         style={'max-width': '80%', 'min-width': '50%'},
     )
     return input_comment
@@ -122,6 +126,7 @@ def insert_profile_settings():
                     ' to be public, just turn off the switch above.',
         placeholder='Jane Doe',
         disabled=True,
+        className='undp-input',
     )
 
     team_name = dmc.TextInput(
@@ -130,6 +135,7 @@ def insert_profile_settings():
         description='Add a team name to associate yourself with other users.',
         placeholder='The Best Team',
         disabled=True,
+        className='undp-input',
     )
 
     stack = dmc.Stack(

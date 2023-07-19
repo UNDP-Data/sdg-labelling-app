@@ -10,20 +10,17 @@ from src.ui import styles, alerts, buttons, inputs, modals, drawer, header, foot
 
 def insert_login_elements():
     title = dmc.Title(
-        'LOG IN',
-        order=1,
-        mt='5vh'
+        'Log in',
+        order=2,
+        className='page-title'
     )
 
     text = dmc.Text(
         'Enter Your Credentials to Proceed',
-        style={'text-align': 'center'},
-        color=styles.PRIMARY_COLOUR,
     )
 
     title_stack = dmc.Stack(
         children=[title, text],
-        align='center',
     )
 
     login_stack = dmc.Stack(

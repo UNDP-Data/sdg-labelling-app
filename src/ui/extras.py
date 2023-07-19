@@ -40,7 +40,7 @@ def insert_user_stats(n_labels: int):
 
 
 def insert_user_count(count: int):
-    badge = dmc.Badge(f'{count:,} people contributed', color='blue', variant='light')
+    badge = dmc.Badge(f'{count:,} people contributed', color='blue', variant='light', size='xl', className='people-count')
     return badge
 
 

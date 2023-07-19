@@ -58,7 +58,7 @@ body{
 }
 
 /* buttons */ 
-.mantine-UnstyledButton-root {
+.undp-button {
   align-items: center;
   background: transparent;
   border: none;
@@ -73,12 +73,12 @@ body{
   justify-content: center;
   padding: 1rem 1.5rem;
 }
-.primary-button {
+.undp-button.button-primary {
   border-radius: 0px;
   background-color: var(--dark-red);
   transition: 0.3s;
 }
-.mantine-UnstyledButton-root.next:after {
+.undp-button.next:after {
   transition: .2s ease;
   background: url(https://design.undp.org/static/media/chevron-right-black.f618eac3.svg) no-repeat left center;
   color: var(--dark-red);
@@ -87,7 +87,7 @@ body{
   content: "";
   width: 13px;
 }
-.mantine-UnstyledButton-root.back:before {
+.undp-button.back:before {
   transition: .2s ease;
   background: url(https://design.undp.org/static/media/chevron-right-black.f618eac3.svg) no-repeat left center;
   color: var(--dark-red);
@@ -98,37 +98,43 @@ body{
   transform: rotate(180deg);
 }
 
-.primary-button:hover {
+.undp-button.button-primary:hover {
   background-color: var(--red);
 }
 
-.secondary-button {
+.undp-button.button-secondary {
   border-radius: 0px;
   background-color: var(--blue-600);
   transition: 0.3s;
 }
 
-.secondary-button:hover {
+.undp-button.button-secondary:hover {
   background-color: var(--blue-500);
 }
 
+/* input */
 input:invalid {
   outline: none !important;
 }
 
-.mantine-TextInput-input {
-  font-family: "SohneBreit", "ProximaNova", sans-serif;
-  border-radius: 0;
-  border: 1px solid black;
-  background-color: white;
+.undp-input .mantine-TextInput-wrapper input, .undp-input .mantine-PasswordInput-input{
+  border: 2px solid var(--black);    
+  padding: 0.625rem;
+  font-size: 1rem;
+  appearance: none;
+  border-radius: 0 !important;
+  line-height: 1.4;
+  color: var(--black);
+  width: 100%;
+  height: 3.25rem !important;
 }
-
-.mantine-PasswordInput-input{
-  border-radius: 0;
-  border: 1px solid black;
-  background-color: white;
+.undp-input .mantine-TextInput-wrapper input:hover, .undp-input .mantine-PasswordInput-input:hover{
+  border: 2px solid var(--blue-700) !important; 
 }
-
+.mantine-PasswordInput-innerInput{
+  height: 3.25rem;
+}
+/* -- accordion --*/
 .mantine-Accordion-item {
   border-bottom: 1px solid rgb(112, 112, 112);
   border-top: transparent;
@@ -187,21 +193,22 @@ input:invalid {
 .mantine-Select-input:hover {
   border: 2px solid var(--blue-700);
 }
-.mantine-Select-rightSection{
+.mantine-Select-rightSection, .mantine-Accordion-chevron{
   background: url(https://design.undp.org/static/media/chevron-down.16c97a3f.svg) no-repeat center center !important;
   padding: 0 10px;
 }
-.mantine-Select-rightSection svg{
-  display: none;
+.select_language .mantine-Select-rightSection svg, .mantine-Accordion-chevron svg{
+  opacity: 0;
 }
 .mantine-Select-dropdown{
   font-size: 1rem !important;
 }
 /* ---- */
-.mantine-Grid-col{
-  margin-bottom: 20px;
+.header-divider{
+  margin-bottom: 10px;
   margin-top: 20px;
 }
+
 /* headings undp styles */
 h1 {
   font-size: 2.938rem;
@@ -234,6 +241,9 @@ h5 {
   font-weight: 400;
   line-height: 1.15 !important;
 }
+.page-title{
+  margin-top: 20px;
+}
 .small-font {
   font-size: 1rem !important;
 }
@@ -247,4 +257,7 @@ h5 {
 .mantine-InputWrapper-description{
   font-size: 1rem;
   padding-bottom: 10px;
+}
+.people-count{
+  margin-top: 10px;
 }
