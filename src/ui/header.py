@@ -60,7 +60,7 @@ def insert_header():
         'Make Your Contribution Towards a Safer And More Inclusive Use of Artificial Intelligence for'
         ' International Development',
         style={'overflow-wrap': 'break-word'},
-        size='lg',
+        size='xl',
     )
 
     title_stack = dmc.Stack(
@@ -83,6 +83,7 @@ def insert_header():
             modals.insert_modal_quit(),
             insert_menu(),
             buttons.insert_button_faq(),
+            extras.insert_user_stack(),
         ],
         spacing='xs',
         style={'float': 'right'},

@@ -48,7 +48,6 @@ def insert_user_count(count: int):
 def insert_user_stack():
     stack = dmc.Stack(
         children=[
-            dmc.Group(id='user-count', spacing='xs'),
             dmc.Group(id='user-stats', spacing='xs'),
         ]
     )
