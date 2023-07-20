@@ -39,7 +39,7 @@ def insert_accordion_announcements():
         ],
         value='announcements',
         style={
-            'border-radius': '0px'
+            'border-radius': '0px', 'padding-top':0,
         }
     )
 
@@ -80,7 +80,6 @@ def insert_accordion_leaderboard():
             description,
             insert_table_leaderboard(),
         ],
-        spacing='md',
     )
 
     accordion_item = dmc.AccordionItem(

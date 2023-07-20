@@ -36,16 +36,13 @@
   --dark-azure: #00C1FF;
 
 }
-body{
-  padding: 15px;
-}
+
 .app-header {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-content: center;
   justify-content: space-between;
-  padding: 20px;
 }
 
 .chip-container {
@@ -210,9 +207,11 @@ input:invalid {
 /* ---- */
 .header-divider{
   margin-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 30px;
 }
-
+.header{
+  padding-left: 20px;
+}
 /* headings undp styles */
 h1 {
   font-size: 2.938rem;
@@ -245,6 +244,11 @@ h5 {
   font-weight: 400;
   line-height: 1.15 !important;
 }
+p{
+  margin-top: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
 .page-title{
   margin-top: 20px;
 }
@@ -264,4 +268,98 @@ h5 {
 }
 .people-count{
   margin-top: 10px;
+}
+/* links */
+a.mantine-Anchor-root, .mantine-Modal-body a{
+  background-image: linear-gradient(var(--dark-red), var(--dark-red)), linear-gradient(var(--dark-red), var(--dark-red));
+  background-position: 100% 100%, -30px 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 2px, 0 1px;
+  text-decoration: none;
+  color: var(--black);
+}
+a.mantine-Anchor-root:hover, .mantine-Modal-body a:hover{
+  animation: lineLoop-animation-for-links 2s linear infinite !important;
+  color: var(--black);
+}
+/* modal */
+.mantine-Modal-body{
+  font-family: 'Proxima Nova', sans-serif;
+}
+/* stat cards */
+.stat-card-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: stretch;
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  padding: 2rem;
+  background-color: var(--gray-200);
+  font-size: 1.25rem;
+  color: var(--black);
+  transition: 300ms all;
+  flex-grow: 1;
+}
+
+.stat-card:hover {
+  background-color: var(--light-yellow);
+}
+
+.stat-card:hover h2 {
+  color: var(--black);
+}
+
+.stat-card h2 {
+  line-height: 1.09;
+  text-shadow: none;
+  -webkit-text-stroke: 2px var(--black);
+  color: var(--gray-200);
+  font-size: 5rem;
+  letter-spacing: .05rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+@media (min-width: 48em) {
+  .stats-card.small h2 {
+    font-size: 4.375rem;
+  }
+}
+.stat-card h3 {
+  font-size: 4.375rem;
+  line-height: 1.09;
+  text-shadow: none;
+  -webkit-text-stroke: 2px var(--black);
+  color: var(--gray-200);
+  letter-spacing: .05rem;
+  margin-top: 0;
+  /*margin-bottom: 1rem;*/
+}
+
+@media (min-width: 48em) {
+    .stats-card.small h3 {
+      font-size: 3.5rem;
+  }
+}
+
+.stat-card:hover h3 {
+  color: var(--black);
+}
+
+.stat-card h4 {
+  line-height: 1.15;
+  color: var(--black);
+  font-size: 1.563rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.stat-card p {
+  line-height: 1.15;
+  font-size: 1rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
