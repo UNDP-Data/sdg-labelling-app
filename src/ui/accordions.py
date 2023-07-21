@@ -39,7 +39,7 @@ def insert_accordion_announcements():
         ],
         value='announcements',
         style={
-            'border-radius': '0px', 'padding-top':0,
+            'borderRadius': '0px', 'paddingTop':'0px',
         }
     )
 

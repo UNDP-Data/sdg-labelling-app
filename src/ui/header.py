@@ -59,14 +59,14 @@ def insert_header():
     subtitle = dmc.Text(
         'Make Your Contribution Towards a Safer And More Inclusive Use of Artificial Intelligence for'
         ' International Development',
-        style={'overflow-wrap': 'break-word'},
+        style={'overflowWrap': 'break-word'},
         size='xl',
     )
 
     title_stack = dmc.Stack(
         children=[title, subtitle],
         spacing='xs',
-        className='header'
+        className='header-left',
     )
 
     divider = dmc.Divider(
@@ -75,7 +75,7 @@ def insert_header():
         className='header-divider'
     )
 
-    extra_group = dmc.Group(
+    right_stack = dmc.Stack(
         children=[
             modals.insert_modal_faq(),
             modals.insert_modal_profile(),
@@ -87,11 +87,13 @@ def insert_header():
         ],
         spacing='xs',
         style={'float': 'right'},
+        align='end',
+        className='header-right',
     )
 
     columns = [
-        dmc.Col(title_stack, xl=11, lg=11, md=11, sm=11, xs=12),
-        dmc.Col(extra_group, xl=1, lg=1, md=1, sm=1, xs=12),
+        dmc.Col(title_stack, xl=11, lg=11, md=11, sm=12, xs=12),
+        dmc.Col(right_stack, xl=1, lg=1, md=1, sm=12, xs=12),
         dmc.Col(divider, span=12),
     ]
     return columns
