@@ -89,7 +89,7 @@ def insert_accordion_leaderboard():
         ],
         value='announcements',
         style={
-            'border-radius': '0px'
+            'borderRadius': '0px'
         }
     )
 

@@ -40,7 +40,7 @@ def insert_button_send():
         variant='light',
         rightIcon=DashIconify(icon='ic:baseline-email'),
         style={
-            'border-radius': '0px',
+            'borderRadius': '0px',
             'transition': 'all 0.3s ease-in-out',
         }
     )

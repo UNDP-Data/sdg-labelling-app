@@ -25,7 +25,7 @@ def layout():
         shadow='lg',
         radius='md',
         withBorder=True,
-        style={'font-size': 'large', 'min-height': '20vh', 'margin': '20px 0'},
+        style={'fontSize': 'large', 'minHeight': '20vh', 'margin': '20px 0'},
     )
 
     loading_paper = dmc.LoadingOverlay(
@@ -45,7 +45,7 @@ def layout():
         color='#D12800',
         radius='md',
         size='xl',
-        style={'margin-top': '20px'},
+        style={'marginTop': '20px'},
     )
 
     stack = dmc.Stack(

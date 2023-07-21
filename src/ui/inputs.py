@@ -104,7 +104,7 @@ def insert_select_comment():
         searchable=True,
         creatable=True,
         className='add-comment undp-input',
-        style={'max-width': '80%', 'min-width': '50%', 'margin': '20px 0' },
+        style={'maxWidth': '80%', 'minWidth': '50%', 'margin': '20px 0' },
     )
     return input_comment
 
