@@ -114,9 +114,10 @@ def insert_profile_settings():
         id='user-profile-leaderboard',
         size='md',
         radius='xl',
-        color=styles.PRIMARY_COLOUR,
+        color="red",
         label='Display on Leaderboard',
-        checked=False
+        checked=False,
+        className='undp-switch',
     )
 
     user_name = dmc.TextInput(

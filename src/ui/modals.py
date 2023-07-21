@@ -65,7 +65,11 @@ def insert_modal_profile():
     title_group = dmc.Group(
         children=[
             title,
-            dmc.Badge(id='user-profile-id'),
+            dmc.Badge(
+              id='user-profile-id', 
+              className='undp-chip undp-chip-blue', 
+              size='xl'
+            ),
         ],
         spacing='md',
     )
