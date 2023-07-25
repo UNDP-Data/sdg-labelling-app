@@ -45,18 +45,18 @@ dash_app.layout = dmc.MantineProvider(
         position='top-center',
     ),
     theme={
-        "fontFamily": "'Proxima Nova', sans-serif",
-        "headings":{
-            "fontFamily": "SohneBreit, 'Proxima Nova', sans-serif",
-            "sizes": {
-                "h1":{"fontSize": "2.938rem"},
-                "h2":{"fontSize": "2.5rem"},
-                "h3":{"fontSize": "1.875rem"},
-                "h4":{"fontSize": "1.563rem"},
-                "h5":{"fontSize": "1.25rem"},
+        'fontFamily': '\'Proxima Nova\', sans-serif',
+        'headings': {
+            'fontFamily': 'SohneBreit, \'Proxima Nova\', sans-serif',
+            'sizes': {
+                'h1': {'fontSize': '2.938rem'},
+                'h2': {'fontSize': '2.5rem'},
+                'h3': {'fontSize': '1.875rem'},
+                'h4': {'fontSize': '1.563rem'},
+                'h5': {'fontSize': '1.25rem'},
             },
-            "fontWeight": "CSSProperties['fontWeight']",
-            "lineHeight": "CSSProperties['lineHeight']",
+            'fontWeight': 'CSSProperties[\'fontWeight\']',
+            'lineHeight': 'CSSProperties[\'lineHeight\']',
         },
     },
 )
