@@ -114,7 +114,7 @@ def insert_profile_settings():
         id='user-profile-leaderboard',
         size='md',
         radius='xl',
-        color="red",
+        color='red',
         label='Display on Leaderboard',
         checked=False,
         className='undp-switch',
