@@ -52,35 +52,34 @@ def insert_user_stack():
         ]
     )
     return stack
-#---------
 
-people_contributed = dmc.Text('people contributed')
 
 def insert_stats_users():
-  stats_users = dmc.Stack(
+    people_contributed = dmc.Text('people contributed')
+    stats_users = dmc.Stack(
       children=[
           dmc.Group(id='user-count'),
           people_contributed,
       ],
       className='stat-card small'
-  )
-  return stats_users
+    )
+    return stats_users
 
-progress_text= dmc.Text('Progress in collecting labels')
 
 def insert_progress_group():
-  progress_group = dmc.Group(
+    progress_group = dmc.Group(
       children=insert_rings_progress(),
       className='stat-card small'
-  )
-  return progress_group
+    )
+    return progress_group
+
 
 def insert_stats_bar():
-  group = dmc.Group(
+    group = dmc.Group(
       children=[
           insert_progress_group(),
           insert_stats_users(),
       ],
       className='stat-card-container',
-  )
-  return group
+    )
+    return group
