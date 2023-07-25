@@ -10,7 +10,7 @@ dash.register_page(__name__, path='/labelling')
 
 def layout():
     title = dmc.Title(
-        'Select SDGs Relevant for this paragraph if applicable',
+        'Select SDGs Relevant For This Paragraph If Applicable',
         order=2,
     )
 
