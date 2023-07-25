@@ -15,11 +15,12 @@ def insert_rings_progress():
     for iso, name in sorted(utils.get_language_mapping().items(), key=lambda x: x[0]):
         ring = dmc.RingProgress(
             id={'type': 'ring', 'index': iso},
-            label=dmc.Center(dmc.Text(iso.upper(), color=styles.PRIMARY_COLOUR)),
+            label=dmc.Center(dmc.Text(iso.upper(), color='black')),
             size=65,
             thickness=5,
             roundCaps=False,
-            sections=[{'value': 0, 'color': styles.PRIMARY_COLOUR}],
+            rootColor='#D4D6D8',
+            sections=[{'value': 0, 'color': "#EE402D"}],
         )
 
         target = int(os.environ['PER_LANGUAGE_GOAL'])
@@ -40,15 +41,45 @@ def insert_user_stats(n_labels: int):
 
 
 def insert_user_count(count: int):
-    badge = dmc.Badge(f'{count:,} people contributed', color='blue', variant='light')
-    return badge
+    text = dmc.Title(f'{count:,}', order=3)
+    return text
 
 
 def insert_user_stack():
     stack = dmc.Stack(
         children=[
-            dmc.Group(id='user-count', spacing='xs'),
             dmc.Group(id='user-stats', spacing='xs'),
         ]
     )
     return stack
+
+
+def insert_stats_users():
+    people_contributed = dmc.Text('people contributed')
+    stats_users = dmc.Stack(
+      children=[
+          dmc.Group(id='user-count'),
+          people_contributed,
+      ],
+      className='stat-card small'
+    )
+    return stats_users
+
+
+def insert_progress_group():
+    progress_group = dmc.Group(
+      children=insert_rings_progress(),
+      className='stat-card small'
+    )
+    return progress_group
+
+
+def insert_stats_bar():
+    group = dmc.Group(
+      children=[
+          insert_progress_group(),
+          insert_stats_users(),
+      ],
+      className='stat-card-container',
+    )
+    return group

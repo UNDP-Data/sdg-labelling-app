@@ -19,7 +19,6 @@ def insert_accordion_announcements():
 
     title = dmc.Group(
         children=['Announcements', badge],
-        spacing='xs',
     )
 
     icon = DashIconify(
@@ -40,7 +39,7 @@ def insert_accordion_announcements():
         ],
         value='announcements',
         style={
-            'border-radius': '0px'
+            'borderRadius': '0px', 'paddingTop':'0px',
         }
     )
 
@@ -62,7 +61,6 @@ def insert_accordion_leaderboard():
 
     title = dmc.Group(
         children=['Top 50 Leaderboard', badge],
-        spacing='xs',
     )
 
     icon = DashIconify(
@@ -82,7 +80,6 @@ def insert_accordion_leaderboard():
             description,
             insert_table_leaderboard(),
         ],
-        spacing='md',
     )
 
     accordion_item = dmc.AccordionItem(
@@ -92,7 +89,7 @@ def insert_accordion_leaderboard():
         ],
         value='announcements',
         style={
-            'border-radius': '0px'
+            'borderRadius': '0px'
         }
     )
 

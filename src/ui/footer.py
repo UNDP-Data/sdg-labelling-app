@@ -15,7 +15,7 @@ def insert_footer():
         color='gray',
     )
     footer = dmc.Footer(
-        height='25px',
+        height='25',
         fixed=True,
         children=dmc.Center(text),
         zIndex=-1,

@@ -11,8 +11,6 @@ def insert_modal_faq():
     title = dmc.Title(
         children='Frequently Asked Questions',
         order=2,
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient',
     )
     modal = dmc.Modal(
         id='modal-faq',
@@ -63,13 +61,15 @@ def insert_modal_profile():
     title = dmc.Title(
         children='My Profile',
         order=2,
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient',
     )
     title_group = dmc.Group(
         children=[
             title,
-            dmc.Badge(id='user-profile-id'),
+            dmc.Badge(
+              id='user-profile-id', 
+              className='undp-chip undp-chip-blue', 
+              size='xl'
+            ),
         ],
         spacing='md',
     )
@@ -89,8 +89,6 @@ def insert_modal_statistics():
     title = dmc.Title(
         children='My Statistics',
         order=2,
-        color=styles.PRIMARY_COLOUR,
-        variant='gradient',
     )
     modal = dmc.Modal(
         id={'type': 'modal', 'index': 'statistics'},
