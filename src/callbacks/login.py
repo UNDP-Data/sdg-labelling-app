@@ -25,7 +25,7 @@ def redirect(pathname, user, config):
 
 
 @callback(
-    Output('user-config', 'data'),
+    Output('user-config', 'data', allow_duplicate=True),
     Output('email-input', 'error'),
     Output('code-input', 'error'),
     Input('button-login', 'n_clicks'),
@@ -44,6 +44,17 @@ def login(n_clicks, email, access_code):
         return no_update, None, 'Invalid access code'
     else:
         return user, None, None
+
+
+@callback(
+    Output('user-config', 'data', allow_duplicate=True),
+    Input({'type': 'menu-user', 'index': 'logout'}, 'n_clicks'),
+    prevent_initial_call=True
+)
+def logout(n_clicks):
+    if not n_clicks:
+        raise PreventUpdate
+    return None
 
 
 @callback(

@@ -15,9 +15,9 @@ import src
 def change_menu_visibility(pathname, user):
     if pathname != '/login' and user is not None:
         style = None
-        return style, style, style
+        return style, style, style, style
     style = {'display': 'none'}
-    return style, style, style
+    return style, style, style, style
 
 
 @callback(

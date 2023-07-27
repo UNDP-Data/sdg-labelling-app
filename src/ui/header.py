@@ -31,6 +31,12 @@ def insert_menu():
                         icon=DashIconify(icon='tabler-report-analytics'),
                         n_clicks=0,
                     ),
+                    dmc.MenuItem(
+                        id={'type': 'menu-user', 'index': 'logout'},
+                        children='Logout',
+                        icon=DashIconify(icon='tabler:logout-2'),
+                        n_clicks=0,
+                    ),
                     dmc.MenuLabel('Community'),
                     dmc.MenuItem(
                         id={'type': 'menu-community', 'index': 'announcements'},
