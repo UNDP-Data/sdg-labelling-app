@@ -10,6 +10,7 @@ from src.ui import styles, buttons, modals, extras
 
 
 def insert_menu():
+    icon_size = 20
     menu = dmc.Menu(
         [
             dmc.MenuTarget(dmc.Burger()),
@@ -22,38 +23,38 @@ def insert_menu():
                     dmc.MenuItem(
                         id={'type': 'menu-user', 'index': 'profile'},
                         children='My Profile',
-                        icon=DashIconify(icon='tabler-user-circle'),
+                        icon=DashIconify(icon='tabler-user-circle', width=icon_size),
                         n_clicks=0,
                     ),
                     dmc.MenuItem(
                         id={'type': 'menu-user', 'index': 'statistics'},
                         children='My Statistics',
-                        icon=DashIconify(icon='tabler-report-analytics'),
+                        icon=DashIconify(icon='tabler-report-analytics', width=icon_size),
                         n_clicks=0,
                     ),
                     dmc.MenuItem(
                         id={'type': 'menu-user', 'index': 'logout'},
                         children='Logout',
-                        icon=DashIconify(icon='tabler:logout-2'),
+                        icon=DashIconify(icon='tabler:logout-2', width=icon_size),
                         n_clicks=0,
                     ),
                     dmc.MenuLabel('Community'),
                     dmc.MenuItem(
                         id={'type': 'menu-community', 'index': 'announcements'},
                         children='Announcements',
-                        icon=DashIconify(icon='tabler:alert-triangle-filled'),
+                        icon=DashIconify(icon='tabler:news', width=icon_size),
                         n_clicks=0,
                     ),
                     dmc.MenuItem(
                         id={'type': 'menu-community', 'index': 'leaderboard'},
                         children='Leaderboard',
-                        icon=DashIconify(icon='tabler:list-numbers'),
+                        icon=DashIconify(icon='tabler:list-numbers', width=icon_size),
                         n_clicks=0,
                     ),
                     dmc.MenuItem(
                         id={'type': 'menu-community', 'index': 'faq'},
                         children=dmc.Group(['FAQ', dmc.Badge('New')], spacing='xs'),
-                        icon=DashIconify(icon='tabler:help-hexagon-filled'),
+                        icon=DashIconify(icon='tabler:info-square-rounded', width=icon_size),
                         n_clicks=0,
                     ),
                     dmc.MenuLabel('Feedback'),
@@ -61,12 +62,12 @@ def insert_menu():
                         children='GitHub',
                         href='https://github.com/UNDP-Data/sdg-labelling-app/issues',
                         target='_blank',
-                        icon=DashIconify(icon='radix-icons:external-link'),
+                        icon=DashIconify(icon='tabler:brand-github', width=icon_size),
                     ),
                     dmc.MenuItem(
                         children='Get in Touch',
                         href=os.environ['MAILTO'],
-                        icon=DashIconify(icon='tabler-mail'),
+                        icon=DashIconify(icon='tabler-mail', width=icon_size),
                     )
                 ]
             ),
