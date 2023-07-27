@@ -9,7 +9,7 @@ import src
 @callback(
     Output('progress-bar', 'value'),
     Output('progress-bar', 'label'),
-    Output('user-stats', 'children'),
+    Output({'type': 'modal', 'index': 'statistics'}, 'children'),
     Output('back-button', 'disabled'),
     Output('next-button', 'children'),
     Input('session-config', 'data'),

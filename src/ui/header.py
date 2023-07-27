@@ -103,7 +103,6 @@ def insert_header():
             modals.insert_modal_statistics(),
             modals.insert_modal_quit(),
             insert_menu(),
-            extras.insert_user_stack(),
         ],
         spacing='xs',
         style={'float': 'right'},

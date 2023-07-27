@@ -36,22 +36,13 @@ def insert_rings_progress():
 
 
 def insert_user_stats(n_labels: int):
-    badge = dmc.Badge(f'you labelled {n_labels:,} texts', color='red', variant='light')
-    return badge
+    text = dmc.Text(f'You have labelled {n_labels:,} texts so far. More statistics are coming soon.')
+    return text
 
 
 def insert_user_count(count: int):
     text = dmc.Title(f'{count:,}', order=3)
     return text
-
-
-def insert_user_stack():
-    stack = dmc.Stack(
-        children=[
-            dmc.Group(id='user-stats', spacing='xs'),
-        ]
-    )
-    return stack
 
 
 def insert_stats_users():
