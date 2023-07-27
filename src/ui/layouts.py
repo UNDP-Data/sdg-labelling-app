@@ -43,7 +43,10 @@ def insert_session_elements():
     )
 
     text = dmc.Text(
-        'Select the number of texts you want to label', className='label'
+        'Select the number of texts you want to label in this session.'
+        ' You can always quit early. And you can also start a new session at the end of the current one if you want.'
+        ' We recommend starting with 10 texts, which should take you about 15 to 20 minutes to complete.',
+        className='label'
     )
 
     title_stack = dmc.Stack(
