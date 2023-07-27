@@ -7,16 +7,6 @@ import src
 
 
 @callback(
-    Output('modal-faq', 'opened'),
-    Input('faq-button', 'n_clicks'),
-    prevent_initial_call=True
-)
-def open_modal_faq(n_clicks):
-    is_open = n_clicks is not None
-    return is_open
-
-
-@callback(
     Output({'type': 'menu-user', 'index': ALL}, 'style'),
     Input('location', 'pathname'),
     Input('user-config', 'data'),
