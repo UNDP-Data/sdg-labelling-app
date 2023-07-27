@@ -30,11 +30,21 @@ def change_menu_visibility(pathname, user):
 
 
 @callback(
-    Output({'type': 'modal', 'index': MATCH}, 'opened'),
+    Output({'type': 'modal', 'index': MATCH}, 'opened', allow_duplicate=True),
     Input({'type': 'menu-user', 'index': MATCH}, 'n_clicks'),
     prevent_initial_call=True
 )
-def open_modal_menu(n_clicks):
+def open_modal_menu_user(n_clicks):
+    is_open = n_clicks is not None
+    return is_open
+
+
+@callback(
+    Output({'type': 'modal', 'index': MATCH}, 'opened', allow_duplicate=True),
+    Input({'type': 'menu-community', 'index': MATCH}, 'n_clicks'),
+    prevent_initial_call=True,
+)
+def open_modal_menu_community(n_clicks):
     is_open = n_clicks is not None
     return is_open
 

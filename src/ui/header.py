@@ -31,6 +31,19 @@ def insert_menu():
                         icon=DashIconify(icon='tabler-report-analytics'),
                         n_clicks=0,
                     ),
+                    dmc.MenuLabel('Community'),
+                    dmc.MenuItem(
+                        id={'type': 'menu-community', 'index': 'announcements'},
+                        children=dmc.Group(['Announcements', dmc.Badge('New')], spacing='xs'),
+                        icon=DashIconify(icon='tabler:alert-triangle-filled'),
+                        n_clicks=0,
+                    ),
+                    dmc.MenuItem(
+                        id={'type': 'menu-community', 'index': 'leaderboard'},
+                        children=dmc.Group(['Leaderboard', dmc.Badge('New')], spacing='xs'),
+                        icon=DashIconify(icon='tabler:list-numbers'),
+                        n_clicks=0,
+                    ),
                     dmc.MenuLabel('Feedback'),
                     dmc.MenuItem(
                         children='GitHub',
@@ -77,6 +90,8 @@ def insert_header():
 
     right_stack = dmc.Stack(
         children=[
+            modals.insert_modal_announcements(),
+            modals.insert_modal_leaderboard(),
             modals.insert_modal_faq(),
             modals.insert_modal_profile(),
             modals.insert_modal_statistics(),

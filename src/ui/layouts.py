@@ -5,7 +5,7 @@ from typing import Literal
 import dash_mantine_components as dmc
 
 # local packages
-from src.ui import styles, alerts, buttons, inputs, modals, drawer, header, footer, affixes, accordions
+from src.ui import styles, alerts, buttons, inputs, modals, drawer, header, footer, affixes
 
 
 def insert_login_elements():

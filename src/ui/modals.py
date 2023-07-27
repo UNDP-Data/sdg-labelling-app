@@ -4,7 +4,7 @@ from dash import dcc
 
 # local packages
 from src import utils
-from src.ui import styles, buttons, inputs
+from src.ui import alerts, buttons, inputs, tables
 
 
 def insert_modal_faq():
@@ -98,5 +98,54 @@ def insert_modal_statistics():
         overlayBlur=10,
         transition='fade',
         children='Coming soon.',
+    )
+    return modal
+
+
+def insert_modal_announcements():
+    title = dmc.Title(
+        children='Announcements',
+        order=2,
+    )
+    stack = dmc.Stack(
+        children=alerts.insert_alert_announcements(),
+        spacing='md',
+    )
+    modal = dmc.Modal(
+        id={'type': 'modal', 'index': 'announcements'},
+        title=title,
+        centered=True,
+        size='xl',
+        overlayBlur=10,
+        transition='fade',
+        children=stack,
+    )
+    return modal
+
+
+def insert_modal_leaderboard():
+    title = dmc.Title(
+        children='Leaderboard',
+        order=2,
+    )
+    description = dmc.Text(
+        children='If you want your name to appear on the leaderboard, log in to the application, open "My Profile",'
+                 ' and turn on the switch next to "Display on Leaderboard".',
+        size='sm',
+    )
+    stack = dmc.Stack(
+        children=[
+            description,
+            tables.insert_table_leaderboard(),
+        ],
+    )
+    modal = dmc.Modal(
+        id={'type': 'modal', 'index': 'leaderboard'},
+        title=title,
+        centered=True,
+        size='xl',
+        overlayBlur=10,
+        transition='fade',
+        children=stack,
     )
     return modal

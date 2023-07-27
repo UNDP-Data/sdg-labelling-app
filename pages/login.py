@@ -21,8 +21,6 @@ def layout():
     columns = [
         *src.ui.header.insert_header(),
         dmc.Col(extras.insert_stats_bar(), **spans),
-        dmc.Col(src.ui.accordions.insert_accordion_announcements(), **spans),
-        dmc.Col(src.ui.accordions.insert_accordion_leaderboard(), **spans),
         dmc.Col(src.ui.layouts.insert_login_elements(), **spans, id='login-settings'),
         dmc.Col(src.ui.layouts.insert_session_elements(), **spans, id='session-settings', style={'display': 'none'}),
         dmc.Col(src.ui.footer.insert_footer(), span=12),
