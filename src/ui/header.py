@@ -21,13 +21,13 @@ def insert_menu():
                     ),
                     dmc.MenuItem(
                         id={'type': 'menu-user', 'index': 'profile'},
-                        children=dmc.Group(['My Profile', dmc.Badge('New')], spacing='xs'),
+                        children='My Profile',
                         icon=DashIconify(icon='tabler-user-circle'),
                         n_clicks=0,
                     ),
                     dmc.MenuItem(
                         id={'type': 'menu-user', 'index': 'statistics'},
-                        children=dmc.Group(['My Statistics', dmc.Badge('New')], spacing='xs'),
+                        children='My Statistics',
                         icon=DashIconify(icon='tabler-report-analytics'),
                         n_clicks=0,
                     ),
@@ -40,13 +40,13 @@ def insert_menu():
                     dmc.MenuLabel('Community'),
                     dmc.MenuItem(
                         id={'type': 'menu-community', 'index': 'announcements'},
-                        children=dmc.Group(['Announcements', dmc.Badge('New')], spacing='xs'),
+                        children='Announcements',
                         icon=DashIconify(icon='tabler:alert-triangle-filled'),
                         n_clicks=0,
                     ),
                     dmc.MenuItem(
                         id={'type': 'menu-community', 'index': 'leaderboard'},
-                        children=dmc.Group(['Leaderboard', dmc.Badge('New')], spacing='xs'),
+                        children='Leaderboard',
                         icon=DashIconify(icon='tabler:list-numbers'),
                         n_clicks=0,
                     ),
