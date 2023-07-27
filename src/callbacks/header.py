@@ -41,19 +41,23 @@ def open_modal_menu_community(n_clicks):
 
 
 @callback(
-    {
-        'rings': [Output({'type': 'ring', 'index': iso}, 'sections') for iso in src.utils.get_language_mapping()],
-        'user-count': Output('user-count', 'children'),
-    },
+    [Output({'type': 'ring', 'index': iso}, 'sections') for iso in src.utils.get_language_mapping()],
     Input('interval-component', 'n_intervals'),
 )
-def update_stats(_: int):
+def update_stats_rings(_: int):
     stats = src.database.get_stats_by_language()
-    output = dict()
-    output['rings'] = [[{'value': stats.get(iso, 0), 'color': src.ui.styles.PRIMARY_COLOUR}] for iso in src.utils.get_language_mapping()]
+    rings = [[{'value': stats.get(iso, 0), 'color': src.ui.styles.PRIMARY_COLOUR}] for iso in src.utils.get_language_mapping()]
+    return rings
+
+
+@callback(
+    Output('user-count', 'children'),
+    Input('interval-component', 'n_intervals'),
+)
+def update_stats_contributors(_: int):
     count = src.database.get_user_count()
-    output['user-count'] = src.ui.extras.insert_user_count(count)
-    return output
+    text = src.ui.extras.insert_user_count(count)
+    return text
 
 
 @callback(
