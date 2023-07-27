@@ -9,7 +9,6 @@ import src
 @callback(
     Output('progress-bar', 'value'),
     Output('progress-bar', 'label'),
-    Output({'type': 'modal', 'index': 'statistics'}, 'children'),
     Output('back-button', 'disabled'),
     Output('next-button', 'children'),
     Input('session-config', 'data'),
@@ -18,11 +17,9 @@ import src
 def update_controls(config):
     config = src.entities.SessionConfig(**config)
     progress = (sum(task_id is not None for task_id in config.task_ids) - 1) / len(config.task_ids) * 100
-    n_labels = src.database.get_stats_user(config)
-    user_stats = src.ui.extras.insert_user_stats(n_labels)
     button_back_disabled = config.task_idx <= 0
     button_next_name = 'Next & Finish' if config.task_idx == (len(config.task_ids) - 1) is not None else 'Next'
-    return progress, f'{progress:.0f}%', user_stats, button_back_disabled, button_next_name
+    return progress, f'{progress:.0f}%', button_back_disabled, button_next_name
 
 
 @callback(

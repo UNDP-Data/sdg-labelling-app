@@ -131,9 +131,9 @@ def get_stats_by_language() -> dict:
     return stats
 
 
-def get_stats_user(config) -> int:
+def get_stats_user(user_id: str) -> int:
     collection = get_document_collection()
-    count = collection.count_documents({'annotations': {'$elemMatch': {'created_by': config.user_id}}})
+    count = collection.count_documents({'annotations': {'$elemMatch': {'created_by': user_id}}})
     return count
 
 

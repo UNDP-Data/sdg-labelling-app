@@ -1,6 +1,7 @@
 # web app
 from dash import callback, MATCH, ALL
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
+from dash.exceptions import PreventUpdate
 
 # local packages
 import src
@@ -53,3 +54,16 @@ def update_stats(_: int):
     count = src.database.get_user_count()
     output['user-count'] = src.ui.extras.insert_user_count(count)
     return output
+
+
+@callback(
+    Output({'type': 'modal', 'index': 'statistics'}, 'children'),
+    Input('interval-component', 'n_intervals'),
+    State('user-config', 'data'),
+)
+def update_user_stats(_: int, user: dict):
+    if user is None:
+        raise PreventUpdate
+    n_labels = src.database.get_stats_user(user['_id'])
+    user_stats = src.ui.extras.insert_user_stats(n_labels)
+    return user_stats
