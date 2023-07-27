@@ -7,30 +7,6 @@ from src import entities, utils
 from src.ui import styles
 
 
-def insert_button_faq():
-    button = dmc.Button(
-        'FAQ',
-        id='faq-button',
-        size='sm',
-        radius='md',
-        color='red',
-        compact=True,
-        variant='light',
-        leftIcon=DashIconify(
-            icon='wpf:faq',
-            width=20,
-        ),
-    )
-    tooltip = dmc.Tooltip(
-        children=button,
-        label='Open Frequently Asked Questions',
-        position='top',
-        offset=3,
-        openDelay=500,
-    )
-    return tooltip
-
-
 def insert_button_send():
     button = dmc.Button(
         'Get Access Code',

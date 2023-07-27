@@ -7,23 +7,6 @@ from src import utils
 from src.ui import alerts, buttons, inputs, tables
 
 
-def insert_modal_faq():
-    title = dmc.Title(
-        children='Frequently Asked Questions',
-        order=2,
-    )
-    modal = dmc.Modal(
-        id='modal-faq',
-        title=title,
-        centered=True,
-        size='xl',
-        overlayBlur=10,
-        transition='fade',
-        children=dcc.Markdown(utils.read_faq_markdown()),
-    )
-    return modal
-
-
 def insert_modal_quit():
     title = dmc.Title(
         'Are you sure you want to quit?',
@@ -147,5 +130,22 @@ def insert_modal_leaderboard():
         overlayBlur=10,
         transition='fade',
         children=stack,
+    )
+    return modal
+
+
+def insert_modal_faq():
+    title = dmc.Title(
+        children='Frequently Asked Questions',
+        order=2,
+    )
+    modal = dmc.Modal(
+        id={'type': 'modal', 'index': 'faq'},
+        title=title,
+        centered=True,
+        size='xl',
+        overlayBlur=10,
+        transition='fade',
+        children=dcc.Markdown(utils.read_faq_markdown()),
     )
     return modal

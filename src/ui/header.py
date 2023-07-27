@@ -44,6 +44,12 @@ def insert_menu():
                         icon=DashIconify(icon='tabler:list-numbers'),
                         n_clicks=0,
                     ),
+                    dmc.MenuItem(
+                        id={'type': 'menu-community', 'index': 'faq'},
+                        children=dmc.Group(['FAQ', dmc.Badge('New')], spacing='xs'),
+                        icon=DashIconify(icon='tabler:help-hexagon-filled'),
+                        n_clicks=0,
+                    ),
                     dmc.MenuLabel('Feedback'),
                     dmc.MenuItem(
                         children='GitHub',
@@ -97,7 +103,6 @@ def insert_header():
             modals.insert_modal_statistics(),
             modals.insert_modal_quit(),
             insert_menu(),
-            buttons.insert_button_faq(),
             extras.insert_user_stack(),
         ],
         spacing='xs',
