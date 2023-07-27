@@ -11,7 +11,7 @@ def insert_slider_texts():
         className='slider',
         id='slider',
         min=5,
-        max=100,
+        max=25,
         step=5,
         size='md',
         radius='md',
@@ -20,12 +20,12 @@ def insert_slider_texts():
         color='black', # this is not working, changed it in the css file
         marks=[
             {'value': 5, 'label': '5'},
+            {'value': 10, 'label': '10'},
+            {'value': 15, 'label': '15'},
+            {'value': 20, 'label': '20'},
             {'value': 25, 'label': '25'},
-            {'value': 50, 'label': '50'},
-            {'value': 75, 'label': '75'},
-            {'value': 100, 'label': '100'}
         ],
-        value=25,
+        value=10,
         style={'width': '95%'},  # avoid overflow for slider ends
     )
     return slider_texts
