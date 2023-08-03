@@ -3,7 +3,7 @@ import dash_mantine_components as dmc
 
 # local packages
 from src import utils
-from src.ui import styles, buttons
+from src.ui import buttons
 
 
 def insert_slider_texts():

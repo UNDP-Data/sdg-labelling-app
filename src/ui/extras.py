@@ -3,11 +3,9 @@ import os
 
 # dash
 import dash_mantine_components as dmc
-from dash_iconify import DashIconify
 
 # local packages
 from src import utils
-from src.ui import styles
 
 
 def insert_rings_progress():

@@ -6,7 +6,7 @@ import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 
 # local packages
-from src.ui import styles, buttons, modals, extras
+from src.ui import styles, modals
 
 
 def insert_menu():

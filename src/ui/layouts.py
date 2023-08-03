@@ -1,11 +1,8 @@
-# standard library
-from typing import Literal
-
 # dash
 import dash_mantine_components as dmc
 
 # local packages
-from src.ui import styles, alerts, buttons, inputs, modals, drawer, header, footer, affixes
+from src.ui import buttons, inputs
 
 
 def insert_login_elements():
