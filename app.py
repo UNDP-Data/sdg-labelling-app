@@ -26,22 +26,39 @@ dash_app = Dash(
 app = dash_app.server
 
 # define layout
-dash_app.layout = dmc.NotificationsProvider(
-    children=[
-        dcc.Location(id='location'),
-        dcc.Store(id='user-config', storage_type='session'),
-        dcc.Store(id='session-config', storage_type='session'),
-        dcc.Interval(
-            id='interval-component',
-            interval=1_000 * 10,  # in milliseconds
-            n_intervals=0
-        ),
-        dash.page_container,
-        html.Div(id='notifications-container'),
-        html.Div(id='login-redirect'),
-    ],
-    autoClose=False,
-    position='top-center',
+dash_app.layout = dmc.MantineProvider(
+    dmc.NotificationsProvider(
+        children=[
+            dcc.Location(id='location'),
+            dcc.Store(id='user-config', storage_type='session'),
+            dcc.Store(id='session-config', storage_type='session'),
+            dcc.Interval(
+                id='interval-component',
+                interval=1_000 * 10,  # in milliseconds
+                n_intervals=0
+            ),
+            dash.page_container,
+            html.Div(id='notifications-container'),
+            html.Div(id='login-redirect'),
+        ],
+        autoClose=False,
+        position='top-center',
+    ),
+    theme={
+        'fontFamily': '\'Proxima Nova\', sans-serif',
+        'headings': {
+            'fontFamily': 'SohneBreit, \'Proxima Nova\', sans-serif',
+            'sizes': {
+                'h1': {'fontSize': '2.938rem'},
+                'h2': {'fontSize': '2.5rem'},
+                'h3': {'fontSize': '1.875rem'},
+                'h4': {'fontSize': '1.563rem'},
+                'h5': {'fontSize': '1.25rem'},
+            },
+            'fontWeight': 'CSSProperties[\'fontWeight\']',
+            'lineHeight': 'CSSProperties[\'lineHeight\']',
+        },
+    },
 )
 
 # run the app

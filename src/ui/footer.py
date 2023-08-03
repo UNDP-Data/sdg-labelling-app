@@ -5,7 +5,7 @@ import dash_mantine_components as dmc
 def insert_footer():
     text = dmc.Text(
         children=[
-            'App v1.0.0. Developed and maintained by the ',
+            'App v1.1.0. Developed and maintained by the ',
             dmc.Anchor('SDG Integration team', href='https://sdgintegration.undp.org', target='_blank'),
             ' at UNDP. Visit ',
             dmc.Anchor('Data Futures Platform', href='https://data.undp.org', target='_blank'),
@@ -15,7 +15,7 @@ def insert_footer():
         color='gray',
     )
     footer = dmc.Footer(
-        height='25px',
+        height='25',
         fixed=True,
         children=dmc.Center(text),
         zIndex=-1,

@@ -10,10 +10,8 @@ dash.register_page(__name__, path='/labelling')
 
 def layout():
     title = dmc.Title(
-        'SELECT SDGs RELEVANT FOR THIS PARAGRAPH IF APPLICABLE',
+        'Select SDGs Relevant For This Paragraph If Applicable',
         order=2,
-        color=src.ui.styles.PRIMARY_COLOUR,
-        variant='gradient',
     )
 
     scroll = dmc.ScrollArea(
@@ -27,7 +25,7 @@ def layout():
         shadow='lg',
         radius='md',
         withBorder=True,
-        style={'font-size': 'large', 'min-height': '20vh'}
+        style={'fontSize': 'large', 'minHeight': '20vh', 'margin': '20px 0'},
     )
 
     loading_paper = dmc.LoadingOverlay(
@@ -44,9 +42,10 @@ def layout():
         id='progress-bar',
         value=0,
         label='0%',
-        color=src.ui.styles.PRIMARY_COLOUR,
-        radius='sm',
+        color='#D12800',
+        radius='md',
         size='xl',
+        style={'marginTop': '20px'},
     )
 
     stack = dmc.Stack(

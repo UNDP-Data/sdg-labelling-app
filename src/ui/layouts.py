@@ -1,29 +1,23 @@
-# standard library
-from typing import Literal
-
 # dash
 import dash_mantine_components as dmc
 
 # local packages
-from src.ui import styles, alerts, buttons, inputs, modals, drawer, header, footer, affixes, accordions
+from src.ui import buttons, inputs
 
 
 def insert_login_elements():
     title = dmc.Title(
-        'LOG IN',
-        order=1,
-        mt='5vh'
+        'Log in',
+        order=2,
+        className='page-title'
     )
 
     text = dmc.Text(
         'Enter Your Credentials to Proceed',
-        style={'text-align': 'center'},
-        color=styles.PRIMARY_COLOUR,
     )
 
     title_stack = dmc.Stack(
         children=[title, text],
-        align='center',
     )
 
     login_stack = dmc.Stack(
@@ -41,20 +35,19 @@ def insert_login_elements():
 
 def insert_session_elements():
     title = dmc.Title(
-        'LET\'S GET STARTED',
+        'Let\'s get started',
         order=2,
-        mt='5vh',
     )
 
     text = dmc.Text(
-        'Select the number of texts you want to label',
-        style={'text-align': 'center'},
-        color=styles.PRIMARY_COLOUR,
+        'Select the number of texts you want to label in this session.'
+        ' You can always quit early. And you can also start a new session at the end of the current one if you want.'
+        ' We recommend starting with 10 texts, which should take you about 15 to 20 minutes to complete.',
+        className='label'
     )
 
     title_stack = dmc.Stack(
         children=[title, text],
-        align='center',
     )
 
     session_stack = dmc.Stack(

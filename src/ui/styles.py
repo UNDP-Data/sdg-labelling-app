@@ -6,22 +6,22 @@ PRIMARY_COLOUR = '#1F5A95'
 
 def get_sdg_style(sdg_id: int, is_selected: bool, language: entities.LANGUAGE_ISO) -> dict:
     style_base = {
-        'background-size': 'cover',
+        'backgroundSize': 'cover',
         'transition': '0.3s',
         'border': '2px solid transparent',
-        'border-radius': '0px',
+        'borderRadius': '0px',
         'cursor': 'pointer',
     }
     if is_selected:
         style_extra = {
-            'background-image': f'url("../assets/icons/{language}/colour/sdg_{sdg_id}.png")',
+            'backgroundImage': f'url("../assets/icons/{language}/colour/sdg_{sdg_id}.png")',
             'height': '11vh',
             'width': '11vh',
-            'box-shadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
+            'boxShadow': 'rgb(38, 57, 77) 0px 20px 30px -10px',
         }
     else:
         style_extra = {
-            'background-image': f'url("../assets/icons/{language}/black/sdg_{sdg_id}.png")',
+            'backgroundImage': f'url("../assets/icons/{language}/black/sdg_{sdg_id}.png")',
             'height': '10vh',
             'width': '10vh',
         }
