@@ -2,6 +2,7 @@ from . import (
     affixes,
     alerts,
     buttons,
+    drawer,
     extras,
     footer,
     header,
