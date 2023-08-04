@@ -16,7 +16,7 @@ Contributions in English are always welcome!
 
 ### When is the deadline?
 
-The application is open for contributions **until July 31, 2023**.
+The application is open for contributions **until September 30, 2023**.
 Make sure to contribute regularly!
 
 ### How much time is required to contribute?
